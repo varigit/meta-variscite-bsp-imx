@@ -76,4 +76,4 @@ pkg_postinst_kernel-devicetree_append_imx8qm-var-som () {
 }
 
 KERNEL_VERSION_SANITY_SKIP="1"
-COMPATIBLE_MACHINE = "(mx6|mx8)"
+COMPATIBLE_MACHINE = "(imx8mp-var-dart)"
