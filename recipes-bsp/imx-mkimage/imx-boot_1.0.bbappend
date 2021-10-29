@@ -1,3 +1,5 @@
+require imx-mkimage_git.inc
+
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
 SRC_URI_append_imx8mn-var-som = " file://imx-mkimage-imx8m-soc.mak-add-var-som-imx8m-nano-support.patch"
