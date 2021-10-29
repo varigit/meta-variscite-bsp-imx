@@ -36,6 +36,10 @@ MACHINE_FIRMWARE_append_mx8 = " \
 	freertos-variscite \
 	"
 
+# Add VPU and Cortex M4/M7 firmware
+MACHINE_FIRMWARE_append_mx8 = " \
+	freertos-variscite \
+	"
 MACHINE_EXTRA_RDEPENDS += " \
 	gptfdisk \
 	hostapd \
