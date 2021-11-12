@@ -8,8 +8,6 @@ DESCRIPTION = "Linux kernel provided and supported by Variscite (based on the ke
 with focus on i.MX Family SOMs. It includes support for many IPs such as GPU, VPU and IPU."
 
 require recipes-kernel/linux/linux-imx.inc
-include linux-common.inc
-
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
 
@@ -19,6 +17,12 @@ DEPENDS += "lzop-native bc-native"
 RDEPENDS_${KERNEL_PACKAGE_NAME}-base = ""
 
 DEFAULT_PREFERENCE = "1"
+
+LINUX_VERSION = "5.4.127"
+SRCBRANCH = "5.4-2.3.x-imx_var01"
+SRCREV = "920c302cfe05d805f97be9635af411e67c888051"
+KERNEL_SRC = "git://github.com/varigit/linux-imx;protocol=git"
+SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
 
 LOCALVERSION_var-som-mx6 = "-imx6ul"
 LOCALVERSION_imx6ul-var-dart = "-imx6ul"
@@ -47,8 +51,6 @@ DEFAULT_DTB_PREFIX_imx8mq-var-dart = "imx8mq-var-dart-dt8mcustomboard"
 DEFAULT_DTB_PREFIX_imx8qxp-var-som = "imx8qxp-var-som-symphony"
 DEFAULT_DTB_PREFIX_imx8qxpb0-var-som = "imx8qxp-var-som-symphony"
 DEFAULT_DTB_PREFIX_imx8qm-var-som = "imx8qm-var-som"
-
-SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
 
 S = "${WORKDIR}/git"
 
