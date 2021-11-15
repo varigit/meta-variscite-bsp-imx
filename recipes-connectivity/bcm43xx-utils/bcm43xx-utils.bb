@@ -22,6 +22,7 @@ FILES_${PN} = " \
 RDEPENDS_${PN}_imx8mq-var-dart = "i2c-tools"
 RDEPENDS_${PN}_imx8mm-var-dart = "i2c-tools"
 RDEPENDS_${PN}_imx8mn-var-som = "i2c-tools"
+RDEPENDS_${PN}_imx8mp-var-dart = "i2c-tools"
 RDEPENDS_${PN}_append = " bash base-files"
 
 S = "${WORKDIR}"
@@ -53,4 +54,4 @@ do_install() {
 	fi
 }
 
-COMPATIBLE_MACHINE = "(imx6ul-var-dart|imx7-var-som|imx8mm-var-dart|imx8mn-var-som|imx8mq-var-dart|imx8qm-var-som|imx8qxp-var-som|imx8qxpb0-var-som)"
+COMPATIBLE_MACHINE = "(imx6ul-var-dart|imx7-var-som|imx8mm-var-dart|imx8mn-var-som|imx8mq-var-dart|imx8qm-var-som|imx8qxp-var-som|imx8qxpb0-var-som|imx8mp-var-dart)"
