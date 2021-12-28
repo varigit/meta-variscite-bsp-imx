@@ -16,6 +16,9 @@ DEFAULTTUNE_mx8mq  ?= "cortexa53-crypto"
 DEFAULTTUNE_mx8qxp ?= "cortexa35-crypto"
 DEFAULTTUNE_mx8qm ?= "cortexa72-cortexa53-crypto"
 
+# Variscite BSP default providers
+PREFERRED_RPROVIDER_u-boot-default-env ?= "u-boot-variscite"
+
 # Use i.MX Gstreamer Version
 MACHINE_GSTREAMER_1_0_PLUGIN_mx8 = "imx-gst1.0-plugin"
 PREFERRED_VERSION_imx-gst1.0-plugin_mx8 ?= "4.5.7"
