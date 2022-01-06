@@ -5,13 +5,9 @@ DEPENDS += "bison-native"
 
 UBOOT_SRC ?= "git://github.com/varigit/uboot-imx;protocol=git"
 
-SRCBRANCH = "imx_v2020.04_5.4.70_2.3.0_var01"
-SRCREV = "46d384f517a2dbe63c6161d2ecfd964fdc08bf89"
+SRCBRANCH = "lf_v2021.04_var03"
+SRCREV = "de1e61993bd20e9c0326c9994ccbb86c9608803a"
 UBOOT_INITIAL_ENV_DEVICE = "sd"
-
-SRCBRANCH_imx8mp-var-dart = "imx_v2020.04_5.4.70_2.3.0_var01"
-SRCREV_imx8mp-var-dart = "46d384f517a2dbe63c6161d2ecfd964fdc08bf89"
-UBOOT_INITIAL_ENV_DEVICE_imx8mp-var-dart = "sd"
 
 SRCBRANCH_var-som-mx6 = "imx_v2018.03_4.14.78_1.0.0_ga_var02"
 SRCREV_var-som-mx6 = "e382ce1bbd5ce83e4f3b9dbeed5d04e41708aae5"
