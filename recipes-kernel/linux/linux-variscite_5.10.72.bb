@@ -17,11 +17,11 @@ DEPENDS += "lzop-native bc-native"
 
 DEFAULT_PREFERENCE = "1"
 
-SRCBRANCH = "lf-5.10.y_var02"
+SRCBRANCH = "lf-5.10.y_var04"
 KERNEL_SRC ?= "git://github.com/varigit/linux-imx;protocol=git"
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
-SRCREV = "da4b924dde283174c8253b818b6337f4997b0fd1"
-LINUX_VERSION = "5.10.35"
+SRCREV = "3f9724ea325855c7b2dab4a8d5680568a4edb634"
+LINUX_VERSION = "5.10.72"
 
 KERNEL_CONFIG_COMMAND = "oe_runmake_call -C ${S} CC="${KERNEL_CC}" O=${B} olddefconfig"
 
@@ -76,4 +76,4 @@ pkg_postinst_kernel-devicetree_append_imx8qm-var-som () {
 }
 
 KERNEL_VERSION_SANITY_SKIP="1"
-COMPATIBLE_MACHINE = "(imx8mp-var-dart)"
+COMPATIBLE_MACHINE = "(mx8)"
