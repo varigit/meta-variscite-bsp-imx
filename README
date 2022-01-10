@@ -1,0 +1,5 @@
+OpenEmbedded/Yocto BSP layer for Variscite's platforms
+======================================================
+
+This layer provides support for Variscite's platforms for use with
+OpenEmbedded and/or Yocto.
