@@ -42,7 +42,7 @@ DEFAULT_DTB:imx8mq-var-dart = "sd-lvds"
 DEFAULT_DTB:imx8qxp-var-som = "sd"
 DEFAULT_DTB:imx8qm-var-som = "lvds"
 DEFAULT_DTB_PREFIX:imx8mq-var-dart = "imx8mq-var-dart"
-DEFAULT_DTB_PREFIX:imx8qxp-var-som = "imx8qxp-var-som"
+DEFAULT_DTB_PREFIX:imx8qxp-var-som = "imx8qxp-var-som-symphony"
 DEFAULT_DTB_PREFIX:imx8qm-var-som = "imx8qm-var-som"
 
 pkg_postinst:kernel-devicetree:append () {
