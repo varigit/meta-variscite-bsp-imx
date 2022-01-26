@@ -71,7 +71,9 @@ pkg_postinst:kernel-devicetree:append:imx8qxpb0-var-som () {
 pkg_postinst:kernel-devicetree:append:imx8qm-var-som () {
     cd $D/boot
     ln -s ${DEFAULT_DTB_PREFIX}-${DEFAULT_DTB}.dtb ${DEFAULT_DTB_PREFIX}.dtb
+    ln -s imx8qp-var-som-${DEFAULT_DTB}.dtb imx8qp-var-som.dtb
     ln -s imx8qm-var-spear-${DEFAULT_DTB}.dtb imx8qm-var-spear.dtb
+    ln -s imx8qp-var-spear-${DEFAULT_DTB}.dtb imx8qp-var-spear.dtb
 }
 
 KERNEL_VERSION_SANITY_SKIP="1"
