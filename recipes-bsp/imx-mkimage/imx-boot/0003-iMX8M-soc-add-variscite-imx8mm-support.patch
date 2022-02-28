@@ -1,15 +1,15 @@
-From 19b158890a3fda14ad14d699e0ac6160f917f48e Mon Sep 17 00:00:00 2001
+From 3342095cdb35d20e44bc779e7fbb1975e9bd362b Mon Sep 17 00:00:00 2001
 From: Nate Drude <nate.d@variscite.com>
-Date: Fri, 23 Oct 2020 16:07:35 -0500
-Subject: [PATCH] imx-mkimage: imx8m: soc.mak: add variscite imx8mm support
+Date: Mon, 28 Feb 2022 10:43:57 -0600
+Subject: [PATCH 3/3] iMX8M: soc: add variscite imx8mm support
 
 Signed-off-by: Nate Drude <nate.d@variscite.com>
 ---
- iMX8M/soc.mak | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ iMX8M/soc.mak | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
 diff --git a/iMX8M/soc.mak b/iMX8M/soc.mak
-index 4bfdc37..be34d23 100644
+index 9e099ba..75ba6d8 100644
 --- a/iMX8M/soc.mak
 +++ b/iMX8M/soc.mak
 @@ -116,6 +116,22 @@ u-boot-spl-ddr4.bin: u-boot-spl.bin $(ddr4_imem_1d) $(ddr4_dmem_1d) $(ddr4_imem_
@@ -35,20 +35,24 @@ index 4bfdc37..be34d23 100644
  ddr3_imem_1d = ddr3_imem_1d$(DDR_FW_VERSION).bin
  ddr3_dmem_1d = ddr3_dmem_1d$(DDR_FW_VERSION).bin
  
-@@ -151,6 +167,12 @@ u-boot.itb: $(dtb)
+@@ -149,6 +165,16 @@ u-boot.itb: $(dtb)
  	./mkimage_uboot -E -p 0x3000 -f u-boot.its u-boot.itb
  	@rm -f u-boot.its $(dtb)
  
-+dtbs_lpddr4_ddr4_evk = $(PLAT)-var-dart-customboard.dtb $(PLAT)-var-som-symphony.dtb
++dtbs_lpddr4_ddr4_evk ?= $(dtbs)
 +u-boot-lpddr4-ddr4-evk.itb: $(dtbs_lpddr4_ddr4_evk)
++	./$(PAD_IMAGE) tee.bin
 +	./$(PAD_IMAGE) bl31.bin
++	./$(PAD_IMAGE) u-boot-nodtb.bin $(dtbs_lpddr4_ddr4_evk)
 +	DEK_BLOB_LOAD_ADDR=$(DEK_BLOB_LOAD_ADDR) TEE_LOAD_ADDR=$(TEE_LOAD_ADDR) ATF_LOAD_ADDR=$(ATF_LOAD_ADDR) ./mkimage_fit_atf.sh $(dtbs_lpddr4_ddr4_evk) > u-boot-lpddr4-ddr4-evk.its
 +	./mkimage_uboot -E -p 0x3000 -f u-boot-lpddr4-ddr4-evk.its u-boot-lpddr4-ddr4-evk.itb
++	@rm -f $(dtbs_lpddr4_ddr4_evk)
++
 +
  dtb_ddr3l = valddr3l.dtb
  $(dtb_ddr3l):
  	./$(DTB_PREPROC) $(PLAT)-ddr3l-$(VAL_BOARD).dtb $(dtb_ddr3l) $(dtbs)
-@@ -226,6 +248,8 @@ flash_evk_emmc_fastboot: flash_evk_no_hdmi_emmc_fastboot
+@@ -224,6 +250,8 @@ flash_evk_emmc_fastboot: flash_evk_no_hdmi_emmc_fastboot
  
  flash_ddr4_evk: flash_ddr4_evk_no_hdmi
  
@@ -57,7 +61,7 @@ index 4bfdc37..be34d23 100644
  flash_ddr3l_evk: flash_ddr3l_evk_no_hdmi
  
  flash_ddr3l_val: flash_ddr3l_val_no_hdmi
-@@ -272,6 +296,9 @@ flash_ddr4_evk_flexspi: $(MKIMG) u-boot-spl-ddr4.bin u-boot-ddr4-evk.itb
+@@ -270,6 +298,9 @@ flash_ddr4_evk_flexspi: $(MKIMG) u-boot-spl-ddr4.bin u-boot-ddr4-evk.itb
  	./mkimage_imx8 -version $(VERSION) -dev flexspi -fit -loader u-boot-spl-ddr4.bin $(SPL_FSPI_LOAD_ADDR) -second_loader u-boot-ddr4-evk.itb 0x40200000 0x60000 -out $(OUTIMG)
  	./$(QSPI_PACKER) $(QSPI_HEADER)
  
@@ -68,5 +72,5 @@ index 4bfdc37..be34d23 100644
  
  flash_dp_spl_uboot: flash_dp_evk
 -- 
-2.33.0
+2.25.1
 

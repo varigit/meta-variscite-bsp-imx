@@ -1,14 +1,16 @@
 # Copyright (C) 2017-2020 NXP
 # Copyright (C) 2021 Variscite LTD
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 require imx-mkimage_git.inc
 
-SRC_URI_append_imx8mn-var-som = " file://imx-mkimage-imx8m-soc.mak-add-var-som-imx8m-nano-support.patch"
-SRC_URI_append_imx8mq-var-dart = " file://imx-mkimage-imx8m-soc.mak-add-dart-mx8m-support.patch"
-SRC_URI_append_imx8mm-var-dart = " file://imx-mkimage-imx8m-soc.mak-add-variscite-imx8mm-suppo.patch"
-SRC_URI_append_imx8mp-var-dart = " file://imx-mkimage-imx8m-soc.mak-add-dart-mx8mp-support.patch"
+SRC_URI += " \
+    file://0001-iMX8M-soc-allow-dtb-override.patch \
+    file://0002-iMX8M-soc-change-padding-of-DDR4-and-LPDDR4-DMEM-fir.patch \
+    "
+
+SRC_URI:append:imx8mm-var-dart = " file://0003-iMX8M-soc-add-variscite-imx8mm-support.patch"
 
 do_compile() {
     echo "Copying DTBs"
@@ -34,10 +36,14 @@ do_compile() {
         if [ "$target" = "flash_linux_m4_no_v2x" ]; then
            # Special target build for i.MX 8DXL with V2X off
            bbnote "building ${IMX_BOOT_SOC_TARGET} - ${REV_OPTION} V2X=NO ${target}"
-           make SOC=${IMX_BOOT_SOC_TARGET} ${REV_OPTION} V2X=NO dtbs="${UBOOT_DTB_NAME} ${UBOOT_DTB_EXTRA}" flash_linux_m4
+           make SOC=${IMX_BOOT_SOC_TARGET} ${REV_OPTION} V2X=NO \
+                dtbs="${UBOOT_DTB_NAME} ${UBOOT_DTB_EXTRA}" \
+                flash_linux_m4
         else
            bbnote "building ${IMX_BOOT_SOC_TARGET} - ${REV_OPTION} ${target}"
-           make SOC=${IMX_BOOT_SOC_TARGET} ${REV_OPTION} dtbs="${UBOOT_DTB_NAME} ${UBOOT_DTB_EXTRA}" ${target}
+           make SOC=${IMX_BOOT_SOC_TARGET} ${REV_OPTION} \
+                dtbs="${UBOOT_DTB_NAME} ${UBOOT_DTB_EXTRA}" \
+                ${target}
         fi
         if [ -e "${BOOT_STAGING}/flash.bin" ]; then
             cp ${BOOT_STAGING}/flash.bin ${S}/${BOOT_CONFIG_MACHINE}-${target}
