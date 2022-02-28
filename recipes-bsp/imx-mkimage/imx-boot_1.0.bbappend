@@ -14,17 +14,10 @@ SRC_URI:append:imx8mm-var-dart = " file://0003-iMX8M-soc-add-variscite-imx8mm-su
 
 do_compile() {
     echo "Copying DTBs"
-    if [ -f ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/imx8mm-var-som-symphony.dtb ]; then
-        cp ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/imx8mm-var-som-symphony.dtb ${S}/iMX8M/
-    fi
-
-    if [ -f ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/imx8mp-var-dart-dt8mcustomboard-legacy.dtb ]; then
-        cp ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/imx8mp-var-dart-dt8mcustomboard-legacy.dtb ${S}/iMX8M/
-    fi
-
-    if [ -f ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/imx8mp-var-som-symphony.dtb ]; then
-        cp ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/imx8mp-var-som-symphony.dtb ${S}/iMX8M/
-    fi
+    cp ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/${UBOOT_DTB_NAME} ${BOOT_STAGING}
+    for UBOOT_DTB in ${UBOOT_DTB_EXTRA}; do
+        cp ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/${UBOOT_DTB} ${BOOT_STAGING}
+    done
 
     # mkimage for i.MX8
     # Copy TEE binary to SoC target folder to mkimage
