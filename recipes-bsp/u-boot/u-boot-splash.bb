@@ -7,7 +7,7 @@ SRC_URI = "file://splash.bmp"
 
 S = "${WORKDIR}"
 
-FILES_${PN} = "/boot/splash.bmp"
+FILES:${PN} = "/boot/splash.bmp"
 
 do_install () {
 	install -d ${D}/boot

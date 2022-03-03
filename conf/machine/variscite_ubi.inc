@@ -23,10 +23,10 @@ UBI_VOLNAME  = "rootfs"
 IMAGE_FSTYPES = "tar.gz multiubi wic.gz"
 
 # do multiubi last
-IMAGE_TYPEDEP_multiubi += "${IMAGE_FSTYPES}"
-IMAGE_TYPEDEP_multiubi_remove = "multiubi"
+IMAGE_TYPEDEP:multiubi += "${IMAGE_FSTYPES}"
+IMAGE_TYPEDEP:multiubi:remove = "multiubi"
 
-multiubi_mkfs_prepend() {
+multiubi_mkfs:prepend() {
 	# Update PEB size in fw_env.config (u-boot-fw-utils)
 	if [ -f ${IMAGE_ROOTFS}${sysconfdir}/fw_env.config ]; then
 		# Get PEB from UBINIZE_ARGS

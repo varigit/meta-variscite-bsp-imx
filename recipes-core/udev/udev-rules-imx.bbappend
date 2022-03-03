@@ -1,20 +1,20 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-SRC_URI_append_imx8mq-var-dart = " file://usb-power.rules"
-SRC_URI_append_imx8mm-var-dart = " file://usb-power.rules"
-SRC_URI_append_imx8mp-var-dart = " file://usb-power.rules"
+SRC_URI:append:imx8mq-var-dart = " file://usb-power.rules"
+SRC_URI:append:imx8mm-var-dart = " file://usb-power.rules"
+SRC_URI:append:imx8mp-var-dart = " file://usb-power.rules"
 
-do_install_append_imx8mq-var-dart () {
+do_install:append:imx8mq-var-dart () {
         install -d ${D}${sysconfdir}/udev/rules.d
         install -m 0644 ${WORKDIR}/usb-power.rules ${D}${sysconfdir}/udev/rules.d/
 }
 
-do_install_append_imx8mm-var-dart () {
+do_install:append:imx8mm-var-dart () {
         install -d ${D}${sysconfdir}/udev/rules.d
         install -m 0644 ${WORKDIR}/usb-power.rules ${D}${sysconfdir}/udev/rules.d/
 }
 
-do_install_append_imx8mp-var-dart () {
+do_install:append:imx8mp-var-dart () {
         install -d ${D}${sysconfdir}/udev/rules.d
         install -m 0644 ${WORKDIR}/usb-power.rules ${D}${sysconfdir}/udev/rules.d/
 }

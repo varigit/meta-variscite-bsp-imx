@@ -19,4 +19,4 @@ do_install() {
         install -m 0755 ${S}/brcm_patchram_plus ${D}${bindir}/
 }
 
-FILES_${PN} = "${bindir}/brcm_patchram_plus"
+FILES:${PN} = "${bindir}/brcm_patchram_plus"

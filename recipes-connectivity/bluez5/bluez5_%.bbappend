@@ -1,6 +1,6 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-SRC_URI_append = " \
+SRC_URI:append = " \
 	file://main.conf \
 	file://audio.conf \
 	file://bluetooth \
@@ -11,11 +11,11 @@ SRC_URI_append = " \
 "
 
 # Required by obexd
-RDEPENDS_${PN}_append_libc-glibc = " glibc-gconv-utf-16"
+RDEPENDS:${PN}:append:libc-glibc = " glibc-gconv-utf-16"
 
 DEPENDS += "${@bb.utils.contains('DISTRO_FEATURES','systemd','','update-rc.d-native',d)}"
 
-do_install_append() {
+do_install:append() {
 	install -d ${D}${sysconfdir}/bluetooth
 	install -d ${D}${sysconfdir}/dbus-1/system.d
 	install -d ${D}${sysconfdir}/profile.d

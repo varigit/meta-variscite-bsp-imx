@@ -45,22 +45,22 @@ DEFAULT_DTB_PREFIX:imx8mq-var-dart = "imx8mq-var-dart"
 DEFAULT_DTB_PREFIX:imx8qxp-var-som = "imx8qxp-var-som"
 DEFAULT_DTB_PREFIX:imx8qm-var-som = "imx8qm-var-som"
 
-pkg_postinst_kernel-devicetree:append () {
+pkg_postinst:kernel-devicetree:append () {
    rm -f $D/boot/devicetree-*
 }
 
-pkg_postinst_kernel-devicetree:append:imx8mq-var-dart () {
+pkg_postinst:kernel-devicetree:append:imx8mq-var-dart () {
     cd $D/boot
     ln -s ${DEFAULT_DTB_PREFIX}-${DEFAULT_DTB}.dtb ${DEFAULT_DTB_PREFIX}.dtb
     ln -s ${DEFAULT_DTB_PREFIX}-${DEFAULT_DTB}-cb12.dtb ${DEFAULT_DTB_PREFIX}-cb12.dtb
 }
 
-pkg_postinst_kernel-devicetree:append:imx8qxp-var-som () {
+pkg_postinst:kernel-devicetree:append:imx8qxp-var-som () {
     cd $D/boot
     ln -s ${DEFAULT_DTB_PREFIX}-${DEFAULT_DTB}.dtb ${DEFAULT_DTB_PREFIX}.dtb
 }
 
-pkg_postinst_kernel-devicetree:append:imx8qm-var-som () {
+pkg_postinst:kernel-devicetree:append:imx8qm-var-som () {
     cd $D/boot
     ln -s ${DEFAULT_DTB_PREFIX}-${DEFAULT_DTB}.dtb ${DEFAULT_DTB_PREFIX}.dtb
     ln -s imx8qm-var-spear-${DEFAULT_DTB}.dtb imx8qm-var-spear.dtb

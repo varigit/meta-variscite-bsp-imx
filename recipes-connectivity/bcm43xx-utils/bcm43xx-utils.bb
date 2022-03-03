@@ -12,18 +12,18 @@ SRC_URI = " \
 	file://variscite-bt.service \
 "
 
-FILES_${PN} = " \ 
+FILES:${PN} = " \ 
 	${sysconfdir}/wifi/*  \
 	${sysconfdir}/bluetooth/*  \
 	${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '${systemd_unitdir}/system/* ${sysconfdir}/systemd/system/multi-user.target.wants/*', \
 			'${sysconfdir}/init.d ${sysconfdir}/rcS.d ${sysconfdir}/rc2.d ${sysconfdir}/rc3.d ${sysconfdir}/rc4.d ${sysconfdir}/rc5.d', d)} \
 "
 
-RDEPENDS_${PN}_imx8mq-var-dart = "i2c-tools"
-RDEPENDS_${PN}_imx8mm-var-dart = "i2c-tools"
-RDEPENDS_${PN}_imx8mn-var-som = "i2c-tools"
-RDEPENDS_${PN}_imx8mp-var-dart = "i2c-tools"
-RDEPENDS_${PN}_append = " bash base-files"
+RDEPENDS:${PN}:imx8mq-var-dart = "i2c-tools"
+RDEPENDS:${PN}:imx8mm-var-dart = "i2c-tools"
+RDEPENDS:${PN}:imx8mn-var-som = "i2c-tools"
+RDEPENDS:${PN}:imx8mp-var-dart = "i2c-tools"
+RDEPENDS:${PN}:append = " bash base-files"
 
 S = "${WORKDIR}"
 

@@ -19,7 +19,7 @@ S = "${WORKDIR}/git"
 
 inherit systemd pkgconfig autotools
 
-do_install_append () {
+do_install:append () {
   if ${@bb.utils.contains('DISTRO_FEATURES','systemd','true','false',d)}; then
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/bluez-alsa.service ${D}${systemd_unitdir}/system
@@ -32,10 +32,10 @@ do_install_append () {
   fi
 }
 
-FILES_${PN} += "${libdir}/alsa-lib/lib*.so ${datadir}/alsa"
-FILES_${PN}-dev += "${libdir}/alsa-lib/*.la"
-FILES_${PN}-staticdev += "${libdir}/alsa-lib/lib*.a"
-FILES_${PN}-dbg += "${libdir}/alsa-lib/.debug/*.so"
+FILES:${PN} += "${libdir}/alsa-lib/lib*.so ${datadir}/alsa"
+FILES:${PN}-dev += "${libdir}/alsa-lib/*.la"
+FILES:${PN}-staticdev += "${libdir}/alsa-lib/lib*.a"
+FILES:${PN}-dbg += "${libdir}/alsa-lib/.debug/*.so"
 
 SYSTEMD_AUTO_ENABLE = "enable"
-SYSTEMD_SERVICE_${PN} = "bluez-alsa.service"
+SYSTEMD_SERVICE:${PN} = "bluez-alsa.service"

@@ -7,7 +7,7 @@ require recipes-bsp/u-boot/u-boot.inc
 
 PROVIDES += "u-boot"
 DEPENDS += "bison-native bc-native dtc-native"
-FILESEXTRAPATHS_prepend := "${THISDIR}/u-boot-fw-utils:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/u-boot-fw-utils:"
 
 include u-boot-common.inc
 
@@ -21,7 +21,7 @@ SRC_URI += "file://fw_env.config"
 
 UBOOT_INITIAL_ENV = "u-boot-initial-env"
 
-do_deploy_append_mx8m () {
+do_deploy:append:mx8m () {
     # Deploy the mkimage, u-boot-nodtb.bin and the U-Boot dtb for mkimage to generate boot binary
     if [ -n "${UBOOT_CONFIG}" ]
     then
@@ -46,13 +46,13 @@ do_deploy_append_mx8m () {
 
 }
 
-do_install_append() {
+do_install:append() {
     ln -sf ${UBOOT_INITIAL_ENV}-${UBOOT_INITIAL_ENV_DEVICE} ${D}/${sysconfdir}/${UBOOT_INITIAL_ENV}
 }
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 COMPATIBLE_MACHINE = "(mx6|mx7|mx8)"
 
-UBOOT_NAME_mx6 = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
-UBOOT_NAME_mx7 = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
-UBOOT_NAME_mx8 = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
+UBOOT_NAME:mx6 = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
+UBOOT_NAME:mx7 = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
+UBOOT_NAME:mx8 = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"

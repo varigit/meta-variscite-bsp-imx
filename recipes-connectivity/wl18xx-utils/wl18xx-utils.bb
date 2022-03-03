@@ -10,13 +10,13 @@ SRC_URI = " \
 	file://variscite-bt.service \
 "
 
-FILES_${PN} = " \
+FILES:${PN} = " \
 	${sysconfdir}/bluetooth/*  \
 	${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '${systemd_unitdir}/system/* ${sysconfdir}/systemd/system/multi-user.target.wants/*', \
 				'${sysconfdir}/init.d ${sysconfdir}/rcS.d ${sysconfdir}/rc2.d ${sysconfdir}/rc3.d ${sysconfdir}/rc4.d ${sysconfdir}/rc5.d', d)} \
 "
 
-RDEPENDS_${PN}_append = " bash base-files"
+RDEPENDS:${PN}:append = " bash base-files"
 
 S = "${WORKDIR}"
 
