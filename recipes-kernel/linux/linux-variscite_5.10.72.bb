@@ -46,7 +46,7 @@ DEFAULT_DTB:imx8qm-var-som = "lvds"
 DEFAULT_DTB_PREFIX:imx8mq-var-dart = "imx8mq-var-dart"
 DEFAULT_DTB_PREFIX:imx8qxp-var-som = "imx8qxp-var-som-symphony"
 DEFAULT_DTB_PREFIX:imx8qxpb0-var-som = "imx8qxp-var-som-symphony"
-DEFAULT_DTB_PREFIX:imx8qm-var-som = "imx8qm-var-som"
+DEFAULT_DTB_PREFIX:imx8qm-var-som = "imx8qm-var-som-symphony"
 
 pkg_postinst:kernel-devicetree:append () {
    rm -f $D/boot/devicetree-*
@@ -71,9 +71,9 @@ pkg_postinst:kernel-devicetree:append:imx8qxpb0-var-som () {
 pkg_postinst:kernel-devicetree:append:imx8qm-var-som () {
     cd $D/boot
     ln -s ${DEFAULT_DTB_PREFIX}-${DEFAULT_DTB}.dtb ${DEFAULT_DTB_PREFIX}.dtb
-    ln -s imx8qp-var-som-${DEFAULT_DTB}.dtb imx8qp-var-som.dtb
-    ln -s imx8qm-var-spear-${DEFAULT_DTB}.dtb imx8qm-var-spear.dtb
-    ln -s imx8qp-var-spear-${DEFAULT_DTB}.dtb imx8qp-var-spear.dtb
+    ln -s imx8qp-var-som-symphony-${DEFAULT_DTB}.dtb imx8qp-var-som-symphony.dtb
+    ln -s imx8qm-var-spear-sp8customboard-${DEFAULT_DTB}.dtb imx8qm-var-spear-sp8customboard.dtb
+    ln -s imx8qp-var-spear-sp8customboard-${DEFAULT_DTB}.dtb imx8qp-var-spear-sp8customboard.dtb
 }
 
 KERNEL_VERSION_SANITY_SKIP="1"
