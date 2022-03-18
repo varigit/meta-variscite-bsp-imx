@@ -14,10 +14,12 @@ SRC_URI:append:imx8mm-var-dart = " file://0003-iMX8M-soc-add-variscite-imx8mm-su
 
 do_compile() {
     echo "Copying DTBs"
-    cp ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/${UBOOT_DTB_NAME} ${BOOT_STAGING}
-    for UBOOT_DTB in ${UBOOT_DTB_EXTRA}; do
-        cp ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/${UBOOT_DTB} ${BOOT_STAGING}
-    done
+    if [ "mx8m" = "${SOC_FAMILY}" ]; then
+        cp ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/${UBOOT_DTB_NAME} ${BOOT_STAGING}
+        for UBOOT_DTB in ${UBOOT_DTB_EXTRA}; do
+            cp ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/${UBOOT_DTB} ${BOOT_STAGING}
+        done
+    fi
 
     # mkimage for i.MX8
     # Copy TEE binary to SoC target folder to mkimage
