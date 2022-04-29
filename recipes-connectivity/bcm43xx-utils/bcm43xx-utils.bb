@@ -24,7 +24,7 @@ RDEPENDS:${PN}:imx8mq-var-dart = "i2c-tools"
 RDEPENDS:${PN}:imx8mm-var-dart = "i2c-tools"
 RDEPENDS:${PN}:imx8mn-var-som = "i2c-tools"
 RDEPENDS:${PN}:imx8mp-var-dart = "i2c-tools"
-RDEPENDS:${PN}:append = " bash base-files"
+RDEPENDS:${PN}:append = " base-files"
 
 S = "${WORKDIR}"
 

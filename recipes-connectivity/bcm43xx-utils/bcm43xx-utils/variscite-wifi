@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh -e
 
 . /etc/wifi/variscite-wifi.conf
 . /etc/wifi/variscite-wifi-common.sh
