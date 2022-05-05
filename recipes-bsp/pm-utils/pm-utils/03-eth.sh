@@ -1,13 +1,13 @@
-#!/bin/bash -e
+#!/bin/sh
 
 case $1 in
 
 "suspend")
-	ifconfig eth0 down
-	ifconfig eth1 down
 	;;
 "resume")
-	ifconfig eth0 up
-	ifconfig eth1 up
+	for eth_interface in /sys/class/net/eth* ; do
+		ifconfig $(basename ${eth_interface}) down
+		ifconfig $(basename ${eth_interface}) up
+	done
 	;;
 esac
