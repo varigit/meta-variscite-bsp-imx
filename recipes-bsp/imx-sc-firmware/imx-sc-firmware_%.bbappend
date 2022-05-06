@@ -8,8 +8,8 @@ SC_MX8_FAMILY:mx8qm = "qm"
 SC_MX8_FAMILY:mx8qxp = "qx"
 SC_MACHINE_NAME = "mx8${SC_MX8_FAMILY}_b0"
 
-SCFW_BRANCH = "1.11.0"
-SRCREV = "f181e372dd70910569f1db7b1258f73a5a285c81"
+SCFW_BRANCH = "1.11.1"
+SRCREV = "e75d7f8f9446256656e769bf4c856eaa454757c9"
 
 SRC_URI += " \
     git://github.com/varigit/imx-sc-firmware.git;protocol=https;branch=${SCFW_BRANCH}; \
