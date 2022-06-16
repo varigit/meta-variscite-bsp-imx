@@ -23,8 +23,6 @@ SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
 SRCREV = "eea1e341f45f9104e0ff582b4accbcd6f25d3c54"
 LINUX_VERSION = "5.10.72"
 
-KERNEL_CONFIG_COMMAND = "oe_runmake_call -C ${S} CC="${KERNEL_CC}" O=${B} olddefconfig"
-
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 LOCALVERSION:imx6ul-var-dart = "-imx6ul"
