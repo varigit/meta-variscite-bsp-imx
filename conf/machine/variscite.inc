@@ -6,38 +6,38 @@ IMX_DEFAULT_BSP = "nxp"
 
 USE_VT = "0"
 
-KERNEL_IMAGETYPE:mx8 = "Image.gz"
+KERNEL_IMAGETYPE:mx8-nxp-bsp = "Image.gz"
 
-WKS_FILE:mx8 = "imx-imx-boot-singlepart.wks.in"
+WKS_FILE:mx8-nxp-bsp = "imx-imx-boot-singlepart.wks.in"
 
-DEFAULTTUNE:mx8mm  ?= "cortexa53-crypto"
-DEFAULTTUNE:mx8mn  ?= "cortexa53-crypto"
-DEFAULTTUNE:mx8mq  ?= "cortexa53-crypto"
-DEFAULTTUNE:mx8qxp ?= "cortexa35-crypto"
-DEFAULTTUNE:mx8qm ?= "cortexa72-cortexa53-crypto"
+DEFAULTTUNE:mx8mm-nxp-bsp  ?= "cortexa53-crypto"
+DEFAULTTUNE:mx8mn-nxp-bsp  ?= "cortexa53-crypto"
+DEFAULTTUNE:mx8mq-nxp-bsp  ?= "cortexa53-crypto"
+DEFAULTTUNE:mx8qxp-nxp-bsp ?= "cortexa35-crypto"
+DEFAULTTUNE:mx8qm-nxp-bsp ?= "cortexa72-cortexa53-crypto"
 
 # Variscite BSP default providers
 PREFERRED_RPROVIDER_u-boot-default-env ?= "u-boot-variscite"
 
 # Use i.MX Gstreamer Version
-MACHINE_GSTREAMER_1_0_PLUGIN:mx8 = "imx-gst1.0-plugin"
-PREFERRED_VERSION_imx-gst1.0-plugin:mx8 ?= "4.6.1"
-PREFERRED_VERSION_gstreamer1.0:mx8              ?= "1.18.0.imx"
-PREFERRED_VERSION_gstreamer1.0-plugins-base:mx8 ?= "1.18.0.imx"
-PREFERRED_VERSION_gstreamer1.0-plugins-good:mx8 ?= "1.18.0.imx"
-PREFERRED_VERSION_gstreamer1.0-plugins-bad:mx8  ?= "1.18.0.imx"
-PREFERRED_VERSION_gstreamer1.0-plugins-ugly:mx8 ?= "1.18.0"
-PREFERRED_VERSION_gstreamer1.0-libav:mx8        ?= "1.18.0"
-PREFERRED_VERSION_gstreamer1.0-rtsp-server:mx8  ?= "1.18.0"
+MACHINE_GSTREAMER_1_0_PLUGIN:mx8-nxp-bsp = "imx-gst1.0-plugin"
+PREFERRED_VERSION_imx-gst1.0-plugin:mx8-nxp-bsp ?= "4.6.1"
+PREFERRED_VERSION_gstreamer1.0:mx8-nxp-bsp              ?= "1.18.0.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-base:mx8-nxp-bsp ?= "1.18.0.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-good:mx8-nxp-bsp ?= "1.18.0.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-bad:mx8-nxp-bsp  ?= "1.18.0.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-ugly:mx8-nxp-bsp ?= "1.18.0"
+PREFERRED_VERSION_gstreamer1.0-libav:mx8-nxp-bsp        ?= "1.18.0"
+PREFERRED_VERSION_gstreamer1.0-rtsp-server:mx8-nxp-bsp  ?= "1.18.0"
 
 # Add VPU and Cortex M4/M7 firmware
-MACHINE_FIRMWARE:append:mx8 = " \
+MACHINE_FIRMWARE:append:mx8-nxp-bsp = " \
 	firmware-imx-vpu-imx8 \
 	freertos-variscite \
 	"
 
 # Add VPU and Cortex M4/M7 firmware
-MACHINE_FIRMWARE:append:mx8 = " \
+MACHINE_FIRMWARE:append:mx8-nxp-bsp = " \
 	freertos-variscite \
 	"
 MACHINE_EXTRA_RDEPENDS += " \
@@ -62,7 +62,7 @@ MACHINE_EXTRA_RDEPENDS += " \
 "
 
 # Packages added to all images (including core-image-minimal)
-IMAGE_INSTALL:append:mx8 = " \
+IMAGE_INSTALL:append:mx8-nxp-bsp = " \
 	kernel-image \
 	kernel-devicetree \
 "
