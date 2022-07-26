@@ -16,8 +16,9 @@ do_compile() {
     echo "Copying DTBs"
     if [ "mx8m" = "${SOC_FAMILY}" ]; then
         cp ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/${UBOOT_DTB_NAME} ${BOOT_STAGING}
-        for UBOOT_DTB in ${UBOOT_DTB_EXTRA}; do
-            cp ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/${UBOOT_DTB} ${BOOT_STAGING}
+
+        for UBOOT_DTB_EXTRA_FILE in ${UBOOT_DTB_EXTRA}; do
+            cp ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/${UBOOT_DTB_EXTRA_FILE} ${BOOT_STAGING}
         done
     fi
 
