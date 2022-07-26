@@ -127,4 +127,4 @@ FILES:${PN}-hdmi = " \
     ${nonarch_base_libdir}/firmware/dpfw.bin \
 "
 
-COMPATIBLE_MACHINE = "(imx)"
+COMPATIBLE_MACHINE = "(imx-nxp-bsp)"

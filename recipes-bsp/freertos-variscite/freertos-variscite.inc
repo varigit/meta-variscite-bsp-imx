@@ -19,12 +19,12 @@ S = "${WORKDIR}/git"
 MCUXPRESSO_BRANCH = "mcuxpresso_sdk_${PV}-var01"
 
 CM_BOARD="INVALID"
-CM_BOARD:mx8mn="som_mx8mn"
-CM_BOARD:mx8mq="dart_mx8mq"
-CM_BOARD:mx8mm="dart_mx8mm"
-CM_BOARD:mx8mp="dart_mx8mp som_mx8mp"
-CM_BOARD:mx8qm="som_mx8qm"
-CM_BOARD:mx8qxp="som_mx8qx"
+CM_BOARD:mx8mn-nxp-bsp="som_mx8mn"
+CM_BOARD:mx8mq-nxp-bsp="dart_mx8mq"
+CM_BOARD:mx8mm-nxp-bsp="dart_mx8mm"
+CM_BOARD:mx8mp-nxp-bsp="dart_mx8mp som_mx8mp"
+CM_BOARD:mx8qm-nxp-bsp="som_mx8qm"
+CM_BOARD:mx8qxp-nxp-bsp="som_mx8qx"
 
 # Firmware source directories
 CM_DEMOS = " \
@@ -34,7 +34,7 @@ CM_DEMOS = " \
 "
 
 # Firmware source directories
-CM_DEMOS:mx8qm = " \
+CM_DEMOS:mx8qm-nxp-bsp = " \
     multicore_examples/rpmsg_lite_str_echo_rtos/cm4_core0 \
     multicore_examples/rpmsg_lite_pingpong_rtos/linux_remote/cm4_core0 \
     demo_apps/hello_world/cm4_core0 \
@@ -58,8 +58,8 @@ CM_DEMOS:mx8qm = " \
 #   echo start > /sys/class/remoteproc/remoteproc0/state
 #   echo stop > /sys/class/remoteproc/remoteproc0/state
 CM_DEMOS_DISABLE_CACHE = ""
-CM_DEMOS_DISABLE_CACHE:mx8qxp = "demo_apps/disable_cache"
-CM_DEMOS_DISABLE_CACHE:mx8qm = "demo_apps/disable_cache/cm4_core0 demo_apps/disable_cache/cm4_core1"
+CM_DEMOS_DISABLE_CACHE:mx8qxp-nxp-bsp = "demo_apps/disable_cache"
+CM_DEMOS_DISABLE_CACHE:mx8qm-nxp-bsp = "demo_apps/disable_cache/cm4_core0 demo_apps/disable_cache/cm4_core1"
 
 DISABLE_CACHE_PATCH="disable_cache.patch"
 DISABLE_CACHE_PATCH:imx8qxp-var-som="disable_cache_${PV}.patch"

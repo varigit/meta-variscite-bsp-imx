@@ -4,8 +4,8 @@ SC_FIRMWARE_NAME:imx8qxpb0-var-som = "mx8qx-var-som-scfw-tcm.bin"
 SC_FIRMWARE_NAME:imx8qm-var-som = "mx8qm-var-som-scfw-tcm.bin"
 
 SC_MX_FAMILY ?= "INVALID"
-SC_MX8_FAMILY:mx8qm = "qm"
-SC_MX8_FAMILY:mx8qxp = "qx"
+SC_MX8_FAMILY:mx8qm-nxp-bsp = "qm"
+SC_MX8_FAMILY:mx8qxp-nxp-bsp = "qx"
 SC_MACHINE_NAME = "mx8${SC_MX8_FAMILY}_b0"
 
 SCFW_BRANCH = "1.11.1"
