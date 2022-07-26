@@ -3,8 +3,6 @@
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-require imx-mkimage_git.inc
-
 SRC_URI += " \
     file://0001-iMX8M-soc-allow-dtb-override.patch \
     file://0002-iMX8M-soc-change-padding-of-DDR4-and-LPDDR4-DMEM-fir.patch \
