@@ -64,9 +64,9 @@ CM_DEMOS_DISABLE_CACHE:mx8qm-nxp-bsp = "demo_apps/disable_cache/cm4_core0 demo_a
 DISABLE_CACHE_PATCH="disable_cache.patch"
 DISABLE_CACHE_PATCH:imx8qxp-var-som="disable_cache_${PV}.patch"
 DISABLE_CACHE_PATCH:imx8qxpb0-var-som="disable_cache_${PV}.patch"
-SRC_URI:append:imx8qxp-var-som += "file://${DISABLE_CACHE_PATCH};apply=no"
-SRC_URI:append:imx8qxpb0-var-som += "file://${DISABLE_CACHE_PATCH};apply=no"
-SRC_URI:append:imx8qm-var-som += "file://${DISABLE_CACHE_PATCH};apply=no"
+SRC_URI:append:imx8qxp-var-som = " file://${DISABLE_CACHE_PATCH};apply=no"
+SRC_URI:append:imx8qxpb0-var-som = " file://${DISABLE_CACHE_PATCH};apply=no"
+SRC_URI:append:imx8qm-var-som = " file://${DISABLE_CACHE_PATCH};apply=no"
 
 compile_fw() {
     DIR_GCC="$1"
