@@ -21,14 +21,14 @@ PREFERRED_RPROVIDER_u-boot-default-env ?= "u-boot-variscite"
 
 # Use i.MX Gstreamer Version
 MACHINE_GSTREAMER_1_0_PLUGIN:mx8-nxp-bsp = "imx-gst1.0-plugin"
-PREFERRED_VERSION_imx-gst1.0-plugin:mx8-nxp-bsp ?= "4.6.1"
-PREFERRED_VERSION_gstreamer1.0:mx8-nxp-bsp              ?= "1.18.0.imx"
-PREFERRED_VERSION_gstreamer1.0-plugins-base:mx8-nxp-bsp ?= "1.18.0.imx"
-PREFERRED_VERSION_gstreamer1.0-plugins-good:mx8-nxp-bsp ?= "1.18.0.imx"
-PREFERRED_VERSION_gstreamer1.0-plugins-bad:mx8-nxp-bsp  ?= "1.18.0.imx"
-PREFERRED_VERSION_gstreamer1.0-plugins-ugly:mx8-nxp-bsp ?= "1.18.0"
-PREFERRED_VERSION_gstreamer1.0-libav:mx8-nxp-bsp        ?= "1.18.0"
-PREFERRED_VERSION_gstreamer1.0-rtsp-server:mx8-nxp-bsp  ?= "1.18.0"
+PREFERRED_VERSION_imx-gst1.0-plugin:mx8-nxp-bsp ?= "4.6.4"
+PREFERRED_VERSION_gstreamer1.0:mx8-nxp-bsp              ?= "1.18.5.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-base:mx8-nxp-bsp ?= "1.18.5.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-good:mx8-nxp-bsp ?= "1.18.5.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-bad:mx8-nxp-bsp  ?= "1.18.5.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-ugly:mx8-nxp-bsp ?= "1.18.5"
+PREFERRED_VERSION_gstreamer1.0-libav:mx8-nxp-bsp        ?= "1.18.5"
+PREFERRED_VERSION_gstreamer1.0-rtsp-server:mx8-nxp-bsp  ?= "1.18.5"
 
 # Add VPU and Cortex M4/M7 firmware
 MACHINE_FIRMWARE:append:mx8-nxp-bsp = " \
