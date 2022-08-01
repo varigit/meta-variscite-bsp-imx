@@ -10,11 +10,11 @@ KERNEL_IMAGETYPE:mx8-nxp-bsp = "Image.gz"
 
 WKS_FILE:mx8-nxp-bsp = "imx-imx-boot-singlepart.wks.in"
 
-DEFAULTTUNE:mx8mm-nxp-bsp  ?= "cortexa53-crypto"
-DEFAULTTUNE:mx8mn-nxp-bsp  ?= "cortexa53-crypto"
-DEFAULTTUNE:mx8mq-nxp-bsp  ?= "cortexa53-crypto"
-DEFAULTTUNE:mx8qxp-nxp-bsp ?= "cortexa35-crypto"
-DEFAULTTUNE:mx8qm-nxp-bsp ?= "cortexa72-cortexa53-crypto"
+# Set a more generic tuning for code reuse across parts
+DEFAULTTUNE:mx8-nxp-bsp:fslc     ?= "armv8a-crc-crypto"
+DEFAULTTUNE:mx8m-nxp-bsp:fslc    ?= "armv8a-crc-crypto"
+DEFAULTTUNE:mx8qxp-nxp-bsp:fslc  ?= "armv8a-crc-crypto"
+DEFAULTTUNE:mx8x-nxp-bsp:fslc    ?= "armv8a-crc-crypto"
 
 # Variscite BSP default providers
 PREFERRED_RPROVIDER_u-boot-default-env ?= "u-boot-variscite"
