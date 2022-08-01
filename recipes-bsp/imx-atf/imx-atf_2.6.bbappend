@@ -1,3 +1,3 @@
 SRC_URI = "git://github.com/varigit/imx-atf;protocol=https;branch=${SRCBRANCH}"
-SRCBRANCH = "lf_v2.4_var04"
-SRCREV = "5c390ef7c48f3e99af19b3c933183a0edf3ebb8f"
+SRCBRANCH = "lf_v2.6_var01"
+SRCREV = "b15d97961fd1a921624a645aef9f2e10ef54b36c"
