@@ -1,2 +1,0 @@
-SRCBRANCH = "lf-5.10.y_2.0.0"
-SRCREV = "6a4d89fc27b33bc1d2657ffa7fd7380f061b21a4"
