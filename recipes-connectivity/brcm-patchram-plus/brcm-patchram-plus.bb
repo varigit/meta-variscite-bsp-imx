@@ -3,7 +3,7 @@
 # http://www.variscite.com
 
 PR = "r0"
-LICENSE = "GPLv2"
+LICENSE = "GPL-2.0-only"
 
 S = "${WORKDIR}"
 
