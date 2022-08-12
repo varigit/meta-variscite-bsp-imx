@@ -1,6 +1,6 @@
 INHERIT += "image-buildinfo"
 
-MACHINE_FEATURES += " pci bluetooth wifi"
+MACHINE_FEATURES += " pci bluetooth wifi screen"
 
 IMX_DEFAULT_BSP = "nxp"
 
