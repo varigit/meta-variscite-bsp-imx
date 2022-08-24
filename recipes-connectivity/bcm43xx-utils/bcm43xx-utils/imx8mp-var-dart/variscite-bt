@@ -4,18 +4,18 @@
 #
 
 # GPIO pin to enable BT module on DART-MX8M-PLUS
-BT_EN_GPIO_DART=38
+BT_EN_GPIO_DART="gpiochip1 6"
 
 # GPIO pin to enable BT module on VAR-SOM-MX8M-PLUS
-BT_EN_GPIO_SOM=41
+BT_EN_GPIO_SOM="gpiochip1 9"
 
 # GPIO pin to control routing of UART signals
 # to BT module or SOM connector on DART-MX8M-PLUS
-BT_BUF_GPIO_DART=41
+BT_BUF_GPIO_DART="gpiochip1 9"
 
 # GPIO pin to control routing of UART signals
 # to BT module or SOM connector on VAR-SOM-MX8M-PLUS
-BT_BUF_GPIO_SOM=4
+BT_BUF_GPIO_SOM="gpiochip0 4"
 
 # UART device connected to BT module on DART-MX8M-PLUS
 BT_TTY_DEV_DART=/dev/ttymxc3
@@ -84,25 +84,13 @@ bt_found()
 # Enable BT via GPIO(s)
 bt_enable()
 {
-	# Configure BT_EN_GPIO
-	if [ ! -d /sys/class/gpio/gpio${BT_EN_GPIO} ]; then
-		echo ${BT_EN_GPIO} >/sys/class/gpio/export
-		echo "out" > /sys/class/gpio/gpio${BT_EN_GPIO}/direction
-	fi
-
 	# Power up BT module
-	echo 0 > /sys/class/gpio/gpio${BT_EN_GPIO}/value
+	gpioset ${BT_EN_GPIO}=0
 	sleep 1
-	echo 1 > /sys/class/gpio/gpio${BT_EN_GPIO}/value
-
-	# Configure BT_BUF_GPIO
-	if [ ! -d /sys/class/gpio/gpio${BT_BUF_GPIO} ]; then
-		echo ${BT_BUF_GPIO} >/sys/class/gpio/export
-		echo "out" > /sys/class/gpio/gpio${BT_BUF_GPIO}/direction
-	fi
+	gpioset ${BT_EN_GPIO}=1
 
 	# Route UART lines to BT module
-	echo 0 > /sys/class/gpio/gpio${BT_BUF_GPIO}/value
+	gpioset ${BT_BUF_GPIO}=0
 }
 
 # Start BT hardware
@@ -137,6 +125,9 @@ bt_stop()
 	# Exit if BT interface is not available
 	[ -e /sys/class/bluetooth/hci0 ] || exit 0
 
+	# Set BT UART
+	bt_set_uart
+
 	# Stop BT interface
 	hciconfig hci0 down
 
@@ -144,10 +135,10 @@ bt_stop()
 	kill -9 $(pidof brcm_patchram_plus) 2>/dev/null || true
 
 	# Route UART lines to SOM connector
-	echo 1 > /sys/class/gpio/gpio${BT_BUF_GPIO}/value
+	gpioset ${BT_BUF_GPIO}=1
 
   	# Power down BT module
-	echo 0 > /sys/class/gpio/gpio${BT_EN_GPIO}/value
+	gpioset ${BT_EN_GPIO}=0
 }
 
 ###########################
