@@ -52,7 +52,7 @@ MACHINE_EXTRA_RDEPENDS += " \
            bb.utils.contains('DISTRO_FEATURES', 'wayland', 'networkmanager networkmanager-nmcli', \
                                                        '', d), d)} \
 	packagegroup-tools-bluetooth \
-	bluez-alsa \
+	bluealsa \
 	pm-utils \
 	rng-tools \
 	wpa-supplicant \
