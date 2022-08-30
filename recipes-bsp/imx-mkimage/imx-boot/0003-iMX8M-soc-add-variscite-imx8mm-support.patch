@@ -1,18 +1,19 @@
-From 3342095cdb35d20e44bc779e7fbb1975e9bd362b Mon Sep 17 00:00:00 2001
+From c4038b55a49fc143678ed8665588ebfd526a2b98 Mon Sep 17 00:00:00 2001
 From: Nate Drude <nate.d@variscite.com>
 Date: Mon, 28 Feb 2022 10:43:57 -0600
-Subject: [PATCH 3/3] iMX8M: soc: add variscite imx8mm support
+Subject: [PATCH] iMX8M: soc: add variscite imx8mm support
 
 Signed-off-by: Nate Drude <nate.d@variscite.com>
+
 ---
  iMX8M/soc.mak | 31 +++++++++++++++++++++++++++++++
  1 file changed, 31 insertions(+)
 
 diff --git a/iMX8M/soc.mak b/iMX8M/soc.mak
-index 9e099ba..75ba6d8 100644
+index f2fbbe9..465b92f 100644
 --- a/iMX8M/soc.mak
 +++ b/iMX8M/soc.mak
-@@ -116,6 +116,22 @@ u-boot-spl-ddr4.bin: u-boot-spl.bin $(ddr4_imem_1d) $(ddr4_dmem_1d) $(ddr4_imem_
+@@ -117,6 +117,22 @@ u-boot-spl-ddr4.bin: u-boot-spl.bin $(ddr4_imem_1d) $(ddr4_dmem_1d) $(ddr4_imem_
  	@cat u-boot-spl-pad.bin ddr4_1d_fw.bin ddr4_2d_fw.bin > u-boot-spl-ddr4.bin
  	@rm -f u-boot-spl-pad.bin ddr4_1d_fw.bin ddr4_2d_fw.bin ddr4_imem_1d_pad.bin ddr4_dmem_1d_pad.bin ddr4_imem_2d_pad.bin
  
@@ -35,8 +36,8 @@ index 9e099ba..75ba6d8 100644
  ddr3_imem_1d = ddr3_imem_1d$(DDR_FW_VERSION).bin
  ddr3_dmem_1d = ddr3_dmem_1d$(DDR_FW_VERSION).bin
  
-@@ -149,6 +165,16 @@ u-boot.itb: $(dtb)
- 	./mkimage_uboot -E -p 0x3000 -f u-boot.its u-boot.itb
+@@ -150,6 +166,16 @@ u-boot.itb: $(dtb)
+ 	mkimage -E -p 0x3000 -f u-boot.its u-boot.itb
  	@rm -f u-boot.its $(dtb)
  
 +dtbs_lpddr4_ddr4_evk ?= $(dtbs)
@@ -52,7 +53,7 @@ index 9e099ba..75ba6d8 100644
  dtb_ddr3l = valddr3l.dtb
  $(dtb_ddr3l):
  	./$(DTB_PREPROC) $(PLAT)-ddr3l-$(VAL_BOARD).dtb $(dtb_ddr3l) $(dtbs)
-@@ -224,6 +250,8 @@ flash_evk_emmc_fastboot: flash_evk_no_hdmi_emmc_fastboot
+@@ -225,6 +251,8 @@ flash_evk_emmc_fastboot: flash_evk_no_hdmi_emmc_fastboot
  
  flash_ddr4_evk: flash_ddr4_evk_no_hdmi
  
@@ -61,7 +62,7 @@ index 9e099ba..75ba6d8 100644
  flash_ddr3l_evk: flash_ddr3l_evk_no_hdmi
  
  flash_ddr3l_val: flash_ddr3l_val_no_hdmi
-@@ -270,6 +298,9 @@ flash_ddr4_evk_flexspi: $(MKIMG) u-boot-spl-ddr4.bin u-boot-ddr4-evk.itb
+@@ -276,6 +304,9 @@ flash_ddr4_evk_flexspi: $(MKIMG) u-boot-spl-ddr4.bin u-boot-ddr4-evk.itb
  	./mkimage_imx8 -version $(VERSION) -dev flexspi -fit -loader u-boot-spl-ddr4.bin $(SPL_FSPI_LOAD_ADDR) -second_loader u-boot-ddr4-evk.itb 0x40200000 0x60000 -out $(OUTIMG)
  	./$(QSPI_PACKER) $(QSPI_HEADER)
  
@@ -71,6 +72,3 @@ index 9e099ba..75ba6d8 100644
  flash_hdmi_spl_uboot: flash_evk
  
  flash_dp_spl_uboot: flash_dp_evk
--- 
-2.25.1
-
