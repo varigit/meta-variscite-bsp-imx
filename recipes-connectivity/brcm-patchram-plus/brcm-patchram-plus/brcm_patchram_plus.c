@@ -111,6 +111,7 @@
 #include <fcntl.h>
 
 #include <stdlib.h>
+#include <unistd.h>
 
 #ifdef ANDROID
 #include <termios.h>
