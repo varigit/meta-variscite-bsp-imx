@@ -17,11 +17,11 @@ DEPENDS += "lzop-native bc-native"
 
 DEFAULT_PREFERENCE = "1"
 
-SRCBRANCH = "lf-5.10.y_var04"
+SRCBRANCH = "5.15-2.0.x-imx_var01"
 KERNEL_SRC ?= "git://github.com/varigit/linux-imx;protocol=https"
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
-SRCREV = "4d4fec83c664f4c7a614ee648442bf0e4b117e7c"
-LINUX_VERSION = "5.10.72"
+SRCREV = "dd055f07f727803a7542541f560f69daed8209f4"
+LINUX_VERSION = "5.15.50"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
