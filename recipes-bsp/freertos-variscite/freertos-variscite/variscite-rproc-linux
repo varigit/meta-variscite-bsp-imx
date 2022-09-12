@@ -39,7 +39,11 @@ if [[ ! -e "${REMOTEPROC_DIR}" ]]; then
     echo "Error: ${REMOTEPROC_DIR} not found."
     echo "Please enable remoteproc driver."
     echo "Most likely you need to use the correct device tree, for example:"
-    echo "fw_setenv fdt_file ${CM_DTB} && reboot"
+    if [ "i.MX8MQ" = "${SOC}" ]; then
+        echo "fw_setenv fdt_file ${CM_DTB} && fw_setenv use_m4 yes && reboot"
+    else
+        echo "fw_setenv fdt_file ${CM_DTB} && reboot"
+    fi
     echo ""
     exit
 fi
