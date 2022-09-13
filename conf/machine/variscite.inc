@@ -26,9 +26,9 @@ PREFERRED_VERSION_gstreamer1.0:mx8-nxp-bsp              ?= "1.20.0.imx"
 PREFERRED_VERSION_gstreamer1.0-plugins-base:mx8-nxp-bsp ?= "1.20.0.imx"
 PREFERRED_VERSION_gstreamer1.0-plugins-good:mx8-nxp-bsp ?= "1.20.0.imx"
 PREFERRED_VERSION_gstreamer1.0-plugins-bad:mx8-nxp-bsp  ?= "1.20.0.imx"
-PREFERRED_VERSION_gstreamer1.0-plugins-ugly:mx8-nxp-bsp ?= "1.20.0"
-PREFERRED_VERSION_gstreamer1.0-libav:mx8-nxp-bsp        ?= "1.20.0"
-PREFERRED_VERSION_gstreamer1.0-rtsp-server:mx8-nxp-bsp  ?= "1.20.0"
+PREFERRED_VERSION_gstreamer1.0-plugins-ugly:mx8-nxp-bsp ?= "1.20.%"
+PREFERRED_VERSION_gstreamer1.0-libav:mx8-nxp-bsp        ?= "1.20.%"
+PREFERRED_VERSION_gstreamer1.0-rtsp-server:mx8-nxp-bsp  ?= "1.20.%"
 
 # Add VPU and Cortex M4/M7 firmware
 MACHINE_FIRMWARE:append:mx8-nxp-bsp = " \
