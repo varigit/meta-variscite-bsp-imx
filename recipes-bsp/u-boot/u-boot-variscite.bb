@@ -6,7 +6,7 @@ SUMMARY = "U-Boot for Variscite's i.MX boards"
 require recipes-bsp/u-boot/u-boot.inc
 
 PROVIDES += "u-boot"
-DEPENDS += "bison-native bc-native dtc-native"
+DEPENDS += "bison-native bc-native dtc-native gnutls-native"
 FILESEXTRAPATHS:prepend := "${THISDIR}/u-boot-fw-utils:"
 
 include u-boot-common.inc
