@@ -4,7 +4,7 @@
 #
 
 # GPIO pin to enable BT module
-BT_EN_GPIO=38
+BT_EN_GPIO="gpiochip1 6"
 
 # UART device connected to BT module
 BT_TTY_DEV=/dev/ttymxc1
@@ -50,16 +50,9 @@ bt_found()
 # Enable BT via GPIO(s)
 bt_enable()
 {
-	# Configure BT_EN_GPIO
-	if [ ! -d /sys/class/gpio/gpio${BT_EN_GPIO} ]; then
-		echo ${BT_EN_GPIO} >/sys/class/gpio/export
-		echo "out" > /sys/class/gpio/gpio${BT_EN_GPIO}/direction
-	fi
-
-	# Power up BT module
-	echo 0 > /sys/class/gpio/gpio${BT_EN_GPIO}/value
+	gpioset ${BT_EN_GPIO}=0
 	sleep 1
-	echo 1 > /sys/class/gpio/gpio${BT_EN_GPIO}/value
+	gpioset ${BT_EN_GPIO}=1
 }
 
 # Start BT hardware
@@ -98,7 +91,7 @@ bt_stop()
 	kill -9 $(pidof brcm_patchram_plus) 2>/dev/null || true
 
   	# Power down BT module
-	echo 0 > /sys/class/gpio/gpio${BT_EN_GPIO}/value
+	gpioset ${BT_EN_GPIO}=0
 }
 
 ###########################

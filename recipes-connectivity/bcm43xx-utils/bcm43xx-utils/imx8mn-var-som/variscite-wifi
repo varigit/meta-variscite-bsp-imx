@@ -4,16 +4,16 @@
 #
 
 # GPIO pin to supply 3.3V WIFI voltage
-WIFI_3V3_GPIO=39
+WIFI_3V3_GPIO="gpiochip1 7"
 
 # GPIO pin to supply 1.8V WIFI voltage
-WIFI_1V8_GPIO=52
+WIFI_1V8_GPIO="gpiochip1 20"
 
 # GPIO pin to enable WIFI module
-WIFI_EN_GPIO=42
+WIFI_EN_GPIO="gpiochip1 10"
 
 # GPIO pin to enable BT module
-BT_EN_GPIO=38
+BT_EN_GPIO="gpiochip1 6"
 
 # WIFI MMC host
 WIFI_MMC_HOST=30b40000.mmc
@@ -48,34 +48,6 @@ wifi_mmc_unbind()
 	fi
 }
 
-# Setup WIFI control GPIOs
-wifi_pre_up()
-{
-	# Configure WIFI_3V3_GPIO
-	if [ ! -d /sys/class/gpio/gpio${WIFI_3V3_GPIO} ]; then
-		echo ${WIFI_3V3_GPIO} > /sys/class/gpio/export
-		echo out > /sys/class/gpio/gpio${WIFI_3V3_GPIO}/direction
-	fi
-
-	# Configure WIFI_1V8_GPIO
-	if [ ! -d /sys/class/gpio/gpio${WIFI_1V8_GPIO} ]; then
-		echo ${WIFI_1V8_GPIO} > /sys/class/gpio/export
-		echo out > /sys/class/gpio/gpio${WIFI_1V8_GPIO}/direction
-	fi
-
-	# Configure WIFI_EN_GPIO
-	if [ ! -d /sys/class/gpio/gpio${WIFI_EN_GPIO} ]; then
-		echo ${WIFI_EN_GPIO} > /sys/class/gpio/export
-		echo out > /sys/class/gpio/gpio${WIFI_EN_GPIO}/direction
-	fi
-
-	# Configure BT_EN_GPIO
-	if [ ! -d /sys/class/gpio/gpio${BT_EN_GPIO} ]; then
-		echo ${BT_EN_GPIO} > /sys/class/gpio/export
-		echo out > /sys/class/gpio/gpio${BT_EN_GPIO}/direction
-	fi
-}
-
 # Power up WIFI chip
 wifi_up()
 {
@@ -83,26 +55,26 @@ wifi_up()
 	wifi_mmc_unbind
 
 	# WIFI_3V3 up
-	echo 1 > /sys/class/gpio/gpio${WIFI_3V3_GPIO}/value
+	gpioset ${WIFI_3V3_GPIO}=1
 	usleep 10000
 
 	# WIFI_1V8 up
-	echo 1 > /sys/class/gpio/gpio${WIFI_1V8_GPIO}/value
+	gpioset ${WIFI_1V8_GPIO}=1
 
 	# Wait at least 10ms
 	usleep 10000
 
 	# WLAN_EN up
-	echo 1 > /sys/class/gpio/gpio${WIFI_EN_GPIO}/value
+	gpioset ${WIFI_EN_GPIO}=1
 
 	# BT_EN up
-	echo 1 > /sys/class/gpio/gpio${BT_EN_GPIO}/value
+	gpioset ${BT_EN_GPIO}=1
 
 	# Wait at least 150ms
 	usleep 200000
 
 	# BT_EN down
-	echo 0 > /sys/class/gpio/gpio${BT_EN_GPIO}/value
+	gpioset ${BT_EN_GPIO}=0
 
 	# Bind WIFI device to MMC controller
 	wifi_mmc_bind
@@ -121,17 +93,17 @@ wifi_down()
 	wifi_mmc_unbind
 
 	# WIFI_EN down
-	echo 0 > /sys/class/gpio/gpio${WIFI_EN_GPIO}/value
+	gpioset ${WIFI_EN_GPIO}=0
 
 	# BT_EN down
-	echo 0 > /sys/class/gpio/gpio${BT_EN_GPIO}/value
+	gpioset ${BT_EN_GPIO}=0
 	usleep 10000
 
 	# WIFI_1V8 down
-	echo 0 > /sys/class/gpio/gpio${WIFI_1V8_GPIO}/value
+	gpioset ${WIFI_1V8_GPIO}=0
 
 	# WIFI_3V3 down
-	echo 0 > /sys/class/gpio/gpio${WIFI_3V3_GPIO}/value
+	gpioset ${WIFI_3V3_GPIO}=0
 }
 
 # Return true if SOM has WIFI module assembled
@@ -178,9 +150,6 @@ wifi_start()
 {
 	# Exit if WIFI should not be started
 	wifi_should_not_be_started && exit 0
-
-	# Setup WIFI control GPIOs
-	wifi_pre_up
 
 	# Try starting WIFI hardware
 	for i in $(seq 1 3); do
