@@ -21,6 +21,12 @@ SRCBRANCH:imx7-var-som = "imx_v2018.03_4.14.78_1.0.0_ga_var02"
 SRCREV:imx7-var-som = "59341359399c8caa4d27b9325b777b8062af80f9"
 UBOOT_INITIAL_ENV_DEVICE:imx7-var-som = "nand"
 
+SRCBRANCH:imx8qm-var-som = "lf_v2021.04_var03"
+SRCREV:imx8qm-var-som = "93fc9943fd3488c6d59e7b8df457f3d35463e2f4"
+
+SRCBRANCH:imx8qxp-var-som = "lf_v2021.04_var03"
+SRCREV:imx8qxp-var-som = "93fc9943fd3488c6d59e7b8df457f3d35463e2f4"
+
 SRC_URI = "${UBOOT_SRC};branch=${SRCBRANCH}"
 
 S = "${WORKDIR}/git"
