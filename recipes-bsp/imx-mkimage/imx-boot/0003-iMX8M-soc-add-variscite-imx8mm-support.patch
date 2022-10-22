@@ -46,7 +46,7 @@ index f2fbbe9..465b92f 100644
 +	./$(PAD_IMAGE) bl31.bin
 +	./$(PAD_IMAGE) u-boot-nodtb.bin $(dtbs_lpddr4_ddr4_evk)
 +	DEK_BLOB_LOAD_ADDR=$(DEK_BLOB_LOAD_ADDR) TEE_LOAD_ADDR=$(TEE_LOAD_ADDR) ATF_LOAD_ADDR=$(ATF_LOAD_ADDR) ./mkimage_fit_atf.sh $(dtbs_lpddr4_ddr4_evk) > u-boot-lpddr4-ddr4-evk.its
-+	./mkimage_uboot -E -p 0x3000 -f u-boot-lpddr4-ddr4-evk.its u-boot-lpddr4-ddr4-evk.itb
++	mkimage -E -p 0x3000 -f u-boot-lpddr4-ddr4-evk.its u-boot-lpddr4-ddr4-evk.itb
 +	@rm -f $(dtbs_lpddr4_ddr4_evk)
 +
 +
