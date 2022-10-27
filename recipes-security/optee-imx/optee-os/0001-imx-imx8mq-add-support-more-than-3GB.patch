@@ -1,0 +1,32 @@
+From 308ab5806495343c26f7284089cdc4ebdb05e162 Mon Sep 17 00:00:00 2001
+From: Nate Drude <nate.d@variscite.com>
+Date: Fri, 7 Oct 2022 10:47:50 -0500
+Subject: [PATCH] imx: imx8mq:  add support more than 3GB
+
+Enables support for larger physical addresses, that is, it will define
+paddr_t as a 64-bit type.
+
+Reference:
+https://source.codeaurora.org/external/imx/imx-optee-os/tree/mk/config.mk?h=lf-5.15.32-2.0.0#n637
+
+Signed-off-by: Nate Drude <nate.d@variscite.com>
+---
+ core/arch/arm/plat-imx/conf.mk | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/core/arch/arm/plat-imx/conf.mk b/core/arch/arm/plat-imx/conf.mk
+index fff243af9..759660960 100644
+--- a/core/arch/arm/plat-imx/conf.mk
++++ b/core/arch/arm/plat-imx/conf.mk
+@@ -362,6 +362,8 @@ endif
+ ifneq (,$(filter $(PLATFORM_FLAVOR),mx8mqevk))
+ CFG_DDR_SIZE ?= 0xc0000000
+ CFG_UART_BASE ?= UART1_BASE
++$(call force,CFG_CORE_LARGE_PHYS_ADDR,y)
++$(call force,CFG_CORE_ARM64_PA_BITS,36)
+ endif
+ 
+ ifneq (,$(filter $(PLATFORM_FLAVOR),mx8mmevk))
+-- 
+2.37.3
+
