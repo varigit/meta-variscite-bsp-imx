@@ -34,7 +34,8 @@ LOCALVERSION:imx8qxp-var-som = "-imx8x"
 LOCALVERSION:imx8qxpb0-var-som = "-imx8x"
 LOCALVERSION:imx8qm-var-som = "-imx8qm"
 
-KBUILD_DEFCONFIG:mx6-nxp-bsp = "imx_v7_var_defconfig"
+KBUILD_DEFCONFIG:mx6-nxp-bsp = "imx_v7_defconfig"
+#KBUILD_DEFCONFIG:imx6ul-var-dart = "imx_v7_var_defconfig"
 KBUILD_DEFCONFIG:mx8-nxp-bsp = "imx8_var_defconfig"
 KBUILD_DEFCONFIG:imx8mq-var-dart = "imx8mq_var_dart_defconfig"
 DEFAULT_DTB:imx8mq-var-dart = "sd-lvds"
@@ -75,4 +76,4 @@ pkg_postinst:kernel-devicetree:append:imx8qm-var-som () {
 }
 
 KERNEL_VERSION_SANITY_SKIP="1"
-COMPATIBLE_MACHINE = "(mx8-nxp-bsp)"
+COMPATIBLE_MACHINE = "(mx6-nxp-bsp|mx8-nxp-bsp)"
