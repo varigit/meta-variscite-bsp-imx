@@ -6,3 +6,6 @@ EXTRA_OEMAKE:append:imx8mq-var-dart = " \
     BL32_BASE=${TEE_LOAD_ADDR} \
 "
 
+EXTRA_OEMAKE:append:imx8mm-var-dart = " \
+    BL32_BASE=${TEE_LOAD_ADDR} \
+"

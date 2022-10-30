@@ -10,3 +10,7 @@ EXTRA_OEMAKE:append:imx8mq-var-dart = " \
 EXTRA_OEMAKE:append:imx8mp-var-dart = " \
     CFG_DDR_SIZE=${TEE_CFG_DDR_SIZE} \
 "
+
+EXTRA_OEMAKE:append:imx8mm-var-dart = " \
+    CFG_TZDRAM_START=${TEE_LOAD_ADDR} \
+"

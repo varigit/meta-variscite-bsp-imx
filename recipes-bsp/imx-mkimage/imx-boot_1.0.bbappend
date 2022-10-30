@@ -9,6 +9,7 @@ SRC_URI += " \
     "
 
 SRC_URI:append:imx8mm-var-dart = " file://0003-iMX8M-soc-add-variscite-imx8mm-support.patch"
+SRC_URI:append:imx8mm-var-dart = " file://0001-iMX8M-soc-imx8mm-move-TEE_LOAD_ADDR-to-512mb-memory-.patch"
 SRC_URI:append:imx8mq-var-dart = " file://0001-iMX8M-soc-imx8mq-move-TEE_LOAD_ADDR-to-512mb-memory.patch"
 
 do_compile() {
