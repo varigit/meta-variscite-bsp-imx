@@ -10,7 +10,7 @@ WIFI_EN_GPIO=4
 BT_EN_GPIO=14
 
 # WIFI MMC host controller
-WIFI_MMC_HOST=30b50000.usdhc
+WIFI_MMC_HOST=30b50000.mmc
 
 # Return true if WIFI interface exists
 wifi_interface_exists()

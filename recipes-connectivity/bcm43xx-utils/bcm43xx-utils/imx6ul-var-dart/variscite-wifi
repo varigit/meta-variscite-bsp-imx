@@ -13,7 +13,7 @@ WIFI_PWR_GPIO=130
 BT_EN_GPIO=132
 
 # WIFI MMC host controller
-WIFI_MMC_HOST=2190000.usdhc
+WIFI_MMC_HOST=2190000.mmc
 
 # Check is SOM is DART-6UL-5G
 som_is_dart_6ul_5g()
