@@ -4,9 +4,9 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 SRCREV_FORMAT = "linux-firmware"
 
-BRCM_REV = "10.4.0.10"
-SRC_URI[brcm_lwb.sha256sum] = "63b7b2ee665a1ab424658f2fc4c711045346a8e321b5230e31d42fd611684f30"
-SRC_URI[brcm_lwb5.sha256sum] = "677d52b72e819982c735c73e7db541d6e87efec4703a69eaa92edcc1fafcefdc"
+BRCM_REV = "10.54.0.13"
+SRC_URI[brcm_lwb.sha256sum] = "8faa105e036a9f8bffe2857f5d9f5ce539521ef8624b59069290579440228ac5"
+SRC_URI[brcm_lwb5.sha256sum] = "583e2b328a185f545e1c5de55acaf3ae092cdbc791a62ff005c5559515488f7f"
 
 # TI WiFi FW 8.9.0.0.88 and BT FW 4.7
 SRCREV_tiwlan = "bda5304cc86e9c4029f8101394d2a8b39c640f53"
