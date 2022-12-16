@@ -25,7 +25,9 @@ LINUX_VERSION = "5.10.72"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
+LOCALVERSION:var-som-mx6 = "-imx6"
 LOCALVERSION:imx6ul-var-dart = "-imx6ul"
+LOCALVERSION:imx7-var-som = "-imx7"
 LOCALVERSION:imx8mp-var-dart = "-imx8mp"
 LOCALVERSION:imx8mq-var-dart = "-imx8mq"
 LOCALVERSION:imx8mm-var-dart = "-imx8mm"
@@ -35,6 +37,7 @@ LOCALVERSION:imx8qxpb0-var-som = "-imx8x"
 LOCALVERSION:imx8qm-var-som = "-imx8qm"
 
 KBUILD_DEFCONFIG:mx6 = "imx_v7_var_defconfig"
+KBUILD_DEFCONFIG:mx7 = "imx_v7_var_defconfig"
 KBUILD_DEFCONFIG:mx8 = "imx8_var_defconfig"
 KBUILD_DEFCONFIG:imx8mq-var-dart = "imx8mq_var_dart_defconfig"
 DEFAULT_DTB:imx8mq-var-dart = "sd-lvds"
@@ -75,4 +78,4 @@ pkg_postinst:kernel-devicetree:append:imx8qm-var-som () {
 }
 
 KERNEL_VERSION_SANITY_SKIP="1"
-COMPATIBLE_MACHINE = "(mx6|mx8)"
+COMPATIBLE_MACHINE = "(mx6|mx7|mx8)"
