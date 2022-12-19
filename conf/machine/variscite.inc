@@ -7,6 +7,7 @@ IMX_DEFAULT_BSP = "nxp"
 USE_VT = "0"
 
 KERNEL_IMAGETYPE:mx8-nxp-bsp = "Image.gz"
+KERNEL_IMAGETYPE:mx9-nxp-bsp = "Image.gz"
 
 WKS_FILE:mx8-nxp-bsp = "imx-imx-boot-singlepart.wks.in"
 WKS_FILE:mx9-nxp-bsp = "imx-imx-boot-singlepart.wks.in"
@@ -74,6 +75,11 @@ MACHINE_EXTRA_RDEPENDS += " \
 
 # Packages added to all images (including core-image-minimal)
 IMAGE_INSTALL:append:mx8-nxp-bsp = " \
+	kernel-image \
+	kernel-devicetree \
+"
+
+IMAGE_INSTALL:append:mx9-nxp-bsp = " \
 	kernel-image \
 	kernel-devicetree \
 "
