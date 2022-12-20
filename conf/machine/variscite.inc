@@ -19,7 +19,7 @@ DEFAULTTUNE:mx8qm ?= "cortexa72-cortexa53-crypto"
 # Variscite BSP default providers
 PREFERRED_RPROVIDER_u-boot-default-env ?= "u-boot-variscite"
 
-# Use i.MX Gstreamer Version
+# Use i.MX Gstreamer Version for mx8 SoMs
 MACHINE_GSTREAMER_1_0_PLUGIN:mx8 = "imx-gst1.0-plugin"
 PREFERRED_VERSION_imx-gst1.0-plugin:mx8 ?= "4.6.1"
 PREFERRED_VERSION_gstreamer1.0:mx8              ?= "1.18.0.imx"
@@ -29,6 +29,28 @@ PREFERRED_VERSION_gstreamer1.0-plugins-bad:mx8  ?= "1.18.0.imx"
 PREFERRED_VERSION_gstreamer1.0-plugins-ugly:mx8 ?= "1.18.0"
 PREFERRED_VERSION_gstreamer1.0-libav:mx8        ?= "1.18.0"
 PREFERRED_VERSION_gstreamer1.0-rtsp-server:mx8  ?= "1.18.0"
+
+# Use i.MX Gstreamer Version for mx7d SoMs
+MACHINE_GSTREAMER_1_0_PLUGIN:mx7d = "imx-gst1.0-plugin"
+PREFERRED_VERSION_imx-gst1.0-plugin:mx7d ?= "4.6.1"
+PREFERRED_VERSION_gstreamer1.0:mx7d              ?= "1.18.0.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-base:mx7d ?= "1.18.0.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-good:mx7d ?= "1.18.0.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-bad:mx7d  ?= "1.18.0.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-ugly:mx7d ?= "1.18.0"
+PREFERRED_VERSION_gstreamer1.0-libav:mx7d        ?= "1.18.0"
+PREFERRED_VERSION_gstreamer1.0-rtsp-server:mx7d  ?= "1.18.0"
+
+# Use i.MX Gstreamer Version for mx6ul SoMs
+MACHINE_GSTREAMER_1_0_PLUGIN:mx6ul = "imx-gst1.0-plugin"
+PREFERRED_VERSION_imx-gst1.0-plugin:mx6ul ?= "4.6.1"
+PREFERRED_VERSION_gstreamer1.0:mx6ul              ?= "1.18.0.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-base:mx6ul ?= "1.18.0.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-good:mx6ul ?= "1.18.0.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-bad:mx6ul  ?= "1.18.0.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-ugly:mx6ul ?= "1.18.0"
+PREFERRED_VERSION_gstreamer1.0-libav:mx6ul        ?= "1.18.0"
+PREFERRED_VERSION_gstreamer1.0-rtsp-server:mx6ul  ?= "1.18.0"
 
 # Add VPU and Cortex M4/M7 firmware
 MACHINE_FIRMWARE:append:mx8 = " \
