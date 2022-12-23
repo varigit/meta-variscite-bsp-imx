@@ -27,15 +27,27 @@ do_install:append() {
 	install -m 0755 ${WORKDIR}/tibt/initscripts/TIInit_*.bts ${D}${nonarch_base_libdir}/firmware/ti-connectivity
 	install -m 0755 ${WORKDIR}/tiwlan/*.bin ${D}${nonarch_base_libdir}/firmware/ti-connectivity
 	install -m 0755 ${WORKDIR}/wl1271-nvs.bin ${D}${nonarch_base_libdir}/firmware/ti-connectivity
+
+	# Add machine symbolic links to brcmfmac4339
+	ln -sf brcmfmac4339-sdio.txt \
+		${D}${nonarch_base_libdir}/firmware/brcm/brcmfmac4339-sdio.variscite,${MACHINE}.txt
+	ln -sf brcmfmac4339-sdio.bin \
+		${D}${nonarch_base_libdir}/firmware/brcm/brcmfmac4339-sdio.variscite,${MACHINE}.bin
+
+	# Add machine symbolic links to brcmfmac43430
+	ln -sf brcmfmac43430-sdio.txt \
+		${D}${nonarch_base_libdir}/firmware/brcm/brcmfmac43430-sdio.variscite,${MACHINE}.txt
+	ln -sf brcmfmac43430-sdio.bin \
+		${D}${nonarch_base_libdir}/firmware/brcm/brcmfmac43430-sdio.variscite,${MACHINE}.bin
 }
 
 FILES:${PN}-bcm4339 += " \
   ${nonarch_base_libdir}/firmware/brcm/BCM4335C0.hcd \
-  ${nonarch_base_libdir}/firmware/brcm/brcmfmac4339-sdio.txt \
+  ${nonarch_base_libdir}/firmware/brcm/brcmfmac4339-sdio* \
 "
 
 FILES:${PN}-bcm43430 += " \
   ${nonarch_base_libdir}/firmware/brcm/BCM43430A1.hcd \
-  ${nonarch_base_libdir}/firmware/brcm/brcmfmac43430-sdio.txt \
+  ${nonarch_base_libdir}/firmware/brcm/brcmfmac43430-sdio* \
 "
 
