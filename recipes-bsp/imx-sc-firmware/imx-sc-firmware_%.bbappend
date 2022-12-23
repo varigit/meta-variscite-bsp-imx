@@ -12,7 +12,7 @@ SCFW_BRANCH = "1.13.0"
 SRCREV = "052037315bdac7a5132a1bb1d475d6185def7789"
 
 SRC_URI += " \
-    git://github.com/dorta/imx-sc-firmware.git;protocol=https;branch=${SCFW_BRANCH}; \
+    git://github.com/varigit/imx-sc-firmware.git;protocol=https;branch=${SCFW_BRANCH}; \
     https://developer.arm.com/-/media/Files/downloads/gnu-rm/8-2018q4/gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2;name=gcc-arm-none-eabi \
 "
 
