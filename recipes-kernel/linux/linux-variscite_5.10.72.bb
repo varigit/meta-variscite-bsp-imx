@@ -20,7 +20,7 @@ DEFAULT_PREFERENCE = "1"
 SRCBRANCH = "lf-5.10.y_var04"
 KERNEL_SRC ?= "git://github.com/varigit/linux-imx;protocol=https"
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
-SRCREV = "902ff8be325a056eab7a462f99136ad96967f4bb"
+SRCREV = "ac0eb7ada42b8fc3150c59482418be62fbf55c3c"
 LINUX_VERSION = "5.10.72"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
