@@ -14,6 +14,11 @@ BRANCH_tiwlan = "master"
 SRCREV_tibt = "3aa1d75f3c2ae77f6e4d36194e3d281b899ab149"
 BRANCH_tibt = "master"
 
+MODEL_LIST = "${MACHINE}"
+MODEL_LIST:imx8mm-var-dart = "imx8mm-var-dart imx8mm-var-som"
+MODEL_LIST:imx8mp-var-dart = "imx8mp-var-dart imx8mp-var-som"
+MODEL_LIST:imx8qm-var-som = "imx8qm-var-som imx8qm-var-spear imx8qp-var-som imx8qp-var-spear"
+
 SRC_URI:append = " \
 	https://github.com/LairdCP/Sterling-LWB-and-LWB5-Release-Packages/releases/download/LRD-REL-${BRCM_REV}/laird-lwb-fcc-firmware-${BRCM_REV}.tar.bz2;name=brcm_lwb \
 	https://github.com/LairdCP/Sterling-LWB-and-LWB5-Release-Packages/releases/download/LRD-REL-${BRCM_REV}/laird-lwb5-fcc-firmware-${BRCM_REV}.tar.bz2;name=brcm_lwb5 \
@@ -28,17 +33,19 @@ do_install:append() {
 	install -m 0755 ${WORKDIR}/tiwlan/*.bin ${D}${nonarch_base_libdir}/firmware/ti-connectivity
 	install -m 0755 ${WORKDIR}/wl1271-nvs.bin ${D}${nonarch_base_libdir}/firmware/ti-connectivity
 
-	# Add machine symbolic links to brcmfmac4339
-	ln -sf brcmfmac4339-sdio.txt \
-		${D}${nonarch_base_libdir}/firmware/brcm/brcmfmac4339-sdio.variscite,${MACHINE}.txt
-	ln -sf brcmfmac4339-sdio.bin \
-		${D}${nonarch_base_libdir}/firmware/brcm/brcmfmac4339-sdio.variscite,${MACHINE}.bin
+	for model in ${MODEL_LIST}; do
+		# Add model symbolic links to brcmfmac4339
+		ln -sf brcmfmac4339-sdio.txt \
+			${D}${nonarch_base_libdir}/firmware/brcm/brcmfmac4339-sdio.variscite,${model}.txt
+		ln -sf brcmfmac4339-sdio.bin \
+			${D}${nonarch_base_libdir}/firmware/brcm/brcmfmac4339-sdio.variscite,${model}.bin
 
-	# Add machine symbolic links to brcmfmac43430
-	ln -sf brcmfmac43430-sdio.txt \
-		${D}${nonarch_base_libdir}/firmware/brcm/brcmfmac43430-sdio.variscite,${MACHINE}.txt
-	ln -sf brcmfmac43430-sdio.bin \
-		${D}${nonarch_base_libdir}/firmware/brcm/brcmfmac43430-sdio.variscite,${MACHINE}.bin
+		# Add model symbolic links to brcmfmac43430
+		ln -sf brcmfmac43430-sdio.txt \
+			${D}${nonarch_base_libdir}/firmware/brcm/brcmfmac43430-sdio.variscite,${model}.txt
+		ln -sf brcmfmac43430-sdio.bin \
+			${D}${nonarch_base_libdir}/firmware/brcm/brcmfmac43430-sdio.variscite,${model}.bin
+	done
 }
 
 FILES:${PN}-bcm4339 += " \
