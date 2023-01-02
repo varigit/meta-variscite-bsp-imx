@@ -59,6 +59,7 @@ MACHINE_EXTRA_RDEPENDS += " \
 	wireless-regdb-static \
 	u-boot-fw-utils \
 	u-boot-splash \
+	u-boot-default-env \
 "
 
 # Packages added to all images (including core-image-minimal)
