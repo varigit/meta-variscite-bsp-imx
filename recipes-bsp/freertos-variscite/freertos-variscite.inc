@@ -72,7 +72,7 @@ compile_fw() {
     DIR_GCC="$1"
     cd ${DIR_GCC}
     ./clean.sh
-    ./build_all.sh > /dev/null
+    CFLAGS="" CXXFLAGS="" ./build_all.sh > /dev/null
 }
 
 do_compile() {
