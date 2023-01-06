@@ -10,6 +10,9 @@ KERNEL_IMAGETYPE:mx8-nxp-bsp = "Image.gz"
 
 WKS_FILE:mx8-nxp-bsp = "imx-imx-boot-singlepart.wks.in"
 
+# Enable optee on iMX8 BSPs
+MACHINE_FEATURES:append:use-nxp-bsp = " optee"
+
 # Set a more generic tuning for code reuse across parts
 DEFAULTTUNE:mx8-nxp-bsp:fslc     ?= "armv8a-crc-crypto"
 DEFAULTTUNE:mx8m-nxp-bsp:fslc    ?= "armv8a-crc-crypto"
