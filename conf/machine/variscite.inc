@@ -21,7 +21,6 @@ PREFERRED_RPROVIDER_u-boot-default-env ?= "u-boot-variscite"
 
 # Use i.MX Gstreamer Version
 MACHINE_GSTREAMER_1_0_PLUGIN:mx8-nxp-bsp = "imx-gst1.0-plugin"
-PREFERRED_VERSION_imx-gst1.0-plugin:mx8-nxp-bsp ?= "4.7.0"
 PREFERRED_VERSION_gstreamer1.0:mx8-nxp-bsp              ?= "1.20.0.imx"
 PREFERRED_VERSION_gstreamer1.0-plugins-base:mx8-nxp-bsp ?= "1.20.0.imx"
 PREFERRED_VERSION_gstreamer1.0-plugins-good:mx8-nxp-bsp ?= "1.20.0.imx"
