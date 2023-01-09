@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Variscite
+# Copyright (C) 2021-2023 Variscite
 DESCRIPTION = "Variscite i.MX Cortex M4/M7 Firmware Demos"
 LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://COPYING-BSD-3;md5=0858ec9c7a80c4a2cf16e4f825a2cc91"
