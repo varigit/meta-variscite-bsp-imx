@@ -1,6 +1,9 @@
 require variscite-mirrors.inc
 INHERIT += "image-buildinfo"
 
+# Common override for all Variscite machines
+MACHINEOVERRIDES =. "var-som:"
+
 MACHINE_FEATURES += " pci bluetooth wifi screen"
 
 IMX_DEFAULT_BSP = "nxp"
