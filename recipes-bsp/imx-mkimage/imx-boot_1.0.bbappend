@@ -3,7 +3,7 @@
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-SRC_URI += " \
+SRC_URI:append:var-som = " \
     file://0001-iMX8M-soc-allow-dtb-override.patch \
     file://0002-iMX8M-soc-change-padding-of-DDR4-and-LPDDR4-DMEM-fir.patch \
     "
@@ -12,7 +12,7 @@ SRC_URI:append:imx8mm-var-dart = " file://0003-iMX8M-soc-add-variscite-imx8mm-su
 SRC_URI:append:imx8mm-var-dart = " file://0001-iMX8M-soc-imx8mm-move-TEE_LOAD_ADDR-to-512mb-memory-.patch"
 SRC_URI:append:imx8mq-var-dart = " file://0001-iMX8M-soc-imx8mq-move-TEE_LOAD_ADDR-to-512mb-memory.patch"
 
-do_compile() {
+do_compile:var-som() {
     echo "Copying DTBs"
     if [ "mx8m" = "${SOC_FAMILY}" ]; then
         cp ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/${UBOOT_DTB_NAME} ${BOOT_STAGING}
