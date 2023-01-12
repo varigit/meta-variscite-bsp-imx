@@ -21,7 +21,7 @@ SRC_URI[gcc-arm-none-eabi.sha256sum] = "fb31fbdfe08406ece43eef5df623c0b2deb8b53e
 
 unset do_compile[noexec]
 
-do_compile() {
+do_compile:imx-som() {
     export TOOLS=${WORKDIR}
     cd ${WORKDIR}/git/src/scfw_export_${SC_MACHINE_NAME}/
     oe_runmake clean-${SC_MX8_FAMILY}
