@@ -76,3 +76,7 @@ DISTRO_FEATURES_BACKFILL_CONSIDERED:append = "${@bb.utils.contains('DISTRO_FEATU
 
 # Use bluez-alsa instead of pulseaudio
 DISTRO_FEATURES_BACKFILL_CONSIDERED:append = " pulseaudio"
+
+# Enable virtualization
+DISTRO_FEATURES:append:mx8-nxp-bsp = " virtualization"
+DISTRO_FEATURES:append:mx9-nxp-bsp = " virtualization"
