@@ -1,0 +1,31 @@
+From b57f7c88e9afd9021027332dd996aa4b0bec819a Mon Sep 17 00:00:00 2001
+From: Nate Drude <nate.d@variscite.com>
+Date: Tue, 17 Jan 2023 14:10:39 -0600
+Subject: [PATCH] units: disable systemd-networkd-wait-online if NetworkManager
+ is enabled
+
+Only one "wait" service should be enabled. Do not run this service
+if NetworkManager-wait-online is enabled.
+
+For more information, see https://www.freedesktop.org/wiki/Software/systemd/NetworkTarget/
+
+Signed-off-by: Nate Drude <nate.d@variscite.com>
+---
+ units/systemd-networkd-wait-online.service.in | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/units/systemd-networkd-wait-online.service.in b/units/systemd-networkd-wait-online.service.in
+index 10d8b08c8e..5d5c43e3f0 100644
+--- a/units/systemd-networkd-wait-online.service.in
++++ b/units/systemd-networkd-wait-online.service.in
+@@ -19,6 +19,7 @@ Before=network-online.target shutdown.target
+ [Service]
+ Type=oneshot
+ ExecStart={{ROOTLIBEXECDIR}}/systemd-networkd-wait-online
++ExecCondition=/bin/bash -c '! /bin/systemctl is-enabled NetworkManager-wait-online.service'
+ RemainAfterExit=yes
+ 
+ [Install]
+-- 
+2.39.0
+
