@@ -16,6 +16,22 @@ DEFAULTTUNE:mx8m-nxp-bsp:fslc    ?= "armv8a-crc-crypto"
 DEFAULTTUNE:mx8qxp-nxp-bsp:fslc  ?= "armv8a-crc-crypto"
 DEFAULTTUNE:mx8x-nxp-bsp:fslc    ?= "armv8a-crc-crypto"
 
+NETMAN_PACKAGES = "\
+	networkmanager \
+	networkmanager-nmcli \
+"
+
+# Wayland distros should default to networkmanager
+PREFERRED_CONNECTIVITY_MANAGER	 ?= " \
+	${@bb.utils.contains('DISTRO', 'b2qt', '', \
+		bb.utils.contains('DISTRO_FEATURES', 'wayland', \
+		'networkmanager', '', d), d)} \
+"
+PREFERRED_CONNECTIVITY_MANAGER_PACKAGES	?= " \
+	${@bb.utils.contains('PREFERRED_CONNECTIVITY_MANAGER', 'networkmanager', \
+		'${NETMAN_PACKAGES}','', d)} \
+"
+
 # Variscite BSP default providers
 PREFERRED_RPROVIDER_u-boot-default-env ?= "u-boot-variscite"
 
@@ -47,9 +63,7 @@ MACHINE_EXTRA_RDEPENDS += " \
 	iw \
 	kernel-modules \
 	kmod \
-	${@bb.utils.contains('DISTRO', 'b2qt', '', \
-           bb.utils.contains('DISTRO_FEATURES', 'wayland', 'networkmanager networkmanager-nmcli', \
-                                                       '', d), d)} \
+	${PREFERRED_CONNECTIVITY_MANAGER_PACKAGES} \
 	packagegroup-tools-bluetooth \
 	bluealsa \
 	pm-utils \
