@@ -17,11 +17,17 @@ DEPENDS += "lzop-native bc-native"
 
 DEFAULT_PREFERENCE = "1"
 
-SRCBRANCH = "5.15-2.0.x-imx_var01"
 KERNEL_SRC ?= "git://github.com/varigit/linux-imx;protocol=https"
-SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
+
+SRCBRANCH:imx93-var-som = "lf-5.15.y_var01"
+SRCREV:imx93-var-som = "5006ade871149a113944e0f3c981656b135ecfee"
+LINUX_VERSION:imx93-var-som = "5.15.71"
+
+SRCBRANCH = "5.15-2.0.x-imx_var01"
 SRCREV = "823c33d95f44b8d3cd61ce55b2470eecb87503dc"
 LINUX_VERSION = "5.15.60"
+
+SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
@@ -33,9 +39,11 @@ LOCALVERSION:imx8mn-var-som = "-imx8mn"
 LOCALVERSION:imx8qxp-var-som = "-imx8x"
 LOCALVERSION:imx8qxpb0-var-som = "-imx8x"
 LOCALVERSION:imx8qm-var-som = "-imx8qm"
+LOCALVERSION:imx93-var-som = "-imx93"
 
 KBUILD_DEFCONFIG:mx6-nxp-bsp = "imx_v7_var_defconfig"
 KBUILD_DEFCONFIG:mx8-nxp-bsp = "imx8_var_defconfig"
+KBUILD_DEFCONFIG:mx9-nxp-bsp = "imx8_var_defconfig"
 KBUILD_DEFCONFIG:imx8mq-var-dart = "imx8mq_var_dart_defconfig"
 DEFAULT_DTB:imx8mq-var-dart = "sd-lvds"
 DEFAULT_DTB:imx8qxp-var-som = "sd"
@@ -75,4 +83,4 @@ pkg_postinst:kernel-devicetree:append:imx8qm-var-som () {
 }
 
 KERNEL_VERSION_SANITY_SKIP="1"
-COMPATIBLE_MACHINE = "(mx8-nxp-bsp)"
+COMPATIBLE_MACHINE = "(mx8-nxp-bsp|mx9-nxp-bsp)"
