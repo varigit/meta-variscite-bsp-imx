@@ -18,11 +18,12 @@ diff --git a/units/systemd-networkd-wait-online.service.in b/units/systemd-netwo
 index 10d8b08c8e..5d5c43e3f0 100644
 --- a/units/systemd-networkd-wait-online.service.in
 +++ b/units/systemd-networkd-wait-online.service.in
-@@ -19,6 +19,7 @@ Before=network-online.target shutdown.target
+@@ -19,6 +19,8 @@ Before=network-online.target shutdown.target
  [Service]
  Type=oneshot
  ExecStart={{ROOTLIBEXECDIR}}/systemd-networkd-wait-online
 +ExecCondition=/bin/bash -c '! /bin/systemctl is-enabled NetworkManager-wait-online.service'
++ExecCondition=/bin/bash -c '! /bin/systemctl is-enabled connman-wait-online.service'
  RemainAfterExit=yes
  
  [Install]
