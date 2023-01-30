@@ -17,6 +17,7 @@ SRC_URI:mx9-nxp-bsp = " \
     git://git@github.com/varigit/freertos-variscite-private;protocol=ssh;branch=${MCUXPRESSO_BRANCH}; \
     https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2;name=gcc-arm-none-eabi-10.3-2021.10 \
     file://0001-mcimx93evk-demo_apps-ethosu_apps_rpmsg-port-to-VAR-S.patch \
+    file://0002-MIMX9352-Correct-multiple-incorect-IOMUXC_-macro-def.patch \
 "
 
 SRC_URI[gcc-arm-none-eabi-10.3-2021.10.sha256sum] = "97dbb4f019ad1650b732faffcc881689cedc14e2b7ee863d390e0a41ef16c9a3"
