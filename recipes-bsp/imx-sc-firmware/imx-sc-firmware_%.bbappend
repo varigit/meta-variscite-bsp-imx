@@ -4,14 +4,14 @@ SC_FIRMWARE_NAME:imx8qxpb0-var-som = "mx8qx-var-som-scfw-tcm.bin"
 SC_FIRMWARE_NAME:imx8qm-var-som = "mx8qm-var-som-scfw-tcm.bin"
 
 SC_MX_FAMILY ?= "INVALID"
-SC_MX8_FAMILY:mx8qm-nxp-bsp = "qm"
-SC_MX8_FAMILY:mx8qxp-nxp-bsp = "qx"
-SC_MACHINE_NAME = "mx8${SC_MX8_FAMILY}_b0"
+SC_MX8_FAMILY:var-som:mx8qm-nxp-bsp = "qm"
+SC_MX8_FAMILY:var-som:mx8qxp-nxp-bsp = "qx"
+SC_MACHINE_NAME:var-som = "mx8${SC_MX8_FAMILY}_b0"
 
-SCFW_BRANCH = "1.13.0"
-SRCREV = "052037315bdac7a5132a1bb1d475d6185def7789"
+SCFW_BRANCH:var-som = "1.13.0"
+SRCREV:var-som = "052037315bdac7a5132a1bb1d475d6185def7789"
 
-SRC_URI += " \
+SRC_URI:append:var-som = " \
     git://github.com/varigit/imx-sc-firmware.git;protocol=https;branch=${SCFW_BRANCH}; \
     https://developer.arm.com/-/media/Files/downloads/gnu-rm/8-2018q4/gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2;name=gcc-arm-none-eabi \
 "
@@ -19,9 +19,7 @@ SRC_URI += " \
 SRC_URI[gcc-arm-none-eabi.md5sum] = "f55f90d483ddb3bcf4dae5882c2094cd"
 SRC_URI[gcc-arm-none-eabi.sha256sum] = "fb31fbdfe08406ece43eef5df623c0b2deb8b53e405e2c878300f7a1f303ee52"
 
-unset do_compile[noexec]
-
-do_compile:imx-som() {
+do_deploy:prepend:var-som() {
     export TOOLS=${WORKDIR}
     cd ${WORKDIR}/git/src/scfw_export_${SC_MACHINE_NAME}/
     oe_runmake clean-${SC_MX8_FAMILY}
