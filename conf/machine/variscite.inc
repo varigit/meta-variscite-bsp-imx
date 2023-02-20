@@ -51,10 +51,6 @@ MACHINE_FIRMWARE:append:mx8-nxp-bsp = " \
 	freertos-variscite \
 	"
 
-# Add VPU and Cortex M4/M7 firmware
-MACHINE_FIRMWARE:append:mx8-nxp-bsp = " \
-	freertos-variscite \
-	"
 MACHINE_EXTRA_RDEPENDS += " \
 	gptfdisk \
 	hostapd \
