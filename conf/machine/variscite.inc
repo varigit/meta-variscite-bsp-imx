@@ -9,6 +9,7 @@ USE_VT = "0"
 KERNEL_IMAGETYPE:mx8-nxp-bsp = "Image.gz"
 
 WKS_FILE:mx8-nxp-bsp = "imx-imx-boot-singlepart.wks.in"
+WKS_FILE:mx9-nxp-bsp = "imx-imx-boot-singlepart.wks.in"
 
 # Set a more generic tuning for code reuse across parts
 DEFAULTTUNE:mx8-nxp-bsp:fslc     ?= "armv8a-crc-crypto"
