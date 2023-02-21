@@ -10,7 +10,7 @@ SRCREV = "49ec7c516ad2ad0c8a352cad5de69a5ac26c752c"
 UBOOT_INITIAL_ENV_DEVICE = "sd"
 
 SRCBRANCH:imx93-var-som = "lf_v2022.04_var02"
-SRCREV:imx93-var-som = "3ec65fd1cf65a451205ab8e1f010df897ca9675f"
+SRCREV:imx93-var-som = "277ff23bfc0eb4a1fdd0bc114b64edddff311903"
 UBOOT_INITIAL_ENV_DEVICE:imx93-var-som = "sd"
 
 SRCBRANCH:var-som-mx6 = "imx_v2018.03_4.14.78_1.0.0_ga_var02"
