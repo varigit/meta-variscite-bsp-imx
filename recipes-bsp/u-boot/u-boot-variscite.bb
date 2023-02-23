@@ -15,6 +15,8 @@ inherit fsl-u-boot-localversion
 
 LOCALVERSION ?= "-${SRCBRANCH}"
 
+PV = "${SRCBRANCH}+git${@d.getVar("SRCREV", False).__str__()[:7]}"
+
 BOOT_TOOLS = "imx-boot-tools"
 
 SRC_URI += "file://fw_env.config"
