@@ -1,0 +1,69 @@
+From 62e37796669c676f90536c2dca597410df4536c2 Mon Sep 17 00:00:00 2001
+From: Clement Faure <clement.faure@nxp.com>
+Date: Fri, 3 Jun 2022 17:59:43 +0200
+Subject: [PATCH] core: pta: attestation: fix buffer size for generated key
+
+There is assertion error in the attestation PTA when it comes to
+deserialize the key. Here are the logs:
+
+* regression_1037 Remote attestation
+o regression_1037.1 Get public key
+E/TC:? 0 assertion '!buf_sz' failed at core/pta/attestation.c:199 <deserialize_key>
+E/TC:3 0 Panic at core/kernel/assert.c:28 <_assert_break>
+E/TC:3 0 TEE load address @ 0xbe000000
+E/TC:3 0 Call stack:
+E/TC:3 0  0xbe0091b4
+E/TC:3 0  0xbe024b5c
+E/TC:3 0  0xbe02292c
+E/TC:3 0  0xbe02fde4
+E/TC:3 0  0xbe0300c4
+E/TC:3 0  0xbe029a3c
+E/TC:3 0  0xbe025e70
+E/TC:3 0  0xbe0336e0
+E/TC:3 0  0xbe007070
+E/TC:3 0  0xbe0071ec
+
+To reproduce the issue, you need a persistent storage and follow these
+steps:
+ $ xtest 1037
+ *reboot the platform*
+ $ xtest 1037
+
+When allocating the key buffer, the maximum buffer size is allocated
+(1033 bytes) whatever the size specified by CFG_ATTESTATION_PTA_KEY_SIZE.
+
+With default attestation key size (CFG_ATTESTATION_PTA_KEY_SIZE) of
+3072 bits, only 777 bytes is needed to store the key but the allocated
+buffer size is still 1033 bytes.
+
+When the key has already been generated, the key stored is deserialized
+and the deserialize_key() function expects the size of the previously
+generated key to be equal to the maximum buffer size.
+
+The assertion can be removed as the buffer size and the key size could
+mismatch. The deserialize_bignum() function, however, still checks the
+buffer size is big enough to hold the given key size.
+
+Fixes: 7e05ec25b ("core: pta: add remote attestation PTA")
+Signed-off-by: Clement Faure <clement.faure@nxp.com>
+Reviewed-by: Jerome Forissier <jerome.forissier@linaro.org>
+Reviewed-by: Etienne Carriere <etienne.carriere@linaro.org>
+---
+ core/pta/attestation.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/core/pta/attestation.c b/core/pta/attestation.c
+index 6395d0d9..671fc4d6 100644
+--- a/core/pta/attestation.c
++++ b/core/pta/attestation.c
+@@ -195,8 +195,6 @@ static TEE_Result deserialize_key(uint8_t *buf, size_t buf_sz)
+	sz = deserialize_bignum(p, buf_sz, key->n);
+	if (!sz)
+		goto out;
+-	buf_sz -= sz;
+-	assert(!buf_sz);
+ out:
+	return res;
+ }
+--
+2.25.1
