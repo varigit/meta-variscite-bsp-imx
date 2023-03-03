@@ -17,43 +17,23 @@ DEPENDS += "lzop-native bc-native"
 
 DEFAULT_PREFERENCE = "1"
 
-SRCBRANCH ?= "5.15-2.0.x-imx_var01"
 SRCBRANCH:mx6-nxp-bsp = "lf-5.10.y_var04"
 KERNEL_SRC ?= "git://github.com/varigit/linux-imx;protocol=https"
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
-SRCREV ?= "a0198bb5f0c1bc1f1e9a61dfb56dfe0c7e1ad2d2"
-SRCREV:mx6-nxp-bsp = "aab630a20633f2684b6282fa5bf18acec3647901"
-LINUX_VERSION ?= "5.15.60"
+SRCREV:mx6-nxp-bsp = "1483cba123232f4a7ac0881b39c3bfbfbf2f48de"
 LINUX_VERSION:mx6-nxp-bsp = "5.10.72"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 LOCALVERSION:imx6ul-var-dart = "-imx6ul"
-LOCALVERSION:imx8mp-var-dart = "-imx8mp"
-LOCALVERSION:imx8mq-var-dart = "-imx8mq"
-LOCALVERSION:imx8mm-var-dart = "-imx8mm"
-LOCALVERSION:imx8mn-var-som = "-imx8mn"
-LOCALVERSION:imx8qxp-var-som = "-imx8x"
-LOCALVERSION:imx8qxpb0-var-som = "-imx8x"
-LOCALVERSION:imx8qm-var-som = "-imx8qm"
 
 KBUILD_DEFCONFIG:mx6-nxp-bsp = "imx_v7_defconfig"
 KBUILD_DEFCONFIG:imx6ul-var-dart = "imx_v7_var_defconfig"
 KBUILD_DEFCONFIG:var-som-mx6 = "imx_v7_var_defconfig"
-KBUILD_DEFCONFIG:mx8-nxp-bsp = "imx8_var_defconfig"
-KBUILD_DEFCONFIG:imx8mq-var-dart = "imx8mq_var_dart_defconfig"
 DEFAULT_DTB:imx6ul-var-dart = "sd-card"
 DEFAULT_DTB:var-som-mx6 = "sd-card"
-DEFAULT_DTB:imx8mq-var-dart = "sd-lvds"
-DEFAULT_DTB:imx8qxp-var-som = "sd"
-DEFAULT_DTB:imx8qxpb0-var-som = "sd"
-DEFAULT_DTB:imx8qm-var-som = "lvds"
 DEFAULT_DTB_PREFIX:imx6ul-var-dart = "imx6ull-var-dart-6ulcustomboard"
 DEFAULT_DTB_PREFIX:var-som-mx6 = "imx6ull-var-som-symphony"
-DEFAULT_DTB_PREFIX:imx8mq-var-dart = "imx8mq-var-dart-dt8mcustomboard"
-DEFAULT_DTB_PREFIX:imx8qxp-var-som = "imx8qxp-var-som-symphony"
-DEFAULT_DTB_PREFIX:imx8qxpb0-var-som = "imx8qxp-var-som-symphony"
-DEFAULT_DTB_PREFIX:imx8qm-var-som = "imx8qm-var-som-symphony"
 
 pkg_postinst:kernel-devicetree:append () {
    rm -f $D/boot/devicetree-*
@@ -67,30 +47,6 @@ pkg_postinst:kernel-devicetree:append:imx6ul-var-dart () {
 pkg_postinst:kernel-devicetree:append:var-som-mx6 () {
     cd $D/boot
     ln -s ${DEFAULT_DTB_PREFIX}-${DEFAULT_DTB}.dtb ${DEFAULT_DTB_PREFIX}.dtb
-}
-
-pkg_postinst:kernel-devicetree:append:imx8mq-var-dart () {
-    cd $D/boot
-    ln -s ${DEFAULT_DTB_PREFIX}-${DEFAULT_DTB}.dtb ${DEFAULT_DTB_PREFIX}.dtb
-    ln -s ${DEFAULT_DTB_PREFIX}-legacy-${DEFAULT_DTB}.dtb ${DEFAULT_DTB_PREFIX}-legacy.dtb
-}
-
-pkg_postinst:kernel-devicetree:append:imx8qxp-var-som () {
-    cd $D/boot
-    ln -s ${DEFAULT_DTB_PREFIX}-${DEFAULT_DTB}.dtb ${DEFAULT_DTB_PREFIX}.dtb
-}
-
-pkg_postinst:kernel-devicetree:append:imx8qxpb0-var-som () {
-    cd $D/boot
-    ln -s ${DEFAULT_DTB_PREFIX}-${DEFAULT_DTB}.dtb ${DEFAULT_DTB_PREFIX}.dtb
-}
-
-pkg_postinst:kernel-devicetree:append:imx8qm-var-som () {
-    cd $D/boot
-    ln -s ${DEFAULT_DTB_PREFIX}-${DEFAULT_DTB}.dtb ${DEFAULT_DTB_PREFIX}.dtb
-    ln -s imx8qp-var-som-symphony-${DEFAULT_DTB}.dtb imx8qp-var-som-symphony.dtb
-    ln -s imx8qm-var-spear-sp8customboard-${DEFAULT_DTB}.dtb imx8qm-var-spear-sp8customboard.dtb
-    ln -s imx8qp-var-spear-sp8customboard-${DEFAULT_DTB}.dtb imx8qp-var-spear-sp8customboard.dtb
 }
 
 KERNEL_VERSION_SANITY_SKIP="1"
