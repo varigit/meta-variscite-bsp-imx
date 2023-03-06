@@ -1,10 +1,5 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-SRC_URI:append = " \
-    file://0001-core-pta-attestation-fix-buffer-size-for-generated-k.patch \
-    file://0002-core-pta-return-error-code-when-failing-to-deseriali.patch \
-"
-
 SRC_URI:append:imx8mq-var-dart = " file://0001-imx-imx8mq-add-support-more-than-3GB.patch"
 SRC_URI:append:imx8mm-var-dart = " file://0001-imx-imx8mm-add-support-more-than-3GB.patch"
 
