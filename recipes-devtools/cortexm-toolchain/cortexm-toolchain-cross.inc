@@ -1,6 +1,6 @@
 DESCRIPTION = "ARM GCC toolchain for non Linux M4, M7 and M33 targets"
 LICENSE = "BSD-3-Clause"
-LIC_FILES_CHKSUM = "file://COPYING-BSD-3;md5=0858ec9c7a80c4a2cf16e4f825a2cc91"
+LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/BSD-3-Clause;md5=550794465ba0ec5312d6919e203a55f9"
 SECTION = "BSP"
 
 # We do not need to build anything
