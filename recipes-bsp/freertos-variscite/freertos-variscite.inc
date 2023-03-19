@@ -13,7 +13,7 @@ SRC_URI = " \
 
 # inherit cmake
 DEPENDS = "cmake-native"
-DEPENDS:append:mx9-nxp-bsp = " cortexm-toolchain-cross (=${CM_GCC})"
+DEPENDS:append = " cortexm-toolchain-cross (=${CM_GCC})"
 
 S = "${WORKDIR}/git"
 
@@ -94,37 +94,6 @@ compile_fw() {
 
 do_compile() {
     # Configure ARMGCC
-    export ARMGCC_DIR="${WORKDIR}/${CM_GCC}"
-
-    # Copy and patch hello_world demo to disable_cache demo
-    if [ -e "${WORKDIR}/${DISABLE_CACHE_PATCH}" ]; then
-        # Copy hello_world demo
-        cp -r ${S}/boards/${CM_BOARD}/demo_apps/hello_world/ ${S}/boards/${CM_BOARD}/demo_apps/disable_cache
-        # Rename hello_world strings to disable_cache
-        grep -rl hello_world ${S}/boards/${CM_BOARD}/demo_apps/disable_cache | xargs sed -i 's/hello_world/disable_cache/g'
-        # Rename hello_world files to disable_cache
-        find ${S}/boards/${CM_BOARD}/demo_apps/disable_cache/ -name '*hello_world*' -exec sh -c 'mv "$1" "$(echo "$1" | sed s/hello_world/disable_cache/)"' _ {} \;
-    fi
-
-    # Build all demos in CM_DEMOS
-    for CM_DEMO in ${CM_DEMOS}; do
-        compile_fw "${S}/boards/${CM_BOARD}/${CM_DEMO}/armgcc"
-    done
-
-    # Build firmware to reset cache
-    if [ -e "${WORKDIR}/${DISABLE_CACHE_PATCH}" ]; then
-        # Apply patch to disable cache for machine
-        cd ${S} && git apply ${WORKDIR}/${DISABLE_CACHE_PATCH}
-
-        # Build the firmware
-        for CM_DEMO in ${CM_DEMOS_DISABLE_CACHE}; do
-                compile_fw "${S}/boards/${CM_BOARD}/${CM_DEMO}/armgcc"
-        done
-    fi
-}
-
-do_compile:mx9-nxp-bsp() {
-    # Configure ARMGCC
     export ARMGCC_DIR="${STAGING_DIR_NATIVE}${bindir}/cortexm-toolchain-cross-${CM_GCC}"
 
     # Copy and patch hello_world demo to disable_cache demo
@@ -202,11 +171,10 @@ do_install:append:mx9-nxp-bsp() {
 
 do_compile:imx8mp-var-dart() {
     # Configure ARMGCC
-    export ARMGCC_DIR="${WORKDIR}/${CM_GCC}"
+    export ARMGCC_DIR="${STAGING_DIR_NATIVE}${bindir}/cortexm-toolchain-cross-${CM_GCC}"
 
     # Build all board in CM_BOARD
     for cm_board in ${CM_BOARD}; do
-echo "$cm_board"
         # Build all demos in CM_DEMOS
         for CM_DEMO in ${CM_DEMOS}; do
             compile_fw "${S}/boards/${cm_board}/${CM_DEMO}/armgcc"
