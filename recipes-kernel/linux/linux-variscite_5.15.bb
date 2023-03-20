@@ -24,7 +24,7 @@ SRCREV = "823c33d95f44b8d3cd61ce55b2470eecb87503dc"
 LINUX_VERSION = "5.15.60"
 
 SRCBRANCH:imx8mp-var-dart = "lf-5.15.y_var01"
-SRCREV:imx8mp-var-dart = "850312caf60089b85f1ffcb7f69cf11e5622696d"
+SRCREV:imx8mp-var-dart = "a3280172b49e9f7f9e1dbfdd936c8c015c02901d"
 LINUX_VERSION:imx8mp-var-dart = "5.15.71"
 
 SRCBRANCH:imx93-var-som = "lf-5.15.y_var01"
