@@ -16,6 +16,7 @@ BRANCH_tibt = "master"
 
 MODEL_LIST = "${MACHINE}"
 MODEL_LIST:imx8mm-var-dart = "imx8mm-var-dart imx8mm-var-som"
+MODEL_LIST:imx8mn-var-som = "imx8mn-var-som"
 MODEL_LIST:imx8mp-var-dart = "imx8mp-var-dart imx8mp-var-som"
 MODEL_LIST:imx8qm-var-som = "imx8qm-var-som imx8qm-var-spear imx8qp-var-som imx8qp-var-spear"
 
