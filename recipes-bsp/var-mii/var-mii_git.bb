@@ -11,6 +11,8 @@ SRCREV = "40cbec44e3532a46afa0888495a8640105d733a8"
 
 S = "${WORKDIR}/git"
 
+TARGET_CC_ARCH += "${LDFLAGS}"
+
 do_compile() {
     oe_runmake
 }
