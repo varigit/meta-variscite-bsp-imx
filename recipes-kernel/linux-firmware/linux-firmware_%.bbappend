@@ -15,6 +15,7 @@ SRCREV_tibt = "3aa1d75f3c2ae77f6e4d36194e3d281b899ab149"
 BRANCH_tibt = "master"
 
 MODEL_LIST = "${MACHINE}"
+MODEL_LIST:imx6ul-var-dart = "imx6ul-var-dart imx6ul-var-som"
 MODEL_LIST:imx8mm-var-dart = "imx8mm-var-dart imx8mm-var-som"
 MODEL_LIST:imx8mn-var-som = "imx8mn-var-som"
 MODEL_LIST:imx8mp-var-dart = "imx8mp-var-dart imx8mp-var-som"
