@@ -26,7 +26,7 @@ IMAGE_FSTYPES = "tar.gz multiubi wic.gz"
 IMAGE_TYPEDEP:multiubi += "${IMAGE_FSTYPES}"
 IMAGE_TYPEDEP:multiubi:remove = "multiubi"
 
-IMAGE_DEPENDS:multiubi += "bc-native"
+do_image_multiubi[depends] += "bc-native:do_populate_sysroot"
 
 multiubi_mkfs:prepend() {
 	# Update PEB size in fw_env.config (u-boot-fw-utils)
