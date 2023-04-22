@@ -39,6 +39,8 @@ PREFERRED_CONNECTIVITY_MANAGER_PACKAGES	?= " \
 PREFERRED_RPROVIDER_u-boot-default-env ?= "u-boot-variscite"
 
 # Use i.MX Gstreamer Version
+MACHINE_GSTREAMER_1_0_PLUGIN:mx6-nxp-bsp = "imx-gst1.0-plugin"
+MACHINE_GSTREAMER_1_0_PLUGIN:mx7-nxp-bsp = "imx-gst1.0-plugin"
 MACHINE_GSTREAMER_1_0_PLUGIN:mx8-nxp-bsp = "imx-gst1.0-plugin"
 
 # Add VPU and Cortex M4/M7 firmware
