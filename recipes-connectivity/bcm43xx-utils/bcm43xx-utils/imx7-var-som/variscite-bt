@@ -4,15 +4,15 @@
 #
 
 # GPIO pin to enable BT module
-BT_EN_GPIO=14
+BT_EN_GPIO="gpiochip0 14"
 
 # UART device connected to BT module
 BT_TTY_DEV=/dev/ttymxc2
 
-# Sterling LWB Bluetooth firmware
+# Sterling LWB BT firmware
 BT_FIRMWARE_LWB=/lib/firmware/brcm/BCM43430A1.hcd
 
-# Sterling LWB5 Bluetooth firmware
+# Sterling LWB5 BT firmware
 BT_FIRMWARE_LWB5=/lib/firmware/brcm/BCM4335C0.hcd
 
 # Sterling LWB5 WIFI SDIO ID
@@ -68,16 +68,10 @@ bt_found()
 # Enable BT via GPIO(s)
 bt_enable()
 {
-	# Configure BT_EN_GPIO
-	if [ ! -d /sys/class/gpio/gpio${BT_EN_GPIO} ]; then
-		echo ${BT_EN_GPIO} >/sys/class/gpio/export
-		echo "out" > /sys/class/gpio/gpio${BT_EN_GPIO}/direction
-	fi
-
 	# Power up BT module
-	echo 0 > /sys/class/gpio/gpio${BT_EN_GPIO}/value
+	gpioset ${BT_EN_GPIO}=0
 	sleep 1
-	echo 1 > /sys/class/gpio/gpio${BT_EN_GPIO}/value
+	gpioset ${BT_EN_GPIO}=1
 }
 
 # Start BT hardware
@@ -120,7 +114,7 @@ bt_stop()
 	kill -9 $(pidof brcm_patchram_plus) 2>/dev/null || true
 
   	# Power down BT module
-	echo 0 > /sys/class/gpio/gpio${BT_EN_GPIO}/value
+	gpioset ${BT_EN_GPIO}=0
 }
 
 ###########################
