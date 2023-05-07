@@ -15,6 +15,9 @@ FILES:${KERNEL_PACKAGE_NAME}-base += "${nonarch_base_libdir}/modules/${KERNEL_VE
 
 DEPENDS += "lzop-native bc-native"
 
+# Don't include kernels in standard images
+RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
+
 DEFAULT_PREFERENCE = "1"
 
 KERNEL_SRC ?= "git://github.com/varigit/linux-imx;protocol=https"
@@ -22,6 +25,10 @@ KERNEL_SRC ?= "git://github.com/varigit/linux-imx;protocol=https"
 SRCBRANCH = "5.15-2.0.x-imx_var01"
 SRCREV = "823c33d95f44b8d3cd61ce55b2470eecb87503dc"
 LINUX_VERSION = "5.15.60"
+
+SRCBRANCH:imx6ul-var-dart = "lf-5.15.y_var01"
+SRCREV:imx6ul-var-dart = "02be52bb02f6454ba80127796c546f2c81795687"
+LINUX_VERSION:imx6ul-var-dart = "5.15.71"
 
 SRCBRANCH:imx8mn-var-som = "lf-5.15.y_var01"
 SRCREV:imx8mn-var-som = "d4a03eb6188c8e3b31719d9b72680ab2fca86217"
@@ -91,4 +98,4 @@ pkg_postinst:kernel-devicetree:append:imx8qm-var-som () {
 }
 
 KERNEL_VERSION_SANITY_SKIP="1"
-COMPATIBLE_MACHINE = "(mx8-nxp-bsp|mx9-nxp-bsp)"
+COMPATIBLE_MACHINE = "(mx6-nxp-bsp|mx8-nxp-bsp|mx9-nxp-bsp)"
