@@ -85,6 +85,17 @@ IMAGE_FSTYPES = "tar.gz wic.gz"
 DISTRO_FEATURES_BACKFILL_CONSIDERED:append = "${@bb.utils.contains('DISTRO_FEATURES', 'systemd', ' sysvinit', '', d)}"
 DISTRO_FEATURES_BACKFILL_CONSIDERED:append = "${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', ' systemd', '', d)}"
 
+# Unconditionally set systemd as init-manager for MX8 and MX9 platforms
+# via Langdale bug work around
+require conf/include/init-manager-systemd-override.inc
+python() {
+    overrides = d.getVar('OVERRIDES').split(':')
+
+    for override in overrides:
+        if override == "mx8-nxp-bsp" or override == "mx9-nxp-bsp":
+            d.prependVar('MACHINEOVERRIDES', 'broken_initmanager:')
+}
+
 # Use bluez-alsa instead of pulseaudio
 DISTRO_FEATURES_BACKFILL_CONSIDERED:append = " pulseaudio"
 
