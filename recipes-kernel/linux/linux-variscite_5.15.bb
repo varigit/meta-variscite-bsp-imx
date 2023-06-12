@@ -39,7 +39,7 @@ SRCREV:imx8mp-var-dart = "ea8935a3f0aabb0a774c7ea7c58be529c15f2af0"
 LINUX_VERSION:imx8mp-var-dart = "5.15.71"
 
 SRCBRANCH:imx93-var-som = "lf-5.15.y_var01"
-SRCREV:imx93-var-som = "5006ade871149a113944e0f3c981656b135ecfee"
+SRCREV:imx93-var-som = "ea8935a3f0aabb0a774c7ea7c58be529c15f2af0"
 LINUX_VERSION:imx93-var-som = "5.15.71"
 
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
