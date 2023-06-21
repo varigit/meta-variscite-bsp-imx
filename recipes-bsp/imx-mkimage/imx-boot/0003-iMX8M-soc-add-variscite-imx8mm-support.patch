@@ -3,6 +3,7 @@ From: Nate Drude <nate.d@variscite.com>
 Date: Mon, 28 Feb 2022 10:43:57 -0600
 Subject: [PATCH] iMX8M: soc: add variscite imx8mm support
 
+Upstream-Status: Pending
 Signed-off-by: Nate Drude <nate.d@variscite.com>
 
 ---
