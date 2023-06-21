@@ -11,6 +11,7 @@ imx8mp-var-som
 
 Remove dtb_check.sh, it is not needed when dtbs are passed to soc.mak
 
+Upstream-Status: Pending
 Signed-off-by: Nate Drude <nate.d@variscite.com>
 
 ---

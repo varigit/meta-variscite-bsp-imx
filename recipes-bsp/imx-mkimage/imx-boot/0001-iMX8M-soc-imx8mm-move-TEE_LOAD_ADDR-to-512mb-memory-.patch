@@ -6,6 +6,7 @@ Subject: [PATCH] iMX8M: soc: imx8mm: move TEE_LOAD_ADDR to 512mb memory region
 The default memory location, 0xfe000000, requires 3GB of memory. Move
 TEE_LOAD_ADDR to 0x56000000 to work with soms down to 512MB.
 
+Upstream-Status: Pending
 Signed-off-by: Nate Drude <nate.d@variscite.com>
 Signed-off-by: FrancescoFerraro <francesco.f@variscite.com>
 ---

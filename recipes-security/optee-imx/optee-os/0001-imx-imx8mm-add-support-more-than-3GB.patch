@@ -9,6 +9,7 @@ paddr_t as a 64-bit type.
 Reference:
 https://source.codeaurora.org/external/imx/imx-optee-os/tree/mk/config.mk?h=lf-5.15.32-2.0.0#n637
 
+Upstream-Status: Pending
 Signed-off-by: FrancescoFerraro <francesco.f@variscite.com>
 ---
  core/arch/arm/plat-imx/conf.mk | 2 ++

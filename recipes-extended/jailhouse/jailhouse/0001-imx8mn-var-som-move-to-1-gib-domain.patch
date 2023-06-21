@@ -8,6 +8,7 @@ with only 1 GiB.
 
 Note: See device tree imx8mn-var-som-symphony-root.dtb
 
+Upstream-Status: Pending
 Signed-off-by: Nate Drude <nate.d@variscite.com>
 ---
  configs/arm64/imx8mn-linux-demo.c | 74 ++++++++++++++++---------------
