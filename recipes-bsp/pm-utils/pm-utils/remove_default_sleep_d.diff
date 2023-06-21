@@ -1,3 +1,11 @@
+Remove the default sleep.d scripts
+
+Ignore and do not install the default /usr/lib/pm-utils/sleep.d/
+scripts directory, as these scripts are not needed.
+
+Upstream-Status: Pending
+Signed-off-by: Felix Radensky <felix.r@variscite.com>
+
 diff -ur a/pm/Makefile.am b/pm/Makefile.am
 --- a/pm/Makefile.am	2010-07-04 17:42:50.000000000 +0300
 +++ b/pm/Makefile.am	2019-05-27 14:24:27.332670308 +0300

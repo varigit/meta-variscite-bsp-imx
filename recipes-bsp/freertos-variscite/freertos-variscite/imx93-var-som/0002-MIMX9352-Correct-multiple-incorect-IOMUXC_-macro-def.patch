@@ -14,6 +14,7 @@ addresses. This correction was generated using a script which parsed the
 values from linux-imx arch/arm64/boot/dts/freescale/imx93-pinfunc.h
 based on commit 6d4695187159f8182815ac2d2dccb5f867c22b44.
 
+Upstream-Status: Pending
 Signed-off-by: Ken Sloat <ken.s@variscite.com>
 ---
  devices/MIMX9352/drivers/fsl_iomuxc.h | 936 +++++++++++++-------------
