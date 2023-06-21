@@ -4,6 +4,8 @@ Date: Sat, 3 Apr 2021 19:30:27 +0200
 Subject: [PATCH] units: add dependencies to avoid conflict between connman and
  systemd-networkd
 
+Upstream-Status: Pending
+Signed-off-by: Marco Contenti <marco.contenti@variscite.com>
 ---
  units/systemd-networkd.service.in | 2 +-
  units/systemd-networkd.socket     | 2 +-

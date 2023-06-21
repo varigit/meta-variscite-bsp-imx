@@ -9,6 +9,7 @@ if NetworkManager-wait-online is enabled.
 
 For more information, see https://www.freedesktop.org/wiki/Software/systemd/NetworkTarget/
 
+Upstream-Status: Pending
 Signed-off-by: Nate Drude <nate.d@variscite.com>
 ---
  units/systemd-networkd-wait-online.service.in | 1 +

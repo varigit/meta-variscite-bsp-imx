@@ -5,6 +5,7 @@ Subject: [PATCH] iMX8M: soc: change padding of DDR4 and LPDDR4 DMEM firmware
 
 See https://github.com/varigit/uboot-imx/commit/3b5aa3fc1ce23ffe8f790be60efaa495e99f033a
 
+Upstream-Status: Pending
 Signed-off-by: Nate Drude <nate.d@variscite.com>
 
 ---

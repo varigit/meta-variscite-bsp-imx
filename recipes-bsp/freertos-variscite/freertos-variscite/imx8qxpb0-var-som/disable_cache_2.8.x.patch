@@ -3,6 +3,7 @@ From: FrancescoFerraro <francesco.f@variscite.com>
 Date: Sat, 13 Feb 2021 11:50:51 +0100
 Subject: [PATCH 2/2] MIMX8QX6_cm4: changes to build disable_cache_m4 firmware
 
+Upstream-Status: Pending
 Signed-off-by: FrancescoFerraro <francesco.f@variscite.com>
 ---
  devices/MIMX8QX6/system_MIMX8QX6_cm4.c | 13 +++++++------

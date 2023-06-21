@@ -14,6 +14,7 @@ arch/arm64/boot/dts/freescale/imx93-var-som-symphony.dts
 the ethernet regulator on the SoM and outputs the M33 messages on
 Symphony J18.3 and J18.5
 
+Upstream-Status: Pending
 Signed-off-by: Nate Drude <nate.d@variscite.com>
 ---
  boards/mcimx93evk/demo_apps/ethosu_apps_rpmsg/board.h   | 8 ++++----
