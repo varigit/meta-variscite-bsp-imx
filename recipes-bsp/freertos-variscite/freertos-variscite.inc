@@ -233,6 +233,17 @@ FILES:${PN} = " \
 	/boot \
 "
 
+# ethos-u-firmware is provided by this recipe
+RPROVIDES:${PN}-nxp-ethos = "ethos-u-firmware"
+PACKAGES =+ "\
+    ${PN}-nxp-ethos \
+"
+
+FILES:${PN}-nxp-ethos += "\
+    /lib/firmware/ethosu_firmware \
+    /lib/firmware/cm_ethosu_apps_rpmsg.elf.release \
+"
+
 INHIBIT_PACKAGE_STRIP = "1"
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
 
