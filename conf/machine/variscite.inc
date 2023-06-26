@@ -52,6 +52,11 @@ MACHINE_FIRMWARE:append:mx8-nxp-bsp = " \
 	freertos-variscite \
 	"
 
+# Add Cortex-M33 firmware
+MACHINE_FIRMWARE:append:mx9-nxp-bsp = " \
+	freertos-variscite \
+	"
+
 MACHINE_EXTRA_RDEPENDS += " \
 	gptfdisk \
 	hostapd \

@@ -18,6 +18,7 @@ DEPENDS:append = " cortexm-toolchain-cross (=${CM_GCC})"
 S = "${WORKDIR}/git"
 
 MCUXPRESSO_BRANCH = "mcuxpresso_sdk_${PV}-var01"
+MCUXPRESSO_BRANCH:mx9-nxp-bsp = "mcuxpresso_sdk_${PV}-var02"
 
 INSTALL_SCRIPTS="yes"
 INSTALL_SCRIPTS:mx9-nxp-bsp="no"
@@ -29,7 +30,7 @@ CM_BOARD:mx8mm-nxp-bsp="dart_mx8mm"
 CM_BOARD:mx8mp-nxp-bsp="dart_mx8mp som_mx8mp"
 CM_BOARD:mx8qm-nxp-bsp="som_mx8qm"
 CM_BOARD:mx8qxp-nxp-bsp="som_mx8qx"
-CM_BOARD:mx9-nxp-bsp="mcimx93evk"
+CM_BOARD:mx9-nxp-bsp="som_mx93"
 
 CM_BUILD_TARGETS = " \
     debug \
