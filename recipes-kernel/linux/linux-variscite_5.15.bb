@@ -27,19 +27,19 @@ SRCREV = "823c33d95f44b8d3cd61ce55b2470eecb87503dc"
 LINUX_VERSION = "5.15.60"
 
 SRCBRANCH:imx6ul-var-dart = "lf-5.15.y_var01"
-SRCREV:imx6ul-var-dart = "561a3d8c0a0a60ab1673220f36de0ad3b81f141a"
+SRCREV:imx6ul-var-dart = "da2218c723da2323ae744b8ba71a93802a23f976"
 LINUX_VERSION:imx6ul-var-dart = "5.15.71"
 
 SRCBRANCH:imx8mn-var-som = "lf-5.15.y_var01"
-SRCREV:imx8mn-var-som = "ea8935a3f0aabb0a774c7ea7c58be529c15f2af0"
+SRCREV:imx8mn-var-som = "da2218c723da2323ae744b8ba71a93802a23f976"
 LINUX_VERSION:imx8mn-var-som = "5.15.71"
 
 SRCBRANCH:imx8mp-var-dart = "lf-5.15.y_var01"
-SRCREV:imx8mp-var-dart = "ea8935a3f0aabb0a774c7ea7c58be529c15f2af0"
+SRCREV:imx8mp-var-dart = "da2218c723da2323ae744b8ba71a93802a23f976"
 LINUX_VERSION:imx8mp-var-dart = "5.15.71"
 
 SRCBRANCH:imx93-var-som = "lf-5.15.y_var01"
-SRCREV:imx93-var-som = "ea8935a3f0aabb0a774c7ea7c58be529c15f2af0"
+SRCREV:imx93-var-som = "da2218c723da2323ae744b8ba71a93802a23f976"
 LINUX_VERSION:imx93-var-som = "5.15.71"
 
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
