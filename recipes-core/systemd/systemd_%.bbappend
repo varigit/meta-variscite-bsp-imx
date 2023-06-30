@@ -1,7 +1,5 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 
-PACKAGECONFIG:remove:imx-generic-bsp = "networkd"
-
 SRC_URI:append:imx-generic-bsp = " file://imx.conf \
             file://0001-units-add-dependencies-to-avoid-conflict-between-con.patch \
             file://0002-units-disable-systemd-networkd-wait-online-if-Networ.patch \
