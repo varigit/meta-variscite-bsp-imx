@@ -86,9 +86,10 @@ IMAGE_INSTALL:append:mx8-nxp-bsp = " \
 IMAGE_INSTALL:append:mx9-nxp-bsp = " \
 	kernel-image \
 	kernel-devicetree \
+	zstd \
 "
 
-IMAGE_FSTYPES = "tar.gz wic.gz"
+IMAGE_FSTYPES = "tar.zst wic.zst"
 
 # Wayland based distros add systemd to DISTRO_FEATURES
 # Remove sysvinit or systemd based on DISTRO_FEATURES to avoid conflicts
