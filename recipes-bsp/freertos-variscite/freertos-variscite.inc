@@ -59,6 +59,7 @@ CM_DEMOS:mx8qm-nxp-bsp = " \
 
 CM_DEMOS:mx93-nxp-bsp = " \
     demo_apps/ethosu_apps_rpmsg \
+    demo_apps/hello_world \
 "
 
 # If remoteproc is used to reload ddr firmware, special disable_cache firmware
