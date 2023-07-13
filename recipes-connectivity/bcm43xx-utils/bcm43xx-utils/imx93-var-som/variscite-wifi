@@ -20,6 +20,35 @@ BT_EN_GPIO="${gpio4} 15"
 # WIFI MMC host
 WIFI_MMC_HOST=428b0000.mmc
 
+# Get the SOM revision
+get_somrev() {
+    # Get the raw output
+    local raw_output=$(i2cget -f -y 0x2 0x52 0x23)
+
+    # Convert the output to decimal
+    local decimal_output=$(( $raw_output ))
+
+    # Extract major and minor versions
+    local major=$(( ($decimal_output & 0xE0) >> 5 ))
+    local minor=$(( $decimal_output & 0x1F ))
+
+    # Adjust the major version as per the specification
+    major=$(( $major + 1 ))
+
+    echo "$major.$minor"
+}
+
+# Check if wifi is bcm43xx
+wifi_is_bcm43xx() {
+    local somrev=$(get_somrev)
+
+    if [ "$(echo "$somrev < 2.0" | bc)" -eq 1 ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 # Return true if WIFI interface exists
 wifi_interface_exists()
 {
@@ -119,6 +148,10 @@ wifi_is_available()
 # Return true if WIFI should be started
 wifi_should_not_be_started()
 {
+	if ! wifi_is_bcm43xx; then
+		return 0
+	fi
+
 	# Do not start WIFI if it is not available
 	if ! wifi_is_available; then
 		return 0
@@ -133,6 +166,10 @@ wifi_should_not_be_started()
 # Return true if WIFI should not be stopped
 wifi_should_not_be_stopped()
 {
+	if ! wifi_is_bcm43xx; then
+		return 0
+	fi
+
 	# Do not stop WIFI if it is not available
 	if ! wifi_is_available; then
 		return 0
