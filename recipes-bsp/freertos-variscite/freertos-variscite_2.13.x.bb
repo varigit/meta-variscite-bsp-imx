@@ -5,7 +5,7 @@ include freertos-variscite.inc
 # "Development Tools" section for supported GCC version
 CM_GCC = "10.3-2021.10"
 
-SRCREV = "6a8cb483219ef3d6f9c2ef3dafd094b759eb9f10"
+SRCREV = "66cb1c980506524e85364ddadbdaace381c621a6"
 SRC_URI += " \
     git://github.com/varigit/freertos-variscite.git;protocol=https;branch=${MCUXPRESSO_BRANCH}; \
 "
