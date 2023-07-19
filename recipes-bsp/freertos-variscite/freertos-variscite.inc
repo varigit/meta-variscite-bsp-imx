@@ -24,6 +24,7 @@ PACKAGECONFIG ??= "rproc-scripts"
 PACKAGECONFIG:mx9-nxp-bsp ??= ""
 
 PACKAGECONFIG[rproc-scripts] = "--with-rproc-scripts, --without-rproc-scripts"
+PACKAGECONFIG[all-demos] = "--with-all-demos"
 
 CM_BOARD="INVALID"
 CM_BOARD:mx8mn-nxp-bsp="som_mx8mn"
@@ -110,8 +111,15 @@ do_compile() {
         find ${S}/boards/${CM_BOARD}/demo_apps/disable_cache/ -name '*hello_world*' -exec sh -c 'mv "$1" "$(echo "$1" | sed s/hello_world/disable_cache/)"' _ {} \;
     fi
 
-    # Build all demos in CM_DEMOS
-    for CM_DEMO in ${CM_DEMOS}; do
+    # Determine if demos should be compiled from recipe list or all demos in source repo
+    if "${@bb.utils.contains('PACKAGECONFIG_CONFARGS', '--with-all-demos', 'true', 'false', d)}"; then
+        DEMO_LIST=$(find ${S}/boards/${CM_BOARD} -type d -name "armgcc" -printf "%P/\n" | sed 's|/armgcc/|/|')
+    else
+        DEMO_LIST="${CM_DEMOS}"
+    fi
+
+    # Build all demos in DEMO_LIST
+    for CM_DEMO in ${DEMO_LIST}; do
         compile_fw "${S}/boards/${CM_BOARD}/${CM_DEMO}/armgcc"
     done
 
@@ -141,8 +149,15 @@ do_install() {
     install -d ${D}${nonarch_base_libdir}/firmware/
     install -d ${D}/boot/
 
-    # Install all demos in CM_DEMOS
-    for CM_DEMO in ${CM_DEMOS}; do
+    # Determine if demos should be installed from recipe list or all demos in source repo
+    if "${@bb.utils.contains('PACKAGECONFIG_CONFARGS', '--with-all-demos', 'true', 'false', d)}"; then
+        DEMO_LIST=$(find ${S}/boards/${CM_BOARD} -type d -name "armgcc" -printf "%P/\n" | sed 's|/armgcc/|/|')
+    else
+        DEMO_LIST="${CM_DEMOS}"
+    fi
+
+    # Install all demos in DEMO_LIST
+    for CM_DEMO in ${DEMO_LIST}; do
         DIR_GCC="${S}/boards/${CM_BOARD}/${CM_DEMO}/armgcc"
         # Install all build targets
         for CM_BUILD_TARGET in ${CM_BUILD_TARGETS}; do
