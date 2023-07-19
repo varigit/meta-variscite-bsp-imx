@@ -260,8 +260,8 @@ PACKAGES =+ "\
 "
 
 FILES:${PN}-nxp-ethos += "\
-    /lib/firmware/ethosu_firmware \
-    /lib/firmware/cm_ethosu_apps_rpmsg.elf.release \
+    ${nonarch_base_libdir}/firmware/ethosu_firmware \
+    ${nonarch_base_libdir}/firmware/cm_ethosu_apps_rpmsg.elf.release \
 "
 
 INHIBIT_PACKAGE_STRIP = "1"
