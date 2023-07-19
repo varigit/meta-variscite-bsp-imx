@@ -20,8 +20,10 @@ S = "${WORKDIR}/git"
 MCUXPRESSO_BRANCH = "mcuxpresso_sdk_${PV}-var01"
 MCUXPRESSO_BRANCH:mx9-nxp-bsp = "mcuxpresso_sdk_${PV}-var02"
 
-INSTALL_SCRIPTS="yes"
-INSTALL_SCRIPTS:mx9-nxp-bsp="no"
+PACKAGECONFIG ??= "rproc-scripts"
+PACKAGECONFIG:mx9-nxp-bsp ??= ""
+
+PACKAGECONFIG[rproc-scripts] = "--with-rproc-scripts, --without-rproc-scripts"
 
 CM_BOARD="INVALID"
 CM_BOARD:mx8mn-nxp-bsp="som_mx8mn"
@@ -126,7 +128,7 @@ do_compile() {
 }
 
 do_install() {
-    if [ "${INSTALL_SCRIPTS}" = "yes" ]; then
+    if "${@bb.utils.contains('PACKAGECONFIG_CONFARGS', '--with-rproc-scripts', 'true', 'false', d)}"; then
         # Install scripts
         install -d ${D}${sysconfdir}/remoteproc
         install -m 0755 ${WORKDIR}/variscite-rproc-u-boot ${D}${sysconfdir}/remoteproc
@@ -185,12 +187,14 @@ do_compile:imx8mp-var-dart() {
 }
 
 do_install:imx8mp-var-dart() {
-    # Install scripts
-    install -d ${D}${sysconfdir}/remoteproc
-    install -m 0755 ${WORKDIR}/variscite-rproc-u-boot ${D}${sysconfdir}/remoteproc
-    install -m 0755 ${WORKDIR}/variscite-rproc-linux ${D}${sysconfdir}/remoteproc
-    install -m 0644 ${WORKDIR}/variscite-rproc-common.sh ${D}${sysconfdir}/remoteproc
-    install -m 0644 ${WORKDIR}/variscite-rproc.conf ${D}${sysconfdir}/remoteproc
+    if "${@bb.utils.contains('PACKAGECONFIG_CONFARGS', '--with-rproc-scripts', 'true', 'false', d)}"; then
+        # Install scripts
+        install -d ${D}${sysconfdir}/remoteproc
+        install -m 0755 ${WORKDIR}/variscite-rproc-u-boot ${D}${sysconfdir}/remoteproc
+        install -m 0755 ${WORKDIR}/variscite-rproc-linux ${D}${sysconfdir}/remoteproc
+        install -m 0644 ${WORKDIR}/variscite-rproc-common.sh ${D}${sysconfdir}/remoteproc
+        install -m 0644 ${WORKDIR}/variscite-rproc.conf ${D}${sysconfdir}/remoteproc
+    fi
 
     # Install firmware
     install -d ${D}${nonarch_base_libdir}/firmware/
