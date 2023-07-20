@@ -30,6 +30,10 @@ SRCBRANCH:imx6ul-var-dart = "lf-5.15.y_var01"
 SRCREV:imx6ul-var-dart = "da2218c723da2323ae744b8ba71a93802a23f976"
 LINUX_VERSION:imx6ul-var-dart = "5.15.71"
 
+SRCBRANCH:imx7-var-som = "lf-5.15.y_var01"
+SRCREV:imx7-var-som = "ed54a5eb79177bbde3d359f92c1bf1fb7fdb1f20"
+LINUX_VERSION:imx7-var-som = "5.15.71"
+
 SRCBRANCH:imx8mn-var-som = "lf-5.15.y_var01"
 SRCREV:imx8mn-var-som = "da2218c723da2323ae744b8ba71a93802a23f976"
 LINUX_VERSION:imx8mn-var-som = "5.15.71"
@@ -47,6 +51,7 @@ SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 LOCALVERSION:imx6ul-var-dart = "-imx6ul"
+LOCALVERSION:imx7-var-som = "-imx7"
 LOCALVERSION:imx8mp-var-dart = "-imx8mp"
 LOCALVERSION:imx8mq-var-dart = "-imx8mq"
 LOCALVERSION:imx8mm-var-dart = "-imx8mm"
@@ -57,6 +62,7 @@ LOCALVERSION:imx8qm-var-som = "-imx8qm"
 LOCALVERSION:imx93-var-som = "-imx93"
 
 KBUILD_DEFCONFIG:mx6-nxp-bsp = "imx_v7_var_defconfig"
+KBUILD_DEFCONFIG:mx7-nxp-bsp = "imx_v7_var_defconfig"
 KBUILD_DEFCONFIG:mx8-nxp-bsp = "imx8_var_defconfig"
 KBUILD_DEFCONFIG:mx9-nxp-bsp = "imx8_var_defconfig"
 KBUILD_DEFCONFIG:imx8mq-var-dart = "imx8mq_var_dart_defconfig"
@@ -98,4 +104,4 @@ pkg_postinst:kernel-devicetree:append:imx8qm-var-som () {
 }
 
 KERNEL_VERSION_SANITY_SKIP="1"
-COMPATIBLE_MACHINE = "(mx6-nxp-bsp|mx8-nxp-bsp|mx9-nxp-bsp)"
+COMPATIBLE_MACHINE = "(mx6-nxp-bsp|mx7-nxp-bsp|mx8-nxp-bsp|mx9-nxp-bsp)"
