@@ -161,13 +161,18 @@ do_install() {
         DIR_GCC="${S}/boards/${CM_BOARD}/${CM_DEMO}/armgcc"
         # Install all build targets
         for CM_BUILD_TARGET in ${CM_BUILD_TARGETS}; do
+            FW_BASENAME="$(basename ${DIR_GCC}/${CM_BUILD_TARGET}/*.elf .elf)"
+
             # Install elf
-            FILE_CM_FW="$(basename ${DIR_GCC}/${CM_BUILD_TARGET}/*.elf)"
+            FILE_CM_FW="${FW_BASENAME}.elf"
             install -m 644 ${DIR_GCC}/${CM_BUILD_TARGET}/${FILE_CM_FW} ${D}${nonarch_base_libdir}/firmware/cm_${FILE_CM_FW}.${CM_BUILD_TARGET}
 
             # Install bin
             FILE_CM_FW="$(basename ${DIR_GCC}/${CM_BUILD_TARGET}/*.bin)"
-            install -m 644 ${DIR_GCC}/${CM_BUILD_TARGET}/${FILE_CM_FW} ${D}/boot/cm_${FILE_CM_FW}.${CM_BUILD_TARGET}
+
+            # Some releases create a binary named "sdk20-app.bin" rather than the project name, so always
+            # install with same base name as .elf
+            install -m 644 ${DIR_GCC}/${CM_BUILD_TARGET}/${FILE_CM_FW} ${D}/boot/cm_${FW_BASENAME}.bin.${CM_BUILD_TARGET}
         done
     done
 
