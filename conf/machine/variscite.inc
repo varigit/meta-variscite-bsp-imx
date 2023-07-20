@@ -38,9 +38,24 @@ PREFERRED_CONNECTIVITY_MANAGER_PACKAGES	?= " \
 # Variscite BSP default providers
 PREFERRED_RPROVIDER_u-boot-default-env ?= "u-boot-variscite"
 
-# Use i.MX Gstreamer Version
+# Use i.MX Gstreamer Version for mx6 SoMs
 MACHINE_GSTREAMER_1_0_PLUGIN:mx6-nxp-bsp = "imx-gst1.0-plugin"
-MACHINE_GSTREAMER_1_0_PLUGIN:mx7-nxp-bsp = "imx-gst1.0-plugin"
+
+# Use i.MX Gstreamer Version for mx6ul SoMs
+MACHINE_GSTREAMER_1_0_PLUGIN:mx6ul-nxp-bsp = "imx-gst1.0-plugin"
+PREFERRED_VERSION_gstreamer1.0:mx6ul-nxp-bsp ?= "1.20.3.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-base:mx6ul-nxp-bsp ?= "1.20.3.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-good:mx6ul-nxp-bsp ?= "1.20.3.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-bad:mx6ul-nxp-bsp  ?= "1.20.3.imx"
+
+# Use i.MX Gstreamer Version for mx7d SoMs
+MACHINE_GSTREAMER_1_0_PLUGIN:mx7d-nxp-bsp = "imx-gst1.0-plugin"
+PREFERRED_VERSION_gstreamer1.0:mx7d-nxp-bsp ?= "1.20.3.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-base:mx7d-nxp-bsp ?= "1.20.3.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-good:mx7d-nxp-bsp ?= "1.20.3.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-bad:mx7d-nxp-bsp  ?= "1.20.3.imx"
+
+# Use i.MX Gstreamer Version for mx8 SoMs
 MACHINE_GSTREAMER_1_0_PLUGIN:mx8-nxp-bsp = "imx-gst1.0-plugin"
 
 # Add VPU and Cortex M4/M7 firmware
