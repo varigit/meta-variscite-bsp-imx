@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Activate WIFI on Variscite VAR-SOM-93
+# Activate WIFI on Variscite VAR-SOM-MX93
 #
 
 # GPIO pin to supply 1.8V and 3.3V WIFI voltage
