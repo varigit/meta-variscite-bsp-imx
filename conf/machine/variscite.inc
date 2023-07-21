@@ -41,6 +41,9 @@ PREFERRED_CONNECTIVITY_MANAGER_PACKAGES	?= " \
 # Variscite BSP default providers
 PREFERRED_RPROVIDER_u-boot-default-env ?= "u-boot-variscite"
 
+# Use libgpiod 1.6.%
+PREFERRED_VERSION_libgpiod:var-som ?= "1.6.%"
+
 # Use i.MX Gstreamer Version
 MACHINE_GSTREAMER_1_0_PLUGIN:mx6-nxp-bsp = "imx-gst1.0-plugin"
 MACHINE_GSTREAMER_1_0_PLUGIN:mx7-nxp-bsp = "imx-gst1.0-plugin"
