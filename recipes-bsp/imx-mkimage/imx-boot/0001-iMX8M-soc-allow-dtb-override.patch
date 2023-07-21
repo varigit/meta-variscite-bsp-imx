@@ -19,10 +19,10 @@ Signed-off-by: Nate Drude <nate.d@variscite.com>
  1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/iMX8M/soc.mak b/iMX8M/soc.mak
-index 60502d8..5a3a4d7 100644
+index 3486079..169d4a7 100644
 --- a/iMX8M/soc.mak
 +++ b/iMX8M/soc.mak
-@@ -140,9 +140,7 @@ u-boot-atf-tee.bin: u-boot.bin bl31.bin $(TEE)
+@@ -146,9 +146,7 @@ u-boot-atf-tee.bin: u-boot.bin bl31.bin $(TEE)
  clean:
  	@rm -f $(MKIMG) u-boot-atf.bin u-boot-atf-tee.bin u-boot-spl-ddr.bin u-boot.itb u-boot.its u-boot-ddr3l.itb u-boot-ddr3l.its u-boot-spl-ddr3l.bin u-boot-ddr4.itb u-boot-ddr4.its u-boot-spl-ddr4.bin u-boot-ddr4-evk.itb u-boot-ivt.itb u-boot-ddr4-evk.its $(OUTIMG)
  
@@ -31,5 +31,5 @@ index 60502d8..5a3a4d7 100644
 -	./$(DTB_PREPROC) $(PLAT)-evk.dtb $(dtb) $(dtbs)
 +dtb = $(dtbs)
  
- u-boot.itb: $(dtb)
+ u-boot.itb: $(dtb) $(supp_dtbs)
  	./$(PAD_IMAGE) $(TEE)
