@@ -21,7 +21,6 @@ MCUXPRESSO_BRANCH = "mcuxpresso_sdk_${PV}-var01"
 MCUXPRESSO_BRANCH:mx9-nxp-bsp = "mcuxpresso_sdk_${PV}-var02"
 
 PACKAGECONFIG ??= "rproc-scripts"
-PACKAGECONFIG:mx9-nxp-bsp ??= ""
 
 PACKAGECONFIG[rproc-scripts] = "--with-rproc-scripts, --without-rproc-scripts"
 PACKAGECONFIG[all-demos] = "--with-all-demos"

@@ -15,9 +15,11 @@ parse_args "$@"
 if [[ "$FILE_CM_BIN" == *"ddr"* ]]; then
     echo "Configuring for DDR memory"
     CM_LOAD_ADDR=${CM_LOAD_ADDR_DDR}
+    CM_LOAD_ADDR_AUXVIEW=${CM_LOAD_ADDR_AUXVIEW_DDR}
 else
     echo "Configuring for TCM memory"
     CM_LOAD_ADDR=${CM_LOAD_ADDR_TCM}
+    CM_LOAD_ADDR_AUXVIEW=${CM_LOAD_ADDR_AUXVIEW_TCM}
 fi
 
 if [ "${CM_CORES}" -gt 1 ]; then
@@ -37,6 +39,14 @@ fi
 fw_setenv fdt_file "${CM_DTB}"
 fw_setenv use_${CM_SERIES}${CM_CORE_UBOOT} "yes"
 fw_setenv ${CM_SERIES}${CM_CORE_UBOOT}_bin "${FILE_CM_BIN}"
+
+# CPUs like the Cortex-M33 on i.MX9 series use the M core's
+# address view for bootaux command.
+{ set +x; } 2>/dev/null
+if [ ! -z ${CM_LOAD_ADDR_AUXVIEW} ]; then
+    set -x
+    fw_setenv ${CM_SERIES}_addr_auxview "${CM_LOAD_ADDR_AUXVIEW}"
+fi
 
 { set +x; } 2>/dev/null
 

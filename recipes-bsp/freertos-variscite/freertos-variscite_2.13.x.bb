@@ -11,7 +11,7 @@ SRC_URI += " \
 "
 
 SRCREV:mx9-nxp-bsp = "0a30c2c94f77914808b73bd56a815c486eded993"
-SRC_URI:mx9-nxp-bsp = " \
+SRC_URI:append:mx9-nxp-bsp = " \
     git://github.com/varigit/freertos-variscite.git;protocol=https;branch=${MCUXPRESSO_BRANCH}; \
 "
 
