@@ -25,7 +25,7 @@ RDEPENDS:${PN}:imx8mm-var-dart = "i2c-tools"
 RDEPENDS:${PN}:imx8mn-var-som = "i2c-tools"
 RDEPENDS:${PN}:imx8mp-var-dart = "i2c-tools"
 RDEPENDS:${PN}:imx93-var-som = "i2c-tools"
-RDEPENDS:${PN}:append = " base-files libgpiod-tools"
+RDEPENDS:${PN}:append = " base-files libgpiod-tools var-gpio-utils"
 
 S = "${WORKDIR}"
 
