@@ -3,8 +3,12 @@
 # Activate Bluetooth on Variscite VAR-SOM-MX93
 #
 
+. /etc/gpiochip
+
+gpio4=$(get_gpiochip "43830080.gpio")
+
 # GPIO pin to enable BT module
-BT_EN_GPIO="gpiochip2 15"
+BT_EN_GPIO="${gpio4} 15"
 
 # UART device connected to BT module on VAR-SOM-MX93
 BT_TTY_DEV_SOM="/dev/ttyLP4"

@@ -3,14 +3,19 @@
 # Activate WIFI on Variscite VAR-SOM-MX93
 #
 
+. /etc/gpiochip
+
+gpio3=$(get_gpiochip "43820080.gpio")
+gpio4=$(get_gpiochip "43830080.gpio")
+
 # GPIO pin to supply 1.8V and 3.3V WIFI voltage
-WIFI_PWR_EN="gpiochip1 7"
+WIFI_PWR_EN="${gpio3} 7"
 
 # GPIO pin to enable WIFI module
-WIFI_EN_GPIO="gpiochip2 14"
+WIFI_EN_GPIO="${gpio4} 14"
 
 # GPIO pin to enable BT module
-BT_EN_GPIO="gpiochip2 15"
+BT_EN_GPIO="${gpio4} 15"
 
 # WIFI MMC host
 WIFI_MMC_HOST=428b0000.mmc
