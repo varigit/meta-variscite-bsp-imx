@@ -64,6 +64,13 @@ CM_DEMOS:mx93-nxp-bsp = " \
     demo_apps/hello_world \
 "
 
+# These demos should never be packaged in U-Boot because their functionality
+# is only relevent to Linux systems and even pre-loading could cause issues.
+CM_DEMOS_EXCLUDE_UBOOT:mx93-nxp-bsp = "\
+    demo_apps/ethosu_apps_rpmsg \
+"
+CM_DEMOS_EXCLUDE[bin] = "${CM_DEMOS_EXCLUDE_UBOOT}"
+
 # If remoteproc is used to reload ddr firmware, special disable_cache firmware
 # must be reloaded between stop and start comments
 # For Example:
