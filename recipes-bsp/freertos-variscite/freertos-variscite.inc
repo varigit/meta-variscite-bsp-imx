@@ -157,6 +157,8 @@ do_install() {
 
     # Install all demos in DEMO_LIST
     for CM_DEMO in ${DEMO_LIST}; do
+        # Strip demo names of any trailing slashes
+        CM_DEMO=$(echo $CM_DEMO | sed 's#/*$##')
         DIR_GCC="${S}/boards/${CM_BOARD}/${CM_DEMO}/armgcc"
         # Install all build targets
         for CM_BUILD_TARGET in ${CM_BUILD_TARGETS}; do
@@ -166,12 +168,25 @@ do_install() {
             FILE_CM_FW="${FW_BASENAME}.elf"
             install -m 644 ${DIR_GCC}/${CM_BUILD_TARGET}/${FILE_CM_FW} ${D}${nonarch_base_libdir}/firmware/cm_${FILE_CM_FW}.${CM_BUILD_TARGET}
 
-            # Install bin
-            FILE_CM_FW="$(basename ${DIR_GCC}/${CM_BUILD_TARGET}/*.bin)"
+            # Check for bin files excluded via CM_DEMOS_EXCLUDE[bin] flag
+            BINS_EXCLUDED="${@d.getVarFlag('CM_DEMOS_EXCLUDE', 'bin')}"
+            INSTALL_BIN="True"
+            for BIN in ${BINS_EXCLUDED}; do
+                BIN=$(echo $BIN | sed 's#/*$##')
+                if [ "${BIN}" == "${CM_DEMO}" ]; then
+                    INSTALL_BIN="False"
+                    break
+                fi
+            done
 
-            # Some releases create a binary named "sdk20-app.bin" rather than the project name, so always
-            # install with same base name as .elf
-            install -m 644 ${DIR_GCC}/${CM_BUILD_TARGET}/${FILE_CM_FW} ${D}/boot/cm_${FW_BASENAME}.bin.${CM_BUILD_TARGET}
+            if [ "${INSTALL_BIN}" == "True" ]; then
+                # Install bin
+                FILE_CM_FW="$(basename ${DIR_GCC}/${CM_BUILD_TARGET}/*.bin)"
+
+                # Some releases create a binary named "sdk20-app.bin" rather than the project name, so always
+                # install with same base name as .elf
+                install -m 644 ${DIR_GCC}/${CM_BUILD_TARGET}/${FILE_CM_FW} ${D}/boot/cm_${FW_BASENAME}.bin.${CM_BUILD_TARGET}
+            fi
         done
     done
 
