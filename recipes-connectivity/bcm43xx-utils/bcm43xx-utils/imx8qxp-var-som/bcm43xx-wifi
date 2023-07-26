@@ -82,7 +82,7 @@ wifi_up()
 	gpioset ${BT_BUF_GPIO}=1
 
 	# BT_EN down
-gpioset ${BT_EN_GPIO}=0
+	gpioset ${BT_EN_GPIO}=0
 	
 	# Bind WIFI device to MMC controller
 	wifi_mmc_bind
