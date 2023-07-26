@@ -21,40 +21,14 @@ BT_FIRMWARE_LWB=/lib/firmware/brcm/BCM43430A1.hcd
 # Sterling LWB5 BT firmware
 BT_FIRMWARE_LWB5=/lib/firmware/brcm/BCM4335C0.hcd
 
+# Sterling LWB WIFI SDIO ID
+WIFI_2G_SDIO_ID=0xa9a6
+
 # Sterling LWB5 WIFI SDIO ID
 WIFI_5G_SDIO_ID=0x4339
 
 # WIFI SDIO ID file
 WIFI_SDIO_ID_FILE=/sys/class/net/wlan0/device/device
-
-# Get the SOM revision
-get_somrev() {
-    # Get the raw output
-    local raw_output=$(i2cget -f -y 0x2 0x52 0x23)
-
-    # Convert the output to decimal
-    local decimal_output=$(( $raw_output ))
-
-    # Extract major and minor versions
-    local major=$(( ($decimal_output & 0xE0) >> 5 ))
-    local minor=$(( $decimal_output & 0x1F ))
-
-    # Adjust the major version as per the specification
-    major=$(( $major + 1 ))
-
-    echo "$major.$minor"
-}
-
-# Check if wifi is bcm43xx
-wifi_is_bcm43xx() {
-    local somrev=$(get_somrev)
-
-    if [ "$(echo "$somrev < 2.0" | bc)" -eq 1 ]; then
-        return 0
-    else
-        return 1
-    fi
-}
 
 # Set BT firmware based on WIFI SDIO ID
 bt_set_firmware()
@@ -85,11 +59,11 @@ bt_enable()
 # Start BT hardware
 bt_start()
 {
-	# Exit if BT module is not bcm43xx
-	wifi_is_bcm43xx || exit 0
-
 	# Exit if BT module is not available
 	wifi_sdio_exist ${WIFI_SDIO_ID_FILE} || exit 0
+
+	# Exit if BT module is not bcm43xx
+	verify_sdio_id ${WIFI_SDIO_ID_FILE} ${WIFI_2G_SDIO_ID} ${WIFI_5G_SDIO_ID} || exit 0
 
 	# Enable BT hardware
 	bt_enable
@@ -115,7 +89,7 @@ bt_start()
 bt_stop()
 {
 	# Exit if BT module is not bcm43xx
-	wifi_is_bcm43xx || exit 0
+	verify_sdio_id ${WIFI_SDIO_ID_FILE} ${WIFI_2G_SDIO_ID} ${WIFI_5G_SDIO_ID} || exit 0
 
 	# Exit if BT interface is not available
 	[ -e /sys/class/bluetooth/hci0 ] || exit 0
