@@ -1,0 +1,44 @@
+#!/bin/sh -e
+#
+# Activate WIFI on Variscite VAR-SOM-MX93
+#
+
+# Function to disable a network interface
+disable_network_interface() {
+	local iface="$1"
+
+	# Check if the interface exists
+	if ip link show "$iface" &>/dev/null; then
+		ifconfig "$iface" down
+	fi
+}
+
+# Start WIFI
+wifi_start()
+{
+	modprobe moal
+}
+
+# Stop WIFI
+wifi_stop()
+{
+	disable_network_interface wlan0
+	disable_network_interface uap0
+	disable_network_interface wfd0
+	modprobe -r moal;
+}
+
+###########################
+#  Execution starts here  #
+###########################
+case $1 in
+
+start)
+	wifi_start
+	;;
+stop)
+	wifi_stop
+	;;
+esac
+
+exit 0
