@@ -40,6 +40,21 @@ fw_setenv fdt_file "${CM_DTB}"
 fw_setenv use_${CM_SERIES}${CM_CORE_UBOOT} "yes"
 fw_setenv ${CM_SERIES}${CM_CORE_UBOOT}_bin "${FILE_CM_BIN}"
 
+{ set +x; } 2>/dev/null
+if [ "i.MX93" == ${SOC} ]; then
+    # Some platforms have demos which have unused clocks from Linux
+    # Ensure these stay enabled, otherwise some demos may not run
+    # correctly.
+    KERNELARGS=$(fw_printenv kernelargs -n)
+    grep -vq clk_ignore_unused <<< "${KERNELARGS}"
+    if [ "$?" -eq "0" ]; then
+        set -x
+        fw_setenv kernelargs "${KERNELARGS} clk_ignore_unused"
+    else
+        set -x
+    fi
+fi
+
 # CPUs like the Cortex-M33 on i.MX9 series use the M core's
 # address view for bootaux command.
 { set +x; } 2>/dev/null
