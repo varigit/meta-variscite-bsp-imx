@@ -75,6 +75,7 @@ MACHINE_EXTRA_RDEPENDS += " \
 	u-boot-fw-utils \
 	u-boot-splash \
 	u-boot-default-env \
+	${@bb.utils.contains('MACHINE_FEATURES', 'iw612', 'iw612-utils', '', d)} \
 "
 
 # Packages added to all images (including core-image-minimal)
