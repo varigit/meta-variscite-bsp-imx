@@ -3,6 +3,9 @@
 # Activate WIFI on Variscite DART-6UL / VAR-SOM-6UL
 #
 
+# Include common functions
+. /etc/wifi/variscite-wireless
+
 # GPIO pin to supply power to WIFI module on DART-6UL-5G
 WIFI_PWR_GPIO="gpiochip4 2"
 
@@ -14,6 +17,7 @@ BT_EN_GPIO="gpiochip4 4"
 
 # WIFI MMC host
 WIFI_MMC_HOST=2190000.mmc
+WIFI_MMC_PATH="/sys/bus/platform/drivers/sdhci-esdhc-imx"
 
 # Check is SOM is DART-6UL-5G
 som_is_dart_6ul_5g()
@@ -26,41 +30,11 @@ som_is_dart_6ul_5g()
 	return 1
 }
 
-# Return true if WIFI interface exists
-wifi_interface_exists()
-{
-	for i in $(seq 1 20); do
-		if [ -d /sys/class/net/wlan0 ]; then
-			return 0
-		else
-			sleep 1
-		fi
-	done
-
-	return 1
-}
-
-# Bind WIFI device to MMC controller
-wifi_mmc_bind()
-{
-	if [ -e /sys/bus/platform/drivers/sdhci-esdhc-imx/bind ]; then
-		echo ${WIFI_MMC_HOST} > /sys/bus/platform/drivers/sdhci-esdhc-imx/bind
-	fi
-}
-
-# Unbind WIFI device from MMC controller
-wifi_mmc_unbind()
-{
-	if [ -e /sys/bus/platform/drivers/sdhci-esdhc-imx/${WIFI_MMC_HOST} ]; then
-		echo ${WIFI_MMC_HOST} > /sys/bus/platform/drivers/sdhci-esdhc-imx/unbind
-	fi
-}
-
 # Power up WIFI chip
 wifi_up()
 {
 	# Unbind WIFI device from MMC controller
-	wifi_mmc_unbind
+	wifi_mmc_unbind ${WIFI_MMC_PATH} ${WIFI_MMC_HOST}
 
 	if som_is_dart_6ul_5g; then
 		# WIFI power up
@@ -93,7 +67,7 @@ wifi_up()
 	fi
 	
 	# Bind WIFI device to MMC controller
-	wifi_mmc_bind
+	wifi_mmc_bind ${WIFI_MMC_PATH} ${WIFI_MMC_HOST}
 
 	# Load WIFI driver
 	modprobe brcmfmac
@@ -106,7 +80,7 @@ wifi_down()
 	modprobe -r brcmfmac
 
 	# Unbind WIFI device from MMC controller
-	wifi_mmc_unbind
+	wifi_mmc_unbind ${WIFI_MMC_PATH} ${WIFI_MMC_HOST}
 
 	if som_is_dart_6ul_5g; then
 		# WLAN_EN down
@@ -174,7 +148,7 @@ wifi_start()
 		wifi_up
 
 		# Exit if WIFI interface exists
-		wifi_interface_exists && exit 0
+		wifi_interface_exists "wlan0" && exit 0
 
 		# Down WIFI
 		wifi_down

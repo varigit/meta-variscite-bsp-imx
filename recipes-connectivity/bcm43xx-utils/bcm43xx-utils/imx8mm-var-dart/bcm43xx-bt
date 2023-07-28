@@ -3,6 +3,9 @@
 # Activate Bluetooth on Variscite DART-MX8M-MINI/VAR-SOM-MX8M-MINI
 #
 
+# Include common functions
+. /etc/wifi/variscite-wireless
+
 # GPIO pin to enable BT module
 BT_EN_GPIO="gpiochip1 6"
 
@@ -55,21 +58,6 @@ bt_set_uart()
 	fi
 }
 
-# Check if WIFI+BT combo module is available
-bt_found()
-{
-	# Check that WIFI HW was initialized succesfully
-	for i in $(seq 1 5); do
-		if [ -f ${WIFI_SDIO_ID_FILE} ]; then
-			return 0
-		else
-			sleep 1
-		fi
-	done
-
-	return 1
-}
-
 # Enable BT via GPIO(s)
 bt_enable()
 {
@@ -89,7 +77,7 @@ bt_enable()
 bt_start()
 {
 	# Exit if BT module is not available
-	bt_found || exit 0
+	wifi_sdio_exist ${WIFI_SDIO_ID_FILE} || exit 0
 
 	# Enable BT hardware
 	bt_enable

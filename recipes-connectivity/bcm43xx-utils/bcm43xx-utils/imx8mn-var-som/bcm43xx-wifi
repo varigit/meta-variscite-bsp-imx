@@ -3,6 +3,9 @@
 # Activate WIFI on Variscite VAR-SOM-MX8M-NANO
 #
 
+# Include common functions
+. /etc/wifi/variscite-wireless
+
 # GPIO pin to supply 3.3V WIFI voltage
 WIFI_3V3_GPIO="gpiochip1 7"
 
@@ -17,42 +20,13 @@ BT_EN_GPIO="gpiochip1 6"
 
 # WIFI MMC host
 WIFI_MMC_HOST=30b40000.mmc
-
-# Return true if WIFI interface exists
-wifi_interface_exists()
-{
-	for i in $(seq 1 20); do
-		if [ -d /sys/class/net/wlan0 ]; then
-			return 0
-		else
-			sleep 1
-		fi
-	done
-
-	return 1
-}
-
-# Bind WIFI device to MMC controller
-wifi_mmc_bind()
-{
-	if [ -e /sys/bus/platform/drivers/sdhci-esdhc-imx/bind ]; then
-		echo ${WIFI_MMC_HOST} > /sys/bus/platform/drivers/sdhci-esdhc-imx/bind
-	fi
-}
-
-# Unbind WIFI device from MMC controller
-wifi_mmc_unbind()
-{
-	if [ -e /sys/bus/platform/drivers/sdhci-esdhc-imx/${WIFI_MMC_HOST} ]; then
-		echo ${WIFI_MMC_HOST} > /sys/bus/platform/drivers/sdhci-esdhc-imx/unbind
-	fi
-}
+WIFI_MMC_PATH="/sys/bus/platform/drivers/sdhci-esdhc-imx"
 
 # Power up WIFI chip
 wifi_up()
 {
 	# Unbind WIFI device from MMC controller
-	wifi_mmc_unbind
+	wifi_mmc_unbind ${WIFI_MMC_PATH} ${WIFI_MMC_HOST}
 
 	# WIFI_3V3 up
 	gpioset ${WIFI_3V3_GPIO}=1
@@ -77,7 +51,7 @@ wifi_up()
 	gpioset ${BT_EN_GPIO}=0
 
 	# Bind WIFI device to MMC controller
-	wifi_mmc_bind
+	wifi_mmc_bind ${WIFI_MMC_PATH} ${WIFI_MMC_HOST}
 
 	# Load WIFI driver
 	modprobe brcmfmac
@@ -90,7 +64,7 @@ wifi_down()
 	modprobe -r brcmfmac
 
 	# Unbind WIFI device from MMC controller
-	wifi_mmc_unbind
+	wifi_mmc_unbind ${WIFI_MMC_PATH} ${WIFI_MMC_HOST}
 
 	# WIFI_EN down
 	gpioset ${WIFI_EN_GPIO}=0
@@ -157,7 +131,7 @@ wifi_start()
 		wifi_up
 
 		# Exit if WIFI interface exists
-		wifi_interface_exists && exit 0
+		wifi_interface_exists "wlan0" && exit 0
 
 		# Down WIFI
 		wifi_down
