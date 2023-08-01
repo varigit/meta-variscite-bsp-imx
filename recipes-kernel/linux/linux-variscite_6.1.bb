@@ -18,9 +18,9 @@ DEPENDS += "lzop-native bc-native"
 DEFAULT_PREFERENCE = "1"
 
 KERNEL_SRC ?= "git://github.com/varigit/linux-imx;protocol=https"
-
 SRCBRANCH = "lf-6.1.y_var01"
-SRCREV = "7ef61498d6d8671557c99bdf073463448b1c2fb0"
+SRCREV = "2f436cf09672f21b5335f91aba9c7995fb96c2d6"
+
 LINUX_VERSION = "6.1.1"
 
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
