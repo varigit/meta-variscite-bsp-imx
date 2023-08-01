@@ -1,0 +1,3 @@
+SRCBRANCH = "lf-6.1.22_2.0.0"
+SRC_URI = "${MRVL_SRC};branch=${SRCBRANCH}"
+SRCREV = "f1382ccbd34fc22daf504e798745f6cddb702b82"
