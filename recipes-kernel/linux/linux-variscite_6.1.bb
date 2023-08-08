@@ -23,6 +23,10 @@ SRCBRANCH = "lf-6.1.y_var02"
 SRCREV = "56f4b40c3e548fb066f45b0a8c28196091644949"
 LINUX_VERSION = "6.1.22"
 
+SRCBRANCH:imx8mp-var-dart = "lf-6.1.y_var02"
+SRCREV:imx8mp-var-dart = "931be342d64b9908a9f60ec6afe7012981855341"
+LINUX_VERSION:imx8mp-var-dart = "6.1.22"
+
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
@@ -79,4 +83,4 @@ pkg_postinst:kernel-devicetree:append:imx8qm-var-som () {
 }
 
 KERNEL_VERSION_SANITY_SKIP="1"
-COMPATIBLE_MACHINE = "(mx9-nxp-bsp)"
+COMPATIBLE_MACHINE = "(mx8-nxp-bsp|mx9-nxp-bsp)"
