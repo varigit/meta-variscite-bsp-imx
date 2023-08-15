@@ -49,6 +49,7 @@ CM_BUILD_TARGETS = " \
     ddr_debug \
 "
 CM_BUILD_TARGETS:mx93-nxp-bsp = " \
+    debug \
     release \
 "
 
