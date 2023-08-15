@@ -52,7 +52,7 @@ MACHINE_GSTREAMER_1_0_PLUGIN:mx8-nxp-bsp = "imx-gst1.0-plugin"
 # Add VPU and Cortex M4/M7 firmware
 MACHINE_FIRMWARE:append:mx8-nxp-bsp = " \
 	firmware-imx-vpu-imx8 \
-	freertos-variscite \
+	freertos-variscite-dbg \
 	"
 
 # Add Cortex-M33 firmware
