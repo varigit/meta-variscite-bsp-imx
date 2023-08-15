@@ -15,6 +15,8 @@ SRC_URI = " \
 DEPENDS = "cmake-native"
 DEPENDS:append = " cortexm-toolchain-cross (=${CM_GCC})"
 
+inherit deploy
+
 S = "${WORKDIR}/git"
 
 MCUXPRESSO_BRANCH = "mcuxpresso_sdk_${PV}-var01"
@@ -24,6 +26,14 @@ PACKAGECONFIG ??= "rproc-scripts"
 
 PACKAGECONFIG[rproc-scripts] = "--with-rproc-scripts, --without-rproc-scripts"
 PACKAGECONFIG[all-demos] = "--with-all-demos"
+
+MCORE_TYPE  ?= "m4"
+MCORE_TYPE:mx8mn-nxp-bsp  = "m7"
+MCORE_TYPE:mx8mnul-nxp-bsp = "m7"
+MCORE_TYPE:mx8mp-nxp-bsp  = "m7"
+MCORE_TYPE:mx8mpul-nxp-bsp  = "m7"
+MCORE_TYPE:mx8ulp-nxp-bsp  = "m33"
+MCORE_TYPE:mx93-nxp-bsp  = "m33"
 
 CM_BOARD="INVALID"
 CM_BOARD:mx8mn-nxp-bsp="som_mx8mn"
@@ -210,6 +220,16 @@ do_install() {
         install -m 644 ${DIR_GCC}/${CM_BUILD_TARGET}/${FILE_CM_FW} ${D}${nonarch_base_libdir}/firmware/cm_${FILE_CM_FW}.${CM_BUILD_TARGET}
     done
 }
+
+do_deploy() {
+    fwdir="${MCORE_TYPE}_fw"
+    install -d ${DEPLOYDIR}/${fwdir}/bin
+    install -d ${DEPLOYDIR}/${fwdir}/elf
+
+    cp -rf ${D}/boot/* ${DEPLOYDIR}/${fwdir}/bin
+    cp -rf ${D}${nonarch_base_libdir}/firmware/* ${DEPLOYDIR}/${fwdir}/elf
+}
+addtask deploy after do_install
 
 do_install:append:mx9-nxp-bsp() {
     ETHOS_U_FW="cm_ethosu_apps_rpmsg.elf.release"
