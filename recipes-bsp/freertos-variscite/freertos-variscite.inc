@@ -301,6 +301,12 @@ FILES:${PN} = " \
 	${nonarch_base_libdir}/firmware \
 	/boot \
 "
+FILES:${PN}-dbg = " \
+    ${nonarch_base_libdir}/firmware/*.ddr_debug* \
+    ${nonarch_base_libdir}/firmware/*.debug* \
+    /boot/*.ddr_debug* \
+    /boot/*.debug* \
+"
 
 # ethos-u-firmware is provided by this recipe
 RPROVIDES:${PN}-nxp-ethos = "ethos-u-firmware"
