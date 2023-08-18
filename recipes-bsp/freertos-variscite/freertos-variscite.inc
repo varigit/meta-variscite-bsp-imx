@@ -100,6 +100,9 @@ compile_fw() {
     DIR_GCC="$1"
     cd ${DIR_GCC}
     ./clean.sh
+    if grep -q "make -j" build_all.sh; then
+        sed -i "s/make -j.*[0-9]*/make ${PARALLEL_MAKE}/g" build_all.sh
+    fi
     LDFLAGS="" CFLAGS="" CXXFLAGS="" ./build_all.sh > /dev/null
 }
 
