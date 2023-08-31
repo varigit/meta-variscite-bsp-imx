@@ -70,6 +70,7 @@ MACHINE_EXTRA_RDEPENDS += " \
 	kmod \
 	${PREFERRED_CONNECTIVITY_MANAGER_PACKAGES} \
 	packagegroup-tools-bluetooth \
+	packagegroup-var-hw-test \
 	bluealsa \
 	pm-utils \
 	rng-tools \
