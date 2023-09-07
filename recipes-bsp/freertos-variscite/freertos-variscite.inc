@@ -244,8 +244,15 @@ do_compile:imx8mp-var-dart() {
 
     # Build all board in CM_BOARD
     for cm_board in ${CM_BOARD}; do
+        # Determine if demos should be compiled from recipe list or all demos in source repo
+        if "${@bb.utils.contains('PACKAGECONFIG_CONFARGS', '--with-all-demos', 'true', 'false', d)}"; then
+            DEMO_LIST=$(find ${S}/boards/${cm_board} -type d -name "armgcc" -printf "%P/\n" | sed 's|/armgcc/|/|')
+        else
+            DEMO_LIST="${CM_DEMOS}"
+        fi
+
         # Build all demos in CM_DEMOS
-        for CM_DEMO in ${CM_DEMOS}; do
+        for CM_DEMO in ${DEMO_LIST}; do
             compile_fw "${S}/boards/${cm_board}/${CM_DEMO}/armgcc"
         done
     done
@@ -280,8 +287,15 @@ do_install:imx8mp-var-dart() {
         ;;
         esac
 
+        # Determine if demos should be installed from recipe list or all demos in source repo
+        if "${@bb.utils.contains('PACKAGECONFIG_CONFARGS', '--with-all-demos', 'true', 'false', d)}"; then
+            DEMO_LIST=$(find ${S}/boards/${cm_board} -type d -name "armgcc" -printf "%P/\n" | sed 's|/armgcc/|/|')
+        else
+            DEMO_LIST="${CM_DEMOS}"
+        fi
+
         # Install all demos in CM_DEMOS
-        for CM_DEMO in ${CM_DEMOS}; do
+        for CM_DEMO in ${DEMO_LIST}; do
             DIR_GCC="${S}/boards/${cm_board}/${CM_DEMO}/armgcc"
             # Install all build targets
             for CM_BUILD_TARGET in ${CM_BUILD_TARGETS}; do
