@@ -299,13 +299,20 @@ do_install:imx8mp-var-dart() {
             DIR_GCC="${S}/boards/${cm_board}/${CM_DEMO}/armgcc"
             # Install all build targets
             for CM_BUILD_TARGET in ${CM_BUILD_TARGETS}; do
+                TARGET_DIR="${DIR_GCC}/${CM_BUILD_TARGET}"
+
+                # If target does not exist, skip it as some examples may be missing specific targets
+                if [ ! -d ${TARGET_DIR} ]; then
+                    continue
+                fi
+
                 # Install elf
-                FILE_CM_FW="$(basename ${DIR_GCC}/${CM_BUILD_TARGET}/*.elf)"
-                install -m 644 ${DIR_GCC}/${CM_BUILD_TARGET}/${FILE_CM_FW} ${D}${nonarch_base_libdir}/firmware/cm_${FILE_CM_FW}.${CM_BUILD_TARGET}_${CM_FW_SUFFIX}
+                FILE_CM_FW="$(basename ${TARGET_DIR}/*.elf)"
+                install -m 644 ${TARGET_DIR}/${FILE_CM_FW} ${D}${nonarch_base_libdir}/firmware/cm_${FILE_CM_FW}.${CM_BUILD_TARGET}_${CM_FW_SUFFIX}
 
                 # Install bin
-                FILE_CM_FW="$(basename ${DIR_GCC}/${CM_BUILD_TARGET}/*.bin)"
-                install -m 644 ${DIR_GCC}/${CM_BUILD_TARGET}/${FILE_CM_FW} ${D}/boot/cm_${FILE_CM_FW}.${CM_BUILD_TARGET}_${CM_FW_SUFFIX}
+                FILE_CM_FW="$(basename ${TARGET_DIR}/*.bin)"
+                install -m 644 ${TARGET_DIR}/${FILE_CM_FW} ${D}/boot/cm_${FILE_CM_FW}.${CM_BUILD_TARGET}_${CM_FW_SUFFIX}
             done
         done
     done
