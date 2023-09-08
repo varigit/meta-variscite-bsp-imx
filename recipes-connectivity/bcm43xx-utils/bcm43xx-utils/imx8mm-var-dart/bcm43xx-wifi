@@ -5,22 +5,27 @@
 
 # Include common functions
 . /etc/wifi/variscite-wireless
+. /etc/gpiochip
+
+# GPIO banks
+gpio2=$(get_gpiochip "30210000.gpio")
+gpio5=$(get_gpiochip "30240000.gpio")
 
 # GPIO pin to supply 3.3V WIFI voltage
-WIFI_3V3_GPIO="gpiochip1 7"
+WIFI_3V3_GPIO="${gpio2} 7"
 
 # GPIO pin to supply 1.8V WIFI voltage
-WIFI_1V8_GPIO="gpiochip1 20"
+WIFI_1V8_GPIO="${gpio2} 20"
 
 # GPIO pin to enable WIFI module
-WIFI_EN_GPIO="gpiochip1 10"
+WIFI_EN_GPIO="${gpio2} 10"
 
 # GPIO pin to enable BT module
-BT_EN_GPIO="gpiochip1 6"
+BT_EN_GPIO="${gpio2} 6"
 
 # GPIO pin to control routing of UART signals
 # to BT module or SOM connector on DART-MX8M-MINI
-BT_BUF_GPIO="gpiochip4 5"
+BT_BUF_GPIO="${gpio5} 5"
 
 # WIFI MMC host
 WIFI_MMC_HOST=30b40000.mmc
