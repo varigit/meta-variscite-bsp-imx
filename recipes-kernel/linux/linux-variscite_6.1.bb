@@ -23,6 +23,10 @@ SRCBRANCH = "lf-6.1.y_var02"
 SRCREV = "56f4b40c3e548fb066f45b0a8c28196091644949"
 LINUX_VERSION = "6.1.22"
 
+SRCBRANCH:imx8mm-var-dart = "lf-6.1.y_var02"
+SRCREV:imx8mm-var-dart = "25b6cf075e5888ff9fd36165c54d17abd850287c"
+LINUX_VERSION:imx8mm-var-dart = "6.1.22"
+
 SRCBRANCH:imx8mn-var-som= "lf-6.1.y_var02"
 SRCREV:imx8mn-var-som = "9ac32222b830c4c72717c928a7b9d8792e22d26e"
 LINUX_VERSION:imx8mn-var-som = "6.1.22"
