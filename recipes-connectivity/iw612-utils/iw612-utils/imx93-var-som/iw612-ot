@@ -1,0 +1,71 @@
+#!/bin/sh -e
+#
+# Activate 802.15.4 / OpenThread on Variscite VAR-SOM-MX93
+#
+
+# Include common functions
+. /etc/wifi/variscite-wireless
+. /etc/gpiochip
+
+# IW612 ID
+WIFI_SDIO_ID=0x0205
+
+# WIFI SDIO ID file
+WIFI_SDIO_ID_FILE=/sys/class/net/wlan0/device/device
+
+gpio4=$(get_gpiochip "43830080.gpio")
+
+SPI_DEV="/dev/spidev1.0"
+SPI_MODE="0"
+SPI_SPEED="1000000"
+SPI_RESET_DELAY="500"
+
+GPIO_DEV_RESET="/dev/${gpio4}"
+GPIO_LINE_RESET="15"
+GPIO_DEV_INT="/dev/${gpio4}"
+GPIO_LINE_INT="29"
+
+# Start OT hardware
+ot_start()
+{
+	# Exit if OT module is not available
+	wifi_sdio_exist ${WIFI_SDIO_ID_FILE} || exit 0
+
+	# Exit if OT module is not iw612
+	verify_sdio_id ${WIFI_SDIO_ID_FILE} ${WIFI_SDIO_ID} || exit 0
+
+	# Kill any running ot-daemon processes
+	kill -9 $(pidof ot-daemon) 2>/dev/null || true
+
+	echo "$(basename $0): starting"
+
+	# Start ot-daemon
+	URL="spinel+spi://${SPI_DEV}?gpio-int-device=${GPIO_DEV_INT}&gpio-int-line=${GPIO_LINE_INT}&gpio-reset-device=${GPIO_DEV_RESET}&gpio-reset-line=${GPIO_LINE_RESET}&spi-mode=${SPI_MODE}&spi-speed=${SPI_SPEED}&spi-reset-delay=${SPI_RESET_DELAY}&"
+	echo "${URL}"
+	ot-daemon "${URL}"
+}
+
+# Stop OT hardware
+ot_stop()
+{
+	# Exit if OT module is not iw612
+	verify_sdio_id ${WIFI_SDIO_ID_FILE} ${WIFI_SDIO_ID} || exit 0
+
+	# Kill any running ot-daemon processes
+	kill -9 $(pidof ot-daemon) 2>/dev/null || true
+}
+
+###########################
+#  Execution starts here  #
+###########################
+case $1 in
+
+start)
+	ot_start
+	;;
+stop)
+	ot_stop
+	;;
+esac
+
+exit 0
