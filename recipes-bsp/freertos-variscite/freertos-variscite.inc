@@ -194,13 +194,13 @@ do_install() {
             INSTALL_BIN="True"
             for BIN in ${BINS_EXCLUDED}; do
                 BIN=$(echo $BIN | sed 's#/*$##')
-                if [ "${BIN}" == "${CM_DEMO}" ]; then
+                if [ "${BIN}" = "${CM_DEMO}" ]; then
                     INSTALL_BIN="False"
                     break
                 fi
             done
 
-            if [ "${INSTALL_BIN}" == "True" ]; then
+            if [ "${INSTALL_BIN}" = "True" ]; then
                 # Install bin
                 FILE_CM_FW="$(basename ${DIR_GCC}/${CM_BUILD_TARGET}/*.bin)"
 
