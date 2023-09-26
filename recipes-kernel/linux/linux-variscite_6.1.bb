@@ -28,7 +28,7 @@ SRCREV:imx8mn-var-som = "9ac32222b830c4c72717c928a7b9d8792e22d26e"
 LINUX_VERSION:imx8mn-var-som = "6.1.22"
 
 SRCBRANCH:imx8mp-var-dart = "lf-6.1.y_var02"
-SRCREV:imx8mp-var-dart = "931be342d64b9908a9f60ec6afe7012981855341"
+SRCREV:imx8mp-var-dart = "592ac9656210927a8bbe4823ee7b30aaf191f7db"
 LINUX_VERSION:imx8mp-var-dart = "6.1.22"
 
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
