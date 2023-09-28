@@ -2,6 +2,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 SRC_URI:append = " \
 	file://remove_default_sleep_d.diff \
+	file://00-ot.sh \
 	file://01-bt.sh \
 	file://02-wifi.sh \
 	file://03-eth.sh \
