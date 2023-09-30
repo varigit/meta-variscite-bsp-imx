@@ -9,7 +9,7 @@ disable_network_interface() {
 
 	# Check if the interface exists
 	if ip link show "$iface" &>/dev/null; then
-		ifconfig "$iface" down
+		ifconfig "$iface" down || true
 	fi
 }
 
