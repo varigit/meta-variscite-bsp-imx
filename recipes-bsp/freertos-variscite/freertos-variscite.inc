@@ -70,9 +70,8 @@ CM_DEMOS:mx8qm-nxp-bsp = " \
     demo_apps/hello_world/cm4_core1 \
 "
 
-CM_DEMOS:mx93-nxp-bsp = " \
+CM_DEMOS:append:mx93-nxp-bsp = " \
     demo_apps/ethosu_apps_rpmsg \
-    demo_apps/hello_world \
 "
 
 # These demos should never be packaged in U-Boot because their functionality
