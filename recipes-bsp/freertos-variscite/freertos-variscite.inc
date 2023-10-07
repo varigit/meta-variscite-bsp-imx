@@ -319,7 +319,6 @@ do_install:imx8mp-var-dart() {
 }
 
 FILES:${PN} = " \
-	${sysconfdir}/remoteproc \
 	${nonarch_base_libdir}/firmware \
 	/boot \
 "
@@ -328,6 +327,14 @@ FILES:${PN}-dbg = " \
     ${nonarch_base_libdir}/firmware/*.debug* \
     /boot/*.ddr_debug* \
     /boot/*.debug* \
+"
+
+PACKAGES =+ "\
+    ${PN}-scripts \
+"
+
+FILES:${PN}-scripts = " \
+    ${sysconfdir}/remoteproc \
 "
 
 # ethos-u-firmware is provided by this recipe
