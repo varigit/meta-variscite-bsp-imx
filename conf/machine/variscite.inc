@@ -53,11 +53,13 @@ MACHINE_GSTREAMER_1_0_PLUGIN:mx8-nxp-bsp = "imx-gst1.0-plugin"
 MACHINE_FIRMWARE:append:mx8-nxp-bsp = " \
 	firmware-imx-vpu-imx8 \
 	freertos-variscite-dbg \
+	freertos-variscite-scripts \
 	"
 
 # Add Cortex-M33 firmware
 MACHINE_FIRMWARE:append:mx9-nxp-bsp = " \
 	freertos-variscite \
+	freertos-variscite-scripts \
 	"
 
 MACHINE_EXTRA_RDEPENDS += " \
