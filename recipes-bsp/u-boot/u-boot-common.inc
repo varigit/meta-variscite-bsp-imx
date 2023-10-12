@@ -10,15 +10,6 @@ SRCREV = "6b1b1dde1e335e15a87459d5f7693231eb8a0283"
 
 UBOOT_INITIAL_ENV_DEVICE = "sd"
 
-SRCBRANCH:imx8mm-var-dart = "lf_v2023.04_var01"
-SRCREV:imx8mm-var-dart = "8f3626bd5714c3589233c427d77c238a15049dca"
-
-SRCBRANCH:imx8mn-var-som = "lf_v2023.04_var01"
-SRCREV:imx8mn-var-som = "d9e61a98f54ae79b430de04bc21e4845f250f4ba"
-
-SRCBRANCH:imx8mp-var-dart = "lf_v2023.04_var01"
-SRCREV:imx8mp-var-dart = "341b473039306055c34e154af070e941d7cafb14"
-
 SRC_URI = "${UBOOT_SRC};branch=${SRCBRANCH}"
 
 S = "${WORKDIR}/git"
