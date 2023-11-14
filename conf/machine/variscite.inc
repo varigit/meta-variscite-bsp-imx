@@ -74,7 +74,7 @@ MACHINE_EXTRA_RDEPENDS += " \
 	packagegroup-tools-bluetooth \
 	packagegroup-var-hw-test \
 	bluealsa \
-	pm-utils \
+	pm-utils-variscite \
 	rng-tools \
 	wpa-supplicant \
 	wireless-regdb-static \
