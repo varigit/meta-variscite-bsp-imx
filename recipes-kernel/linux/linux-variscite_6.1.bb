@@ -19,9 +19,9 @@ DEFAULT_PREFERENCE = "1"
 
 KERNEL_SRC ?= "git://github.com/varigit/linux-imx;protocol=https"
 
-SRCBRANCH = "lf-6.1.y_var02"
-SRCREV = "2199e0ade4d5619502d7934c08198da7beb88ed5"
-LINUX_VERSION = "6.1.22"
+SRCBRANCH = "lf-6.1.y_var03"
+SRCREV = "04b05c5527e9af8d81254638c307df07dc9a5dd3"
+LINUX_VERSION = "6.1.36"
 
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
 
