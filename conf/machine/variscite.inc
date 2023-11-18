@@ -40,6 +40,10 @@ PREFERRED_RPROVIDER_u-boot-default-env ?= "u-boot-variscite"
 
 # Use i.MX Gstreamer Version for mx6 SoMs
 MACHINE_GSTREAMER_1_0_PLUGIN:mx6-nxp-bsp = "imx-gst1.0-plugin"
+PREFERRED_VERSION_gstreamer1.0:mx6-nxp-bsp ?= "1.20.3.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-base:mx6-nxp-bsp ?= "1.20.3.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-good:mx6-nxp-bsp ?= "1.20.3.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-bad:mx6-nxp-bsp  ?= "1.20.3.imx"
 
 # Use i.MX Gstreamer Version for mx6ul SoMs
 MACHINE_GSTREAMER_1_0_PLUGIN:mx6ul-nxp-bsp = "imx-gst1.0-plugin"
