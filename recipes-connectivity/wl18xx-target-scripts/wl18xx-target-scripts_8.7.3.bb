@@ -24,3 +24,5 @@ do_install() {
 		install -m 0755 $s ${D}${datadir}/wl18xx/
 	done
 }
+
+COMPATIBLE_MACHINE = "(var-som-mx6)"
