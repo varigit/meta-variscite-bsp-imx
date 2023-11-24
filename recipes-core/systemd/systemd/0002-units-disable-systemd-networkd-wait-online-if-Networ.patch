@@ -23,8 +23,8 @@ index 10d8b08c8e..5d5c43e3f0 100644
  [Service]
  Type=oneshot
  ExecStart={{ROOTLIBEXECDIR}}/systemd-networkd-wait-online
-+ExecCondition=/bin/bash -c '! /bin/systemctl is-enabled NetworkManager-wait-online.service'
-+ExecCondition=/bin/bash -c '! /bin/systemctl is-enabled connman-wait-online.service'
++ExecCondition=/bin/bash -c '! /bin/systemctl is-enabled NetworkManager-wait-online.service 2>/dev/null'
++ExecCondition=/bin/bash -c '! /bin/systemctl is-enabled connman-wait-online.service 2>/dev/null'
  RemainAfterExit=yes
  
  [Install]
