@@ -1,6 +1,5 @@
 [Unit]
 Description=Variscite Bluetooth setup service
-After=variscite-wifi.service
 Before=bluetooth.target
 
 [Service]
