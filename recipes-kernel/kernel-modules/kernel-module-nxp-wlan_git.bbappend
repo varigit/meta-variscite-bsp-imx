@@ -14,3 +14,8 @@ do_install:append:var-som() {
     install -d ${D}${sysconfdir}/modules-load.d
     install -m 0644 ${WORKDIR}/moal_modules-load.conf ${D}${sysconfdir}/modules-load.d/moal.conf
 }
+
+FILES:${PN} += " \
+    ${sysconfdir}/modprobe.d/* \
+    ${sysconfdir}/modules-load.d/* \
+"
