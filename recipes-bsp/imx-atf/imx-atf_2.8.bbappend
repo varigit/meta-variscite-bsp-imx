@@ -2,7 +2,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 SRC_URI:var-som = "git://github.com/varigit/imx-atf;protocol=https;branch=${SRCBRANCH}"
 SRCBRANCH:var-som = "lf_v2.8_var02"
-SRCREV:var-som = "1a3beeab6484343a4bd0ee08e947d142db4a5ae6"
+SRCREV:var-som = "8b55a2024b405fabba8821deda772584cd2b0c13"
 
 EXTRA_OEMAKE:append:imx8mq-var-dart = " \
     BL32_BASE=${TEE_LOAD_ADDR} \
