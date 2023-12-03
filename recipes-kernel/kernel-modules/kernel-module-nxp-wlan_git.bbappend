@@ -1,7 +1,5 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-require recipes-connectivity/nxp-wlan-sdk/var-nxp-wlan-sdk_git.inc
-
 SRC_URI:append:var-som = " \
     file://moal_modprobe.conf \
     file://moal_modules-load.conf \
