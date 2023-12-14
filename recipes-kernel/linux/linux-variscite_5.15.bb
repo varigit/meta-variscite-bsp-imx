@@ -26,6 +26,10 @@ SRCBRANCH = "5.15-2.0.x-imx_var01"
 SRCREV = "740e6c7a7b0972255c11686d4041ad629ab3f361"
 LINUX_VERSION = "5.15.60"
 
+SRCBRANCH:var-som-mx6 = "lf-5.15.y_var01"
+SRCREV:var-som-mx6 = "042583ccf25a7702b024c9fc7789279b61ba0632"
+LINUX_VERSION:var-som-mx6 = "5.15.71"
+
 SRCBRANCH:imx6ul-var-dart = "lf-5.15.y_var01"
 SRCREV:imx6ul-var-dart = "ed54a5eb79177bbde3d359f92c1bf1fb7fdb1f20"
 LINUX_VERSION:imx6ul-var-dart = "5.15.71"
@@ -50,6 +54,7 @@ SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
+LOCALVERSION:var-som-mx6 = "-imx6"
 LOCALVERSION:imx6ul-var-dart = "-imx6ul"
 LOCALVERSION:imx7-var-som = "-imx7"
 LOCALVERSION:imx8mp-var-dart = "-imx8mp"
