@@ -47,6 +47,7 @@ bt_start()
 
 	# Kill any running hciattach processes
 	kill -9 $(pidof hciattach) 2>/dev/null || true
+	sleep 0.5
 
 	# Initialize and attach the BT device at 115200
 	hciattach ${BT_TTY_DEV_SOM} any 115200 flow
@@ -63,6 +64,7 @@ bt_start()
 
 	# Kill hciattach after changing the baud
 	kill -9 $(pidof hciattach) 2>/dev/null || true
+	sleep 0.5
 
 	# Initialize and attach the BT device at 3000000
 	hciattach ${BT_TTY_DEV_SOM} any 3000000 flow
