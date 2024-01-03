@@ -85,6 +85,11 @@ bt_stop()
 
 	echo "$(basename $0): stopping"
 
+	# Bring hci0 up if it's down
+	if hciconfig hci0 | grep -q "DOWN"; then
+		hciconfig hci0 up
+	fi
+
 	# Use hcitool to change the baud rate
 	# Arguments:
 	#   0x3f    : HCI_CMD_GROUP_VENDOR_SPECIFIC
