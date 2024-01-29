@@ -12,9 +12,6 @@ gpio4=$(get_gpiochip "43830080.gpio")
 # GPIO pin to enable BT module
 BT_EN_GPIO="${gpio4} 15"
 
-# UART device connected to BT module on VAR-SOM-MX93
-BT_TTY_DEV_SOM="/dev/ttyLP4"
-
 # IW612 ID
 WIFI_SDIO_ID=0x0205
 
@@ -45,33 +42,8 @@ bt_start()
 	# Enable BT hardware
 	bt_enable
 
-	# Kill any running hciattach processes
-	kill -9 $(pidof hciattach) 2>/dev/null || true
-	sleep 0.5
-
-	# Initialize and attach the BT device at 115200
-	hciattach ${BT_TTY_DEV_SOM} any 115200 flow
-	sleep 0.5
-	hciconfig hci0 up
-	hciconfig
-
-	# Use hcitool to change the baud rate
-	# Arguments:
-	#   0x3f    : HCI_CMD_GROUP_VENDOR_SPECIFIC
-	#   0x0009  : HCI_CMD_UART_BAUD
-	#   0xc0 0xc6 0x2d 0x00: 3000000
-	hcitool -i hci0 cmd 0x3f 0x0009 0xc0 0xc6 0x2d 0x00
-
-	# Kill hciattach after changing the baud
-	kill -9 $(pidof hciattach) 2>/dev/null || true
-	sleep 0.5
-
-	# Initialize and attach the BT device at 3000000
-	hciattach ${BT_TTY_DEV_SOM} any 3000000 flow
-	sleep 0.5
-
-	# Create the flag file to indicate baud configuration completion.
-	# touch $FLAG_BAUD_CONFIG
+	# Load the NXP bluetooth driver
+	modprobe btnxpuart
 }
 
 # Stop BT hardware
@@ -85,21 +57,12 @@ bt_stop()
 
 	echo "$(basename $0): stopping"
 
-	# Bring hci0 up if it's down
-	if hciconfig hci0 | grep -q "DOWN"; then
-		hciconfig hci0 up
-	fi
+	# Bring up hci interface before unloading the BT module to allow the driver
+	# to restore the baud rate to 115200bps and conditionally issue reset command
+	hciconfig hci0 up
 
-	# Use hcitool to change the baud rate
-	# Arguments:
-	#   0x3f    : HCI_CMD_GROUP_VENDOR_SPECIFIC
-	#   0x0009  : HCI_CMD_UART_BAUD
-	#   0x00 0x02 0x1C 0x00: 115200
-	hcitool -i hci0 cmd 0x3f 0x0009 0x00 0xC2 0x01 0x00
-	sleep 0.5
-
-	# Kill any running hciattach processes
-	kill -9 $(pidof hciattach) 2>/dev/null || true
+	# Unload the driver
+	modprobe -r btnxpuart
 
 	# Power down BT module
 	gpioset ${BT_EN_GPIO}=0
