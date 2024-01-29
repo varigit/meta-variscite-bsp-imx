@@ -21,9 +21,11 @@ WIFI_SDIO_ID_FILE=/sys/class/net/wlan0/device/device
 # Enable BT via GPIO(s)
 bt_enable()
 {
-	# Power up BT module
+	# Assert bluetooth/802.15.4 reset GPIO and disable BT uart buffer
 	gpioset ${BT_EN_GPIO}=0
 	sleep 0.1
+
+	# Release bluetooth/802.15.4 reset GPIO and enable BT uart buffer
 	gpioset ${BT_EN_GPIO}=1
 	sleep 0.1
 }
@@ -64,7 +66,7 @@ bt_stop()
 	# Unload the driver
 	modprobe -r btnxpuart
 
-	# Power down BT module
+	# Assert bluetooth/802.15.4 reset GPIO and disable BT uart buffer
 	gpioset ${BT_EN_GPIO}=0
 }
 
