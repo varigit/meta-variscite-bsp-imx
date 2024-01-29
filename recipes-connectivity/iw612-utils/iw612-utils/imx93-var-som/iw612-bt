@@ -70,6 +70,24 @@ bt_stop()
 	gpioset ${BT_EN_GPIO}=0
 }
 
+# Issue in-band reset using hci interface
+in_band_reset()
+{
+	# Exit if BT module is not iw612
+	verify_sdio_id ${WIFI_SDIO_ID_FILE} ${WIFI_SDIO_ID} || exit 0
+
+	# Exit if BT interface is not available
+	[ -e /sys/class/bluetooth/hci0 ] || exit 0
+
+	echo "$(basename $0): in-band reset"
+
+	# Bring up hci interface before using hci commands
+	hciconfig hci0 up
+
+	# Issue the reset command
+	hcitool cmd 0x3f 0xfc 0
+}
+
 ###########################
 #  Execution starts here  #
 ###########################
@@ -80,6 +98,9 @@ start)
 	;;
 stop)
 	bt_stop
+	;;
+in-band-reset)
+	in_band_reset
 	;;
 esac
 
