@@ -1,9 +1,9 @@
 #!/bin/sh -e
 
 readonly FILE_SCRIPT="$(basename "$0")"
-readonly DIR_SCRIPT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+readonly DIR_SCRIPT="$( cd "$( dirname "${0}" )" >/dev/null 2>&1 && pwd )"
 
-source ${DIR_SCRIPT}/variscite-rproc-common.sh
+. ${DIR_SCRIPT}/variscite-rproc-common.sh
 
 readonly FILE_DEFAULT_FW=${FILE_DEFAULT_FW_U_BOOT}
 readonly DIR_FW="/boot"
@@ -12,7 +12,7 @@ readonly DIR_FW="/boot"
 parse_args "$@"
 
 # Determine if DDR or TCM
-if [[ "$FILE_CM_BIN" == *"ddr"* ]]; then
+if [ "${FILE_CM_BIN#*ddr*}" != "${FILE_CM_BIN}" ]; then
     echo "Configuring for DDR memory"
     CM_LOAD_ADDR=${CM_LOAD_ADDR_DDR}
     CM_LOAD_ADDR_AUXVIEW=${CM_LOAD_ADDR_AUXVIEW_DDR}
@@ -41,12 +41,12 @@ fw_setenv use_${CM_SERIES}${CM_CORE_UBOOT} "yes"
 fw_setenv ${CM_SERIES}${CM_CORE_UBOOT}_bin "${FILE_CM_BIN}"
 
 { set +x; } 2>/dev/null
-if [ "i.MX93" == ${SOC} ]; then
+if [ "i.MX93" = "${SOC}" ]; then
     # Some platforms have demos which have unused clocks from Linux
     # Ensure these stay enabled, otherwise some demos may not run
     # correctly.
     KERNELARGS=$(fw_printenv kernelargs -n)
-    grep -vq clk_ignore_unused <<< "${KERNELARGS}"
+    echo "${KERNELARGS}" | grep -vq "clk_ignore_unused"
     if [ "$?" -eq "0" ]; then
         set -x
         fw_setenv kernelargs "${KERNELARGS} clk_ignore_unused"
