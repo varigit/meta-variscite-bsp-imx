@@ -52,6 +52,9 @@ bt_start()
 
 	# Load the NXP bluetooth driver
 	modprobe btnxpuart
+
+	# Fork a dummy process to satisfy the variscite-bt systemd service type=forking
+	(while true; do sleep 60; done) &
 }
 
 # Stop BT hardware
