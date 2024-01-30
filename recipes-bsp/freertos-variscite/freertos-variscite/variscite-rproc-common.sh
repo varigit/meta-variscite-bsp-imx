@@ -1,7 +1,7 @@
 #!/bin/sh -e
 
 readonly CONF_SCRIPT="${DIR_SCRIPT}/variscite-rproc.conf"
-source ${CONF_SCRIPT}
+. ${CONF_SCRIPT}
 
 readonly SOC="$(cat /sys/bus/soc/devices/soc0/soc_id)"
 readonly MACHINE="$(cat /sys/bus/soc/devices/soc0/machine)"
@@ -23,7 +23,7 @@ parse_args() {
     fi
 
     CM_CORE=0
-    while [[ $# -gt 0 ]]
+    while [ $# -gt 0 ]
     do
         case $1 in
             -h|--help)
@@ -81,11 +81,11 @@ help() {
 }
 
 # Initialize default Linux Device Tree
-if [[ "${MACHINE}" == *"DART-MX8"* ]]; then
+if [ "${MACHINE#*DART-MX8*}" != "${MACHINE}" ]; then
     readonly CM_DTB=${CM_DTB_DART}
-elif [[ "${MACHINE}" == *"VAR-SOM"* ]]; then
+elif [ "${MACHINE#*VAR-SOM*}" != "${MACHINE}" ]; then
     readonly CM_DTB=${CM_DTB_SOM}
-elif [[ "${MACHINE}" == *"SPEAR-MX8"* ]]; then
+elif [ "${MACHINE#*SPEAR-MX8*}" != "${MACHINE}" ]; then
     readonly CM_DTB=${CM_DTB_SPEAR}
 else
     echo "Error: Unknown machine ${MACHINE}"
