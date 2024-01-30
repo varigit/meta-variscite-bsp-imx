@@ -1,9 +1,9 @@
 #!/bin/sh -e
 
 readonly FILE_SCRIPT="$(basename "$0")"
-readonly DIR_SCRIPT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+readonly DIR_SCRIPT="$( cd "$( dirname "${0}" )" >/dev/null 2>&1 && pwd )"
 
-source ${DIR_SCRIPT}/variscite-rproc-common.sh
+. ${DIR_SCRIPT}/variscite-rproc-common.sh
 
 readonly FILE_DEFAULT_FW=${FILE_DEFAULT_FW_LINUX}
 readonly DIR_FW="/lib/firmware"
@@ -16,7 +16,7 @@ readonly REMOTEPROC_STATE="${REMOTEPROC_DIR}/state"
 readonly REMOTEPROC_FW="${REMOTEPROC_DIR}/firmware"
 
 cm_stop() {
-    if [ "running" == "$(cat ${REMOTEPROC_STATE})" ]; then
+    if [ "running" = "$(cat ${REMOTEPROC_STATE})" ]; then
         echo "Cortex-M: Stopping"
         echo "stop" > ${REMOTEPROC_STATE}
     fi
@@ -34,7 +34,7 @@ cm_start() {
 }
 
 # Warn user if remoteproc not found
-if [[ ! -e "${REMOTEPROC_DIR}" ]]; then
+if [ ! -e "${REMOTEPROC_DIR}" ]; then
     echo ""
     echo "Error: ${REMOTEPROC_DIR} not found."
     echo "Please enable remoteproc driver."
