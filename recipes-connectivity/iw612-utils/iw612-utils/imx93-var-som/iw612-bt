@@ -12,11 +12,16 @@ gpio4=$(get_gpiochip "43830080.gpio")
 # GPIO pin to enable BT module
 BT_EN_GPIO="${gpio4} 15"
 
-# IW612 ID
-WIFI_SDIO_ID=0x0205
+# btnxpuart fdt device compatible file
+BT_FDT="/sys/firmware/devicetree/base/soc@0/bus@42000000/serial@42590000/bluetooth/compatible"
 
-# WIFI SDIO ID file
-WIFI_SDIO_ID_FILE=/sys/class/net/wlan0/device/device
+fdt_has_btnxpuart() {
+	if [ -e "$BT_FDT" ] && grep -q "nxp,88w8987-bt" "$BT_FDT"; then
+		return 0  # fdt has btnxpuart device
+	else
+		return 1  # fdt does not have btnxpuart device
+	fi
+}
 
 # Enable BT via GPIO(s)
 bt_enable()
@@ -33,11 +38,8 @@ bt_enable()
 # Start BT hardware
 bt_start()
 {
-	# Exit if BT module is not available
-	wifi_sdio_exist ${WIFI_SDIO_ID_FILE} || exit 0
-
-	# Exit if BT module is not iw612
-	verify_sdio_id ${WIFI_SDIO_ID_FILE} ${WIFI_SDIO_ID} || exit 0
+	# Exit if BT module is not iw612 according to the device tree
+	fdt_has_btnxpuart || exit 0
 
 	# Exit if BT interface is already running
 	if [ -e "/sys/class/bluetooth/hci0" ]; then
@@ -60,8 +62,8 @@ bt_start()
 # Stop BT hardware
 bt_stop()
 {
-	# Exit if BT module is not iw612
-	verify_sdio_id ${WIFI_SDIO_ID_FILE} ${WIFI_SDIO_ID} || exit 0
+	# Exit if BT module is not iw612 according to the device tree
+	fdt_has_btnxpuart || exit 0
 
 	# Exit if BT interface is not available
 	[ -e /sys/class/bluetooth/hci0 ] || exit 0
@@ -82,8 +84,8 @@ bt_stop()
 # Issue in-band reset using hci interface
 in_band_reset()
 {
-	# Exit if BT module is not iw612
-	verify_sdio_id ${WIFI_SDIO_ID_FILE} ${WIFI_SDIO_ID} || exit 0
+	# Exit if BT module is not iw612 according to the device tree
+	fdt_has_btnxpuart || exit 0
 
 	# Exit if BT interface is not available
 	[ -e /sys/class/bluetooth/hci0 ] || exit 0
