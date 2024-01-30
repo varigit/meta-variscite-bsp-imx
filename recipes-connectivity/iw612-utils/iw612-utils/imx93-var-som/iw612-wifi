@@ -28,6 +28,17 @@ wifi_stop()
 	modprobe -r moal;
 }
 
+# Issue in-band reset using sdio interface
+wifi_in_band_reset()
+{
+	if [ -f /proc/mwlan/adapter0/config ]; then
+		echo "fw_reload=1" > /proc/mwlan/adapter0/config
+	else
+		echo "Error: /proc/mwlan/adapter0/config does not exist."
+		exit 1
+	fi
+}
+
 ###########################
 #  Execution starts here  #
 ###########################
@@ -38,6 +49,9 @@ start)
 	;;
 stop)
 	wifi_stop
+	;;
+in-band-reset)
+	wifi_in_band_reset
 	;;
 esac
 
