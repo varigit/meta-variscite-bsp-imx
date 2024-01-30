@@ -16,7 +16,7 @@ disable_network_interface() {
 # Start WIFI
 wifi_start()
 {
-	modprobe moal
+	modprobe moal mod_para=nxp/var_wifi_mod_para.conf
 }
 
 # Stop WIFI
