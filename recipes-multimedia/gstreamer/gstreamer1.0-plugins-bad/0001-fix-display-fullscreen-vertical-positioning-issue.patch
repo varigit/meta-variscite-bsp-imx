@@ -1,0 +1,119 @@
+From b923a50f4791b33c36d83c0f3d422e7ab8bf80ad Mon Sep 17 00:00:00 2001
+From: Natalia Kovalenko <natasha.k@variscite.com>
+Date: Thu, 8 Feb 2024 09:44:44 +0100
+Subject: [PATCH] gstreamer: Fix display fullscreen vertical positioning issue
+
+Adjusts the height of the fullscreen display when the panel-position
+is set to none in the weston.ini file.
+
+Signed-off-by: Natalia Kovalenko <natasha.k@variscite.com>
+---
+ ext/wayland/wlutils.c  | 29 +++++++++++++++++++++++++----
+ ext/wayland/wlutils.h  |  3 ++-
+ ext/wayland/wlwindow.c |  6 +++---
+ 3 files changed, 30 insertions(+), 8 deletions(-)
+
+diff --git a/ext/wayland/wlutils.c b/ext/wayland/wlutils.c
+index 5c0694054..5ed4a3130 100644
+--- a/ext/wayland/wlutils.c
++++ b/ext/wayland/wlutils.c
+@@ -37,6 +37,8 @@
+
+ #define WESTON_INI "/etc/xdg/weston/weston.ini"
+
++gint panel_height = PANEL_HEIGH;
++
+ gboolean
+ gst_wl_init_surface_state (GstWlDisplay * display, GstWlWindow * window)
+ {
+@@ -48,6 +50,7 @@ gst_wl_init_surface_state (GstWlDisplay * display, GstWlWindow * window)
+   gboolean ret = TRUE;
+   struct stat filestat;
+   FILE *fp;
++  gchar *panel_position = NULL;
+
+   if ((fd = open (path, O_RDONLY)) == -1) {
+     return FALSE;
+@@ -65,9 +68,6 @@ gst_wl_init_surface_state (GstWlDisplay * display, GstWlWindow * window)
+   }
+
+   while (fgets (line, sizeof line, fp)) {
+-    if (found_config)
+-      break;
+-
+     switch (line[0]) {
+       case '#':
+       case '\n':
+@@ -106,6 +106,24 @@ gst_wl_init_surface_state (GstWlDisplay * display, GstWlWindow * window)
+               found_config = TRUE;
+             }
+           }
++
++          if (strcmp (&line[0], "panel-position") == 0) {
++            p++;
++            while (isspace (*p))
++              p++;
++            i = strlen (p);
++            while (i > 0 && isspace (p[i - 1])) {
++              p[i - 1] = '\0';
++              i--;
++            }
++            if (strlen (p) > 0) {
++              if (panel_position)
++                g_free (panel_position);
++              panel_position = g_strdup (p);
++              if (panel_position && strcmp (panel_position, "none") == 0)
++                panel_height = 0;
++            }
++          }
+         }
+         continue;
+     }
+@@ -130,7 +148,10 @@ gst_wl_init_surface_state (GstWlDisplay * display, GstWlWindow * window)
+       goto out;
+     }
+     window->fullscreen_width = desktop_width;
+-    window->fullscreen_height = desktop_height - PANEL_HEIGH;
++    window->fullscreen_height = desktop_height - panel_height;
++    GST_WARNING
++      ("init surface_state to fullscreen (%dx%d) panel-height (%d)",
++        desktop_width, desktop_height - panel_height, panel_height);
+   } else {
+     ret = FALSE;
+     goto out;
+diff --git a/ext/wayland/wlutils.h b/ext/wayland/wlutils.h
+index 003912c66..cbe0891eb 100644
+--- a/ext/wayland/wlutils.h
++++ b/ext/wayland/wlutils.h
+@@ -31,7 +31,8 @@ G_BEGIN_DECLS
+ /* FIXME: try to get from wayland server */
+ #define PANEL_HEIGH 32
+
++extern gint panel_height;
+ gboolean gst_wl_init_surface_state(GstWlDisplay * display, GstWlWindow * window);
+ G_END_DECLS
+
+-#endif
+\ No newline at end of file
++#endif
+diff --git a/ext/wayland/wlwindow.c b/ext/wayland/wlwindow.c
+index a3e59f0b7..72e3bdcec 100644
+--- a/ext/wayland/wlwindow.c
++++ b/ext/wayland/wlwindow.c
+@@ -434,11 +434,11 @@ gst_wl_window_new_internal (GstWlDisplay * display, GMutex * render_lock)
+
+   if (!gst_wl_init_surface_state (display, window)) {
+     window->fullscreen_width = display->width;
+-    window->fullscreen_height = display->height - PANEL_HEIGH;
++    window->fullscreen_height = display->height - panel_height;
+     window->scale = 1;
+     GST_WARNING
+-        ("init surface_state fail, fallback to scale=%d fullscreen (%dx%d)",
+-        window->scale, window->fullscreen_width, window->fullscreen_height);
++        ("init surface_state fail, fallback to scale=%d fullscreen (%dx%d) panel-height (%d)",
++        window->scale, window->fullscreen_width, window->fullscreen_height, panel_height);
+   }
+
+   return window;
+--
+2.34.1
