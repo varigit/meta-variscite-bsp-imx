@@ -6,8 +6,8 @@ case $1 in
 	;;
 "resume")
 	for eth_interface in /sys/class/net/eth* ; do
-		ifconfig $(basename ${eth_interface}) down
-		ifconfig $(basename ${eth_interface}) up
+		ip link set $(basename ${eth_interface}) down
+		ip link set $(basename ${eth_interface}) up
 	done
 	;;
 esac
