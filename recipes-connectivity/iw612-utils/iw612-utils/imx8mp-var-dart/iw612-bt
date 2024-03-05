@@ -109,6 +109,21 @@ bt_start()
 	# Load the NXP bluetooth driver
 	modprobe btnxpuart
 
+	# Wait until the HCI interface comes up
+	if ! timeout 10 sh -c 'until hciconfig | grep -q "hci"; do sleep 0.1; done'; then
+		echo "Error: HCI interface did not come up"
+		exit 1
+	fi
+
+	# Wait until the Bluetooth MAC address is not 00:00:00:00:00:00
+	if ! timeout 10 sh -c 'until [ "$(hciconfig | grep "BD Address" | \
+	awk "{print \$3}")" != "00:00:00:00:00:00" ]; do sleep 0.1; done'; then
+		echo "Error: Bluetooth MAC address is 00:00:00:00:00:00"
+		exit 1
+	fi
+
+	sleep 1
+
 	# Fork a dummy process to satisfy the variscite-bt systemd service type=forking
 	(while true; do sleep 60; done) &
 }
