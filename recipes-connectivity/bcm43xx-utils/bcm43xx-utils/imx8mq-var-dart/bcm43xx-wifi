@@ -22,6 +22,7 @@ BT_EN_GPIO="gpiochip2 4"
 # WIFI MMC host
 WIFI_MMC_HOST=30b50000.mmc
 WIFI_MMC_PATH="/sys/bus/platform/drivers/sdhci-esdhc-imx"
+WIFI_FDT="/sys/firmware/devicetree/base/soc@0/bus@30800000/mmc@30b50000/wifi@1"
 
 # Power up WIFI chip
 wifi_up()
@@ -119,7 +120,7 @@ wifi_should_not_be_started()
 	fi
 
 	# Enable ethernet and exit if booting from eMMC without WIFI
-	if ! grep -q WIFI /sys/devices/soc0/machine; then
+	if [ ! -e "$WIFI_FDT" ]; then
 		modprobe fec
 		return 0
 	fi
@@ -142,7 +143,7 @@ wifi_should_not_be_stopped()
 	fi
 
 	# Do not stop WIFI if booting from eMMC without WIFI
-	if ! grep -q WIFI /sys/devices/soc0/machine; then
+	if [ ! -e "$WIFI_FDT" ]; then
 		modprobe fec
 		return 0
 	fi
