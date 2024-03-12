@@ -1,0 +1,117 @@
+#!/bin/sh -e
+#
+# Activate 802.15.4 / OpenThread on Variscite DART-MX8M-MINI/VAR-SOM-MX8M-MINI
+#
+
+# Include common functions
+. /etc/wifi/variscite-wireless
+. /etc/gpiochip
+
+gpio2=$(get_gpiochip "30210000.gpio")
+
+SPI_DEV="/dev/spidev0.0"
+SPI_MODE="0"
+SPI_SPEED="1000000"
+SPI_RESET_DELAY="500"
+
+GPIO_DEV_INT="/dev/${gpio2}"
+GPIO_LINE_INT="7"
+
+# btnxpuart fdt device compatible file
+BT_FDT_SOM="/sys/firmware/devicetree/base/soc@0/bus@30800000/serial@30880000/bluetooth_iw61x"
+BT_FDT_DART="/sys/firmware/devicetree/base/soc@0/bus@30800000/serial@30a60000/bluetooth_iw61x"
+
+# Return true if SOM is VAR-SOM-MX8M-MINI
+som_is_var_som_mx8m_mini()
+{
+	grep -q VAR-SOM-MX8M-MINI /sys/devices/soc0/machine
+}
+
+# Set UART device connected to BT module
+ot_set_vars()
+{
+	if som_is_var_som_mx8m_mini; then
+		BT_FDT=${BT_FDT_SOM}
+	else
+		BT_FDT=${BT_FDT_DART}
+	fi
+}
+
+# Use btnxpuart device node to determine if wifi module is iw61x
+fdt_has_btnxpuart() {
+	# Check if compatible file exists
+	if [ ! -e "$BT_FDT/compatible" ]; then
+		return 1
+	fi
+
+	# Check if compatible with nxp,88w8987-bt
+	if ! grep -q "nxp,88w8987-bt" "$BT_FDT/compatible"; then
+		return 1
+	fi
+
+	# Check if status file exists
+	if [ ! -e "$BT_FDT/status" ]; then
+		return 1
+	fi
+
+	# Check if status is okay
+	if ! grep -q "okay" "$BT_FDT/status"; then
+		return 1
+	fi
+
+	return 0
+}
+
+# Start OT hardware
+ot_start()
+{
+	# Configure global variables for SOM or DART
+	ot_set_vars
+
+	# Exit if BT module is not iw612 according to the device tree
+	fdt_has_btnxpuart || exit 0
+
+	# Exit if BT interface is not running, since it manages the reset line
+	if [ ! -e "/sys/class/bluetooth/hci0" ]; then
+		echo "$(basename $0): Error: variscite-bt must be running"
+		exit 1
+	fi
+
+	# Kill any running ot-daemon processes
+	kill -9 $(pidof ot-daemon) 2>/dev/null || true
+
+	echo "$(basename $0): starting"
+
+	# Start ot-daemon
+	URL="spinel+spi://${SPI_DEV}?gpio-int-device=${GPIO_DEV_INT}&gpio-int-line=${GPIO_LINE_INT}&spi-mode=${SPI_MODE}&spi-speed=${SPI_SPEED}&spi-reset-delay=${SPI_RESET_DELAY}&"
+	echo "${URL}"
+	ot-daemon "${URL}"
+}
+
+# Stop OT hardware
+ot_stop()
+{
+	# Configure global variables for SOM or DART
+	ot_set_vars
+
+	# Exit if BT module is not iw612 according to the device tree
+	fdt_has_btnxpuart || exit 0
+
+	# Kill any running ot-daemon processes
+	kill -9 $(pidof ot-daemon) 2>/dev/null || true
+}
+
+###########################
+#  Execution starts here  #
+###########################
+case $1 in
+
+start)
+	ot_start
+	;;
+stop)
+	ot_stop
+	;;
+esac
+
+exit 0

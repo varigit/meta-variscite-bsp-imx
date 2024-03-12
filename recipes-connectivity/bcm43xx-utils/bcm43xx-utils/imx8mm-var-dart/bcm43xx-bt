@@ -30,6 +30,9 @@ BT_FIRMWARE_LWB=/lib/firmware/brcm/BCM43430A1.hcd
 # Sterling LWB5 BT firmware
 BT_FIRMWARE_LWB5=/lib/firmware/brcm/BCM4335C0.hcd
 
+# Sterling LWB WIFI SDIO ID
+WIFI_2G_SDIO_ID=0xa9a6
+
 # Sterling LWB5 WIFI SDIO ID
 WIFI_5G_SDIO_ID=0x4339
 
@@ -84,6 +87,9 @@ bt_start()
 	# Exit if BT module is not available
 	wifi_sdio_exist ${WIFI_SDIO_ID_FILE} || exit 0
 
+	# Exit if BT module is not bcm43xx
+	verify_sdio_id ${WIFI_SDIO_ID_FILE} ${WIFI_2G_SDIO_ID} ${WIFI_5G_SDIO_ID} || exit 0
+
 	# Enable BT hardware
 	bt_enable
 
@@ -107,6 +113,9 @@ bt_start()
 # Stop BT hardware
 bt_stop()
 {
+	# Exit if BT module is not bcm43xx
+	verify_sdio_id ${WIFI_SDIO_ID_FILE} ${WIFI_2G_SDIO_ID} ${WIFI_5G_SDIO_ID} || exit 0
+
 	# Exit if BT interface is not available
 	[ -e /sys/class/bluetooth/hci0 ] || exit 0
 
