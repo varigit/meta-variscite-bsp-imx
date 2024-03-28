@@ -1,0 +1,48 @@
+From b49d3282ff77cfde0530cd72dc9a8e2a3848edcf Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Wed, 27 Mar 2024 19:22:04 -0700
+Subject: [PATCH] include missing stdint.h
+
+This fixes build latest gcc-14
+
+Fixes build errors below
+
+/mnt/b/yoe/master/build/tmp/work/x86_64-nativesdk-yoesdk-linux/nativesdk-uuu/1.5.21/git/libuuu/libcomm.h:106:8: error: 'uint16_t' does not name a type
+  106 | inline uint16_t EndianSwap(uint16_t x)
+      |        ^~~~~~~~
+/mnt/b/yoe/master/build/tmp/work/x86_64-nativesdk-yoesdk-linux/nativesdk-uuu/1.5.21/git/libuuu/libcomm.h:106:8: note: 'uint16_t' is defined in header '<cstdint>'; this is probably fixable by adding '#include <cstdint>'
+
+Upstream-Status: Submitted [https://github.com/nxp-imx/mfgtools/pull/418]
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ libuuu/libcomm.h | 1 +
+ uuu/buildincmd.h | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/libuuu/libcomm.h b/libuuu/libcomm.h
+index 93ab7e5..296297d 100644
+--- a/libuuu/libcomm.h
++++ b/libuuu/libcomm.h
+@@ -28,6 +28,7 @@
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
++#include <cstdint>
+ #include <string>
+ #include <stdarg.h>
+ #include <locale>
+diff --git a/uuu/buildincmd.h b/uuu/buildincmd.h
+index 9415117..3a94679 100644
+--- a/uuu/buildincmd.h
++++ b/uuu/buildincmd.h
+@@ -31,6 +31,7 @@
+ 
+ #pragma once
+ 
++#include <cstdint>
+ #include <map>
+ #include <string>
+ #include <vector>
+-- 
+2.44.0
+
