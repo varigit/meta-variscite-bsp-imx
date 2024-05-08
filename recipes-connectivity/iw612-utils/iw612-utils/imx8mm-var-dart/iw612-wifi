@@ -8,7 +8,7 @@ disable_network_interface() {
 	local iface="$1"
 
 	# Check if the interface exists
-	if ip link show "$iface" &>/dev/null; then
+	if ip link show "$iface" >/dev/null 2>&1; then
 		ip link set dev "$iface" down
 	fi
 }
