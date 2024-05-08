@@ -1,4 +1,4 @@
-FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 SRC_URI:append:imx8mq-var-dart = " file://usb-power.rules"
 SRC_URI:append:imx8mm-var-dart = " file://usb-power.rules"
