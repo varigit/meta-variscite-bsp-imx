@@ -26,6 +26,17 @@ BT_BUF_GPIO="gpiochip1 29"
 WIFI_MMC_HOST=5b020000.mmc
 WIFI_MMC_PATH="/sys/bus/platform/drivers/sdhci-esdhc-imx"
 
+# Function to disable a network interface
+disable_network_interface() {
+	local iface="$1"
+
+	# Check if the interface exists
+	if ip link show "$iface" >/dev/null 2>&1; then
+		ifconfig "$iface" down
+		usleep 100000
+	fi
+}
+
 # Power up WIFI chip
 wifi_up()
 {
@@ -68,6 +79,9 @@ wifi_up()
 # Power down WIFI chip
 wifi_down()
 {
+	# Disable network interface
+	disable_network_interface wlan0
+
 	# Unload WIFI driver
 	modprobe -r brcmfmac
 
