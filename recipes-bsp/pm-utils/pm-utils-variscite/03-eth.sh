@@ -13,6 +13,7 @@ case $1 in
 		for eth_interface in /sys/class/net/eth* ; do
 			ip link set $(basename ${eth_interface}) down
 		done
+		exit 0
 	fi
 	;;
 "resume")
@@ -20,5 +21,6 @@ case $1 in
 		ip link set $(basename ${eth_interface}) down
 		ip link set $(basename ${eth_interface}) up
 	done
+	exit 0
 	;;
 esac
