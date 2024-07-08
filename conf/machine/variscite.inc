@@ -57,7 +57,7 @@ MACHINE_FIRMWARE:append:mx8-nxp-bsp = " \
 	"
 
 # Add Cortex-M33 firmware
-MACHINE_FIRMWARE:append:mx9-nxp-bsp = " \
+MACHINE_FIRMWARE:append:imx93-var-som = " \
 	freertos-variscite \
 	freertos-variscite-scripts \
 	"

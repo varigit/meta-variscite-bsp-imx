@@ -15,4 +15,4 @@ SRC_URI:append:mx9-nxp-bsp = " \
     git://github.com/varigit/freertos-variscite.git;protocol=https;branch=${MCUXPRESSO_BRANCH}; \
 "
 
-COMPATIBLE_MACHINE = "(mx9-nxp-bsp|imx8mm-var-dart|imx8mn-var-som|imx8mp-var-dart|imx8mq-var-dart)"
+COMPATIBLE_MACHINE = "(imx93-var-som|imx8mm-var-dart|imx8mn-var-som|imx8mp-var-dart|imx8mq-var-dart)"
