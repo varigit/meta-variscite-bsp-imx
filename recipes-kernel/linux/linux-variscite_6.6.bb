@@ -1,6 +1,6 @@
 # Copyright (C) 2013-2016 Freescale Semiconductor
 # Copyright 2017 NXP
-# Copyright 2018-2023 Variscite Ltd.
+# Copyright 2018-2024 Variscite Ltd.
 # Released under the MIT license (see COPYING.MIT for the terms)
 
 SUMMARY = "Linux kernel provided and supported by Variscite"
