@@ -12,22 +12,21 @@ For more information, see https://www.freedesktop.org/wiki/Software/systemd/Netw
 Upstream-Status: Pending
 Signed-off-by: Nate Drude <nate.d@variscite.com>
 ---
- units/systemd-networkd-wait-online.service.in | 1 +
- 1 file changed, 1 insertion(+)
+ units/systemd-networkd-wait-online.service.in | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/units/systemd-networkd-wait-online.service.in b/units/systemd-networkd-wait-online.service.in
-index 10d8b08c8e..5d5c43e3f0 100644
+index 7768121f5f..b06a605529 100644
 --- a/units/systemd-networkd-wait-online.service.in
 +++ b/units/systemd-networkd-wait-online.service.in
-@@ -19,6 +19,8 @@ Before=network-online.target shutdown.target
+@@ -20,6 +20,8 @@ Before=network-online.target shutdown.target
  [Service]
  Type=oneshot
- ExecStart={{ROOTLIBEXECDIR}}/systemd-networkd-wait-online
+ ExecStart={{LIBEXECDIR}}/systemd-networkd-wait-online
 +ExecCondition=/bin/bash -c '! /bin/systemctl is-enabled NetworkManager-wait-online.service'
 +ExecCondition=/bin/bash -c '! /bin/systemctl is-enabled connman-wait-online.service'
  RemainAfterExit=yes
  
  [Install]
 -- 
-2.39.0
-
+2.45.2
