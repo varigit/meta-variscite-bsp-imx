@@ -3,7 +3,7 @@ LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://COPYING;md5=4725015cb0be7be389cf06deeae3683d"
 
 DEPENDS = "libnl"
-RDEPENDS:${PN} = "wl18xx-fw"
+RDEPENDS:${PN} = "linux-firmware-wl18xx"
 
 #Tag: R8.7_SP3 (8.7.3)
 SRCREV = "5048b59a444ac59ba7171d6e122d5a84581aebf2"
@@ -24,3 +24,5 @@ do_install() {
     install -d ${D}${bindir}
     install -m 0755 calibrator ${D}${bindir}/
 }
+
+COMPATIBLE_MACHINE = "(var-som-mx6)"
