@@ -81,7 +81,7 @@ help() {
 }
 
 # Initialize default Linux Device Tree
-if [ "${MACHINE#*DART-MX8*}" != "${MACHINE}" ]; then
+if [ "${MACHINE#*DART-MX*}" != "${MACHINE}" ]; then
     readonly CM_DTB=${CM_DTB_DART}
 elif [ "${MACHINE#*VAR-SOM*}" != "${MACHINE}" ]; then
     readonly CM_DTB=${CM_DTB_SOM}
