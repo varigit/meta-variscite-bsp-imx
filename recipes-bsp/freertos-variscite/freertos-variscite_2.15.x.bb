@@ -13,7 +13,7 @@ MCUXPRESSO_BRANCH:mx9-nxp-bsp = "mcuxpresso_sdk_${PV}-var01"
 # "Development Tools" section for supported GCC version
 CM_GCC = "12.3.rel1"
 
-SRCREV = "4c594915c46c6bd43b0530c9d1d21a09d464aab0"
+SRCREV = "78afa00fed0753d198ac28ba1cb2f767edf1f106"
 SRC_URI += " \
     git://github.com/varigit/freertos-variscite.git;protocol=https;branch=${MCUXPRESSO_BRANCH}; \
 "
