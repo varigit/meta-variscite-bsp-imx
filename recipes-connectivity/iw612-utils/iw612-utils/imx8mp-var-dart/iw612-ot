@@ -8,14 +8,18 @@
 . /etc/gpiochip
 
 gpio1=$(get_gpiochip "30200000.gpio")
+gpio2=$(get_gpiochip "30210000.gpio")
 
 SPI_DEV="/dev/spidev1.0"
 SPI_MODE="0"
 SPI_SPEED="1000000"
 SPI_RESET_DELAY="500"
 
-GPIO_DEV_INT="/dev/${gpio1}"
-GPIO_LINE_INT="12"
+GPIO_DEV_INT_DART="/dev/${gpio2}"
+GPIO_LINE_INT_DART="6"
+
+GPIO_DEV_INT_SOM="/dev/${gpio1}"
+GPIO_LINE_INT_SOM="12"
 
 # btnxpuart fdt device compatible file
 BT_FDT_SOM="/sys/firmware/devicetree/base/soc@0/bus@30800000/serial@30880000/bluetooth_iw61x"
@@ -32,8 +36,12 @@ ot_set_vars()
 {
 	if som_is_var_som_mx8m_plus; then
 		BT_FDT=${BT_FDT_SOM}
+		GPIO_DEV_INT=${GPIO_DEV_INT_SOM}
+		GPIO_LINE_INT=${GPIO_LINE_INT_SOM}
 	else
 		BT_FDT=${BT_FDT_DART}
+		GPIO_DEV_INT=${GPIO_DEV_INT_DART}
+		GPIO_LINE_INT=${GPIO_LINE_INT_DART}
 	fi
 }
 
