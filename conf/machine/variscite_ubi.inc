@@ -1,11 +1,11 @@
 # UBIFS for Variscite 0.5GB NAND flash
 # erase block size of 128KiB
-export MKUBIFS_ARGS_128kbpeb = " -m 2048 -e 124KiB -c 3965 "
-export UBINIZE_ARGS_128kbpeb = " -m 2048 -p 128KiB -s 2048 "
+MKUBIFS_ARGS_128kbpeb = " -m 2048 -e 124KiB -c 3965 "
+UBINIZE_ARGS_128kbpeb = " -m 2048 -p 128KiB -s 2048 "
 
 # erase block size of 256KiB
-export MKUBIFS_ARGS_256kbpeb = " -m 4096 -e 248KiB -c 2000 "
-export UBINIZE_ARGS_256kbpeb = " -m 4096 -p 256KiB -s 4096 "
+MKUBIFS_ARGS_256kbpeb = " -m 4096 -e 248KiB -c 2000 "
+UBINIZE_ARGS_256kbpeb = " -m 4096 -p 256KiB -s 4096 "
 
 # UBIFS for Variscite 1GB NAND flash
 # erase block size of 128KiB
