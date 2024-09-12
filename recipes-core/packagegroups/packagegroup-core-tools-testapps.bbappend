@@ -5,6 +5,6 @@ CONNMAN_PACKAGES = "\
     "
 
 RDEPENDS:${PN}:remove = "\
-    ${@bb.utils.contains('PREFERRED_CONNECTIVITY_MANAGER', 'networkmanager', \
+    ${@bb.utils.contains_any('PREFERRED_CONNECTIVITY_MANAGER', 'networkmanager systemd-networkd', \
         '${CONNMAN_PACKAGES}', '', d)} \
     "
