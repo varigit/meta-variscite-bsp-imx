@@ -1,22 +1,23 @@
-From 5a497fe81413833ce55d44a3ed49840d66cab14b Mon Sep 17 00:00:00 2001
-From: Pierluigi Passaro <pierluigi.p@variscite.com>
-Date: Mon, 1 Feb 2021 12:19:58 +0100
+From f90953767bf542b2257d7c614e483a76260fd32a Mon Sep 17 00:00:00 2001
+From: FrancescoFerraro <francesco.f@variscite.com>
+Date: Sat, 1 Jun 2024 13:09:43 +0200
 Subject: [PATCH] uboot_env: extend line length to 4096
 
 This avoid cutting commands longer than 1024 chars
 
 Upstream-Status: Pending
 Signed-off-by: Pierluigi Passaro <pierluigi.p@variscite.com>
+Signed-off-by: FrancescoFerraro <francesco.f@variscite.com>
 ---
  src/uboot_env.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/uboot_env.c b/src/uboot_env.c
-index c9a900f..4690eb9 100644
+index ae85c7e..ccda340 100644
 --- a/src/uboot_env.c
 +++ b/src/uboot_env.c
-@@ -1131,7 +1131,7 @@ static int libuboot_load(struct uboot_ctx *ctx)
- 	return ctx->valid ? 0 : -ENODATA;
+@@ -1630,7 +1630,7 @@ cleanup:
+ 	return status;
  }
  
 -#define LINE_LENGTH 1024
@@ -25,5 +26,5 @@ index c9a900f..4690eb9 100644
  {
  	FILE *fp;
 -- 
-2.25.1
+2.45.1
 
