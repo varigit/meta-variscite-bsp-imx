@@ -18,4 +18,4 @@ SRC_URI += " \
     git://github.com/varigit/freertos-variscite.git;protocol=https;branch=${MCUXPRESSO_BRANCH}; \
 "
 
-COMPATIBLE_MACHINE = "(imx8mn-var-som|mx9-nxp-bsp)"
+COMPATIBLE_MACHINE = "(imx8mn-var-som|mx9-nxp-bsp|imx8mm-var-dart)"
