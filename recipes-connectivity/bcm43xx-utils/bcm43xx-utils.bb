@@ -10,13 +10,24 @@ SRC_URI = " \
 	file://variscite-wifi.service \
 	file://variscite-bt \
 	file://variscite-bt.service \
+	file://99-iw61x-unmanaged-devices.conf \
+	file://var_wifi_mod_para.conf \
 "
+
+PACKAGECONFIG ??= "networkmanager"
+PACKAGECONFIG[networkmanager] = "--with-networkmanager,--without-networkmanager"
+PACKAGES += "${PN}-iw61x"
 
 FILES:${PN} = " \ 
 	${sysconfdir}/wifi/*  \
 	${sysconfdir}/bluetooth/*  \
 	${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '${systemd_unitdir}/system/* ${sysconfdir}/systemd/system/multi-user.target.wants/*', \
 			'${sysconfdir}/init.d ${sysconfdir}/rcS.d ${sysconfdir}/rc2.d ${sysconfdir}/rc3.d ${sysconfdir}/rc4.d ${sysconfdir}/rc5.d', d)} \
+"
+
+FILES:${PN}-iw61x = " \
+	/etc/NetworkManager/conf.d/* \
+	/lib/firmware/nxp/var_wifi_mod_para.conf \
 "
 
 RDEPENDS:${PN}:imx6ul-var-dart = "i2c-tools"
@@ -54,6 +65,14 @@ do_install() {
 		ln -s ${sysconfdir}/bluetooth/variscite-bt ${D}${sysconfdir}/init.d/variscite-bt
 		update-rc.d -r ${D} variscite-bt start 99 2 3 4 5 .
 	fi
+
+	if [ "${@bb.utils.contains('PACKAGECONFIG', 'networkmanager', 'yes', 'no', d)}" = "yes" ]; then
+		install -d ${D}/${sysconfdir}/NetworkManager/conf.d
+		install -m 0644 ${WORKDIR}/99-iw61x-unmanaged-devices.conf ${D}/${sysconfdir}/NetworkManager/conf.d
+	fi
+
+	install -d ${D}${nonarch_base_libdir}/firmware/nxp
+	install -m 0755 ${WORKDIR}/var_wifi_mod_para.conf ${D}${nonarch_base_libdir}/firmware/nxp
 }
 
 COMPATIBLE_MACHINE = "(imx6ul-var-dart|imx7-var-som|imx8mm-var-dart|imx8mn-var-som|imx8mq-var-dart|imx8qm-var-som|imx8qxp-var-som|imx8qxpb0-var-som|imx8mp-var-dart|imx93-var-som)"

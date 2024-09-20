@@ -15,6 +15,58 @@ BT_EN_GPIO="gpiochip4 4"
 # WIFI MMC host
 WIFI_MMC_HOST=2190000.mmc
 
+# Get the SOM revision
+get_somrev() {
+	# Get the raw output
+	raw_output=$(i2cget -f -y 0x1 0x51 0xfd)
+
+	# Convert the output to decimal
+	decimal_output=$(( $raw_output ))
+
+	# Extract the relevant bits for SOM revision (using bits 3 and 4)
+	som_info=$(( (decimal_output >> 3) & 0x3 ))
+
+	# Determine the SOM revision based on the extracted bits
+	case $som_info in
+	0)
+		echo "SOM Rev 1"
+		;;
+	1)
+		echo "SOM Rev 2 (5G)"
+		;;
+	2)
+		echo "SOM Rev 2 (5G) (IW611)"
+		;;
+	3)
+		echo "SOM Rev 2 (5G) (IW612)"
+		;;
+	*)
+		echo "SOM Rev illegal!"
+		;;
+	esac
+}
+
+# Check if the SOM uses IW611/IW612
+som_uses_iw61x() {
+	somrev=$(get_somrev)
+
+	if [[ "$somrev" == "SOM Rev 2 (5G) (IW611)" || \
+	      "$somrev" == "SOM Rev 2 (5G) (IW612)" ]]; then
+		return 0  # True, it uses IW611 or IW612
+	else
+		return 1  # False, it doesn't use IW611/IW612
+	fi
+}
+
+# Function to disable a network interface
+disable_network_interface() {
+	local iface="$1"
+	# Check if the interface exists
+	if ip link show "$iface" &>/dev/null; then
+		ip link set dev "$iface" down
+	fi
+}
+
 # Check is SOM is DART-6UL-5G
 som_is_dart_6ul_5g()
 {
@@ -56,8 +108,13 @@ wifi_mmc_unbind()
 	fi
 }
 
+wifi_up_iw61x()
+{
+	modprobe moal mod_para=nxp/var_wifi_mod_para.conf
+}
+
 # Power up WIFI chip
-wifi_up()
+wifi_up_bcm43xx()
 {
 	# Unbind WIFI device from MMC controller
 	wifi_mmc_unbind
@@ -99,8 +156,17 @@ wifi_up()
 	modprobe brcmfmac
 }
 
+
+wifi_down_iw61x()
+{
+	disable_network_interface wlan0
+	disable_network_interface uap0
+	disable_network_interface wfd0
+	modprobe -r moal;
+}
+
 # Power down WIFI chip
-wifi_down()
+wifi_down_bcm43xx()
 {
 	# Unload WIFI driver
 	modprobe -r brcmfmac
@@ -168,16 +234,27 @@ wifi_start()
 	# Exit if WIFI should not be started
 	wifi_should_not_be_started && exit 0
 
+	# Get the SOM revision
+	somrev=$(get_somrev)
+
 	# Try starting WIFI hardware
 	for i in $(seq 1 3); do
-		# Up WIFI
-		wifi_up
+		# Up WIFI based on SOM revision
+		if som_uses_iw61x; then
+			wifi_up_iw61x
+		else
+			wifi_up_bcm43xx
+		fi
 
 		# Exit if WIFI interface exists
 		wifi_interface_exists && exit 0
 
-		# Down WIFI
-		wifi_down
+		# Down WIFI based on SOM revision
+		if som_uses_iw61x; then
+			wifi_down_iw61x
+		else
+			wifi_down_bcm43xx
+		fi
 
 		# Wait enough time for discharge
 		sleep 5
@@ -192,8 +269,15 @@ wifi_stop()
 	# Exit if WIFI should not be stopped
 	wifi_should_not_be_stopped && exit 0
 
-	# Down WIFI
-	wifi_down
+	# Get the SOM revision
+	somrev=$(get_somrev)
+
+	# Down WIFI based on SOM revision
+	if som_uses_iw61x; then
+		wifi_down_iw61x
+	else
+		wifi_down_bcm43xx
+	fi
 }
 
 ###########################
