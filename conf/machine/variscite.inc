@@ -68,7 +68,14 @@ MACHINE_FIRMWARE:append:mx8-nxp-bsp = " \
 	freertos-variscite \
 	"
 
+MACHINE_EXTRA_IW61X = " \
+	kernel-module-nxp-wlan \
+	linux-firmware-nxpiw612-sdio \
+	bcm43xx-utils-iw61x \
+"
+
 MACHINE_EXTRA_RDEPENDS += " \
+	${@bb.utils.contains('MACHINE_FEATURES', 'nxpiw612-sdio', '${MACHINE_EXTRA_IW61X}', '', d)} \
 	gptfdisk \
 	hostapd \
 	hdparm \
