@@ -37,19 +37,19 @@ bt_detect_iw61x()
 # Get maximum of N numbers
 max()
 {
-  printf "%s\n" "$@" | sort -g -r | head -n1
+	printf "%s\n" "$@" | sort -g -r | head -n1
 }
 
 # Set BT MAC address
 bt_set_macaddr()
 {
-  eth0_addr=$(cat /sys/class/net/eth0/address | sed 's/\://g')
-  eth1_addr=$(cat /sys/class/net/eth1/address | sed 's/\://g')
-  bt_addr=$(max $eth0_addr $eth1_addr)
-  bt_addr=$((0x$bt_addr+1))
-  bt_addr=$(printf '%012X' $bt_addr)
+	eth0_addr=$(cat /sys/class/net/eth0/address | sed 's/\://g')
+	eth1_addr=$(cat /sys/class/net/eth1/address | sed 's/\://g')
+	bt_addr=$(max $eth0_addr $eth1_addr)
+	bt_addr=$((0x$bt_addr+1))
+	bt_addr=$(printf '%012X' $bt_addr)
 
-  BT_MACADDR=$(echo $bt_addr | sed 's/\(..\)/\1:/g;s/:$//')
+	BT_MACADDR=$(echo $bt_addr | sed 's/\(..\)/\1:/g;s/:$//')
 }
 
 # Set BT firmware based on WIFI SDIO ID
