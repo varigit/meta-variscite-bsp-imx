@@ -94,7 +94,7 @@ bt_enable()
 }
 
 # Start BT hardware
-bt_start()
+bt_start_bcm43xx()
 {
 	# Exit if BT module is not available
 	bt_found || exit 0
@@ -119,8 +119,56 @@ bt_start()
 			--tosleep 1000 ${BT_TTY_DEV} &
 }
 
+bt_start_iw61x()
+{
+	# Configure global variables for SOM or DART
+	bt_set_uart
+
+	# Exit if BT interface is already running
+	if [ -e "/sys/class/bluetooth/hci0" ]; then
+		echo "$(basename $0): Bluetooth already started"
+		exit 0
+	fi
+
+	echo "$(basename $0): starting"
+
+	# Enable BT hardware
+	bt_enable
+
+	# Initialize and attach the BT device at 115200
+	hciattach ${BT_TTY_DEV} any 115200 flow
+	sleep 0.5
+	hciconfig hci0 up
+
+	# Use hcitool to change the baud rate
+	# Arguments:
+	#   0x3f    : HCI_CMD_GROUP_VENDOR_SPECIFIC
+	#   0x0009  : HCI_CMD_UART_BAUD
+	#   0xc0 0xc6 0x2d 0x00: 3000000
+	hcitool -i hci0 cmd 0x3f 0x0009 0xc0 0xc6 0x2d 0x00
+
+	# Kill hciattach after changing the baud
+	kill -9 $(pidof hciattach) 2>/dev/null || true
+	sleep 0.5
+
+	# Initialize and attach the BT device at 3000000
+	hciattach ${BT_TTY_DEV} any 3000000 flow
+
+	# Fork a dummy process to satisfy the variscite-bt systemd service type=forking
+	(while true; do sleep 60; done) &
+}
+
+bt_start()
+{
+	if [ -f /proc/mwlan/adapter0/config ]; then
+		bt_start_iw61x
+	else
+		bt_start_bcm43xx
+	fi
+}
+
 # Stop BT hardware
-bt_stop()
+bt_stop_bcm43xx()
 {
 	# Exit if BT interface is not available
 	[ -e /sys/class/bluetooth/hci0 ] || exit 0
@@ -139,6 +187,46 @@ bt_stop()
 
   	# Power down BT module
 	gpioset ${BT_EN_GPIO}=0
+}
+
+bt_stop_iw61x()
+{
+	# Exit if BT interface is not available
+	[ -e /sys/class/bluetooth/hci0 ] || exit 0
+
+	echo "$(basename $0): stopping"
+
+	# Configure global variables for SOM or DART
+	bt_set_uart
+
+	# Bring up hci interface before to restore the baud rate to 115200 bps
+	if hciconfig hci0 | grep -q "DOWN"; then
+		hciconfig hci0 up
+	fi
+
+	# Use hcitool to change the baud rate
+	# Arguments:
+	#   0x3f    : HCI_CMD_GROUP_VENDOR_SPECIFIC
+	#   0x0009  : HCI_CMD_UART_BAUD
+	#   0x00 0x02 0x1C 0x00: 115200
+	hcitool -i hci0 cmd 0x3f 0x0009 0x00 0xC2 0x01 0x00
+	sleep 0.5
+
+	# Kill any running hciattach processes
+	kill -9 $(pidof hciattach) 2>/dev/null || true
+
+	# Disable BT uart buffer and power down BT module
+	gpioset ${BT_BUF_GPIO}=1
+	gpioset ${BT_EN_GPIO}=0
+}
+
+bt_stop()
+{
+        if [ -f /proc/mwlan/adapter0/config ]; then
+                bt_stop_iw61x
+        else
+                bt_stop_bcm43xx
+        fi
 }
 
 ###########################

@@ -32,6 +32,30 @@ BT_EN_GPIO_SOM="gpiochip1 9"
 # WIFI MMC host
 WIFI_MMC_HOST=30b40000.mmc
 
+get_somrev() {
+	# Get the raw output
+	raw_output=$(i2cget -f -y 0x0 0x52 0x1e)
+
+	# Convert the output to decimal
+	decimal_output=$(( $raw_output ))
+
+	# Extract major and minor versions
+	major=$(( 1 + (($decimal_output >> 5) & 0x7) ))
+	minor=$(( $decimal_output & 0x1F ))
+
+	echo "$major.$minor"
+}
+
+# Check if wifi is bcm43xx
+wifi_is_bcm43xx() {
+	somrev=$(get_somrev)
+	if [ "$(echo "$somrev < 2.0" | bc)" -eq 1 ]; then
+		return 0
+	else
+		return 1
+	fi
+}
+
 # Return true if WIFI interface exists
 wifi_interface_exists()
 {
@@ -184,8 +208,18 @@ wifi_should_not_be_stopped()
 	return 1
 }
 
+# Function to disable a network interface
+disable_network_interface() {
+	local iface="$1"
+
+	# Check if the interface exists
+	if ip link show "$iface" &>/dev/null; then
+		ip link set dev "$iface" down
+	fi
+}
+
 # Start WIFI hardware
-wifi_start()
+wifi_start_bcm43xx()
 {
 	# Exit if WIFI should not be started
 	wifi_should_not_be_started && exit 0
@@ -211,14 +245,45 @@ wifi_start()
 	exit 1
 }
 
+wifi_start_iw61x()
+{
+	modprobe moal mod_para=nxp/var_wifi_mod_para.conf
+}
+
+wifi_start()
+{
+	if wifi_is_bcm43xx; then
+		wifi_start_bcm43xx
+	else
+		wifi_start_iw61x
+	fi
+}
+
 # Stop WIFI hardware
-wifi_stop()
+wifi_stop_bcm43xx()
 {
 	# Exit if WIFI should not be stopped
 	wifi_should_not_be_stopped && exit 0
 
 	# Down WIFI
 	wifi_down
+}
+
+wifi_stop_iw61x()
+{
+	disable_network_interface wlan0
+	disable_network_interface uap0
+	disable_network_interface wfd0
+	modprobe -r moal;
+}
+
+wifi_stop()
+{
+        if wifi_is_bcm43xx; then
+                wifi_stop_bcm43xx
+        else
+                wifi_stop_iw61x
+        fi
 }
 
 ###########################
