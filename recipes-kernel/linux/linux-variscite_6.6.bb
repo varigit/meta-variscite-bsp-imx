@@ -36,6 +36,7 @@ LOCALVERSION:imx8qxp-var-som = "-imx8x"
 LOCALVERSION:imx8qxpb0-var-som = "-imx8x"
 LOCALVERSION:imx8qm-var-som = "-imx8qm"
 LOCALVERSION:imx93-var-som = "-imx93"
+LOCALVERSION:imx95-var-dart = "-imx95"
 
 KBUILD_DEFCONFIG:mx6-nxp-bsp = "imx_v7_var_defconfig"
 KBUILD_DEFCONFIG:mx8-nxp-bsp = "imx8_var_defconfig"
