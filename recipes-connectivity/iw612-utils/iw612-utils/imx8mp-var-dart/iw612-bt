@@ -83,7 +83,11 @@ bt_enable()
 	sleep 0.1
 
 	# Route UART lines to BT module
-	gpioset ${BT_BUF_GPIO}=0
+	if som_is_var_som_mx8m_plus; then
+		gpioset ${BT_BUF_GPIO}=0
+	else
+		gpioset ${BT_BUF_GPIO}=1
+	fi
 }
 
 # Start BT hardware
@@ -150,7 +154,11 @@ bt_stop()
 	modprobe -r btnxpuart
 
 	# Assert bluetooth/802.15.4 reset GPIO and disable BT uart buffer
-	gpioset ${BT_BUF_GPIO}=0
+	if som_is_var_som_mx8m_plus; then
+		gpioset ${BT_BUF_GPIO}=0
+	else
+		gpioset ${BT_BUF_GPIO}=1
+	fi
 	gpioset ${BT_EN_GPIO}=0
 }
 
