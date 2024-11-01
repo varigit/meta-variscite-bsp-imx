@@ -41,6 +41,12 @@ som_is_var_som_mx8m_plus()
 	grep -q VAR-SOM-MX8M-PLUS /sys/devices/soc0/machine
 }
 
+# Return success exit status if SOM is DART-MX8M-PLUS
+som_is_dart_mx8m_plus()
+{
+	grep -q DART-MX8M-PLUS /sys/devices/soc0/machine
+}
+
 # Set BT firmware based on WIFI SDIO ID
 bt_set_firmware()
 {
@@ -90,7 +96,11 @@ bt_enable()
 	gpioset ${BT_EN_GPIO}=1
 
 	# Route UART lines to BT module
-	gpioset ${BT_BUF_GPIO}=0
+	if som_is_dart_mx8m_plus  && [ -f /proc/mwlan/adapter0/config ]; then
+		gpioset ${BT_BUF_GPIO}=1
+	else
+		gpioset ${BT_BUF_GPIO}=0
+	fi
 }
 
 # Start BT hardware
@@ -229,7 +239,11 @@ bt_stop_iw61x()
 	kill -9 $(pidof hciattach) 2>/dev/null || true
 
 	# Disable BT uart buffer and power down BT module
-	gpioset ${BT_BUF_GPIO}=1
+	if som_is_var_som_mx8m_plus; then
+		gpioset ${BT_BUF_GPIO}=1
+	else
+		gpioset ${BT_BUF_GPIO}=0
+	fi
 	gpioset ${BT_EN_GPIO}=0
 }
 
