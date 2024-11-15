@@ -145,24 +145,10 @@ bt_start_iw61x()
 	# Enable BT hardware
 	bt_enable
 
-	# Initialize and attach the BT device at 115200
-	hciattach ${BT_TTY_DEV} any 115200 flow
+	# Initialize and attach the BT device at 3000000 bps
+	hciattach ${BT_TTY_DEV} variscite 3000000 flow
 	sleep 0.5
 	hciconfig hci0 up
-
-	# Use hcitool to change the baud rate
-	# Arguments:
-	#   0x3f    : HCI_CMD_GROUP_VENDOR_SPECIFIC
-	#   0x0009  : HCI_CMD_UART_BAUD
-	#   0xc0 0xc6 0x2d 0x00: 3000000
-	hcitool -i hci0 cmd 0x3f 0x0009 0xc0 0xc6 0x2d 0x00
-
-	# Kill hciattach after changing the baud
-	kill -9 $(pidof hciattach) 2>/dev/null || true
-	sleep 0.5
-
-	# Initialize and attach the BT device at 3000000
-	hciattach ${BT_TTY_DEV} any 3000000 flow
 
 	# Wait until the HCI interface comes up
 	if ! timeout 10 sh -c 'until hciconfig | grep -q "hci"; do sleep 0.1; done'; then
@@ -222,18 +208,8 @@ bt_stop_iw61x()
 	# Configure global variables for SOM or DART
 	bt_set_uart
 
-	# Bring up hci interface before to restore the baud rate to 115200 bps
-	if hciconfig hci0 | grep -q "DOWN"; then
-		hciconfig hci0 up
-	fi
-
-	# Use hcitool to change the baud rate
-	# Arguments:
-	#   0x3f    : HCI_CMD_GROUP_VENDOR_SPECIFIC
-	#   0x0009  : HCI_CMD_UART_BAUD
-	#   0x00 0x02 0x1C 0x00: 115200
-	hcitool -i hci0 cmd 0x3f 0x0009 0x00 0xC2 0x01 0x00
-	sleep 0.5
+	# Stop BT interface
+	hciconfig hci0 down
 
 	# Kill any running hciattach processes
 	kill -9 $(pidof hciattach) 2>/dev/null || true
