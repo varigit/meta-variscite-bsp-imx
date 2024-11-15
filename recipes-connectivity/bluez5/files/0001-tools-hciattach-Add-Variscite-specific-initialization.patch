@@ -1,0 +1,87 @@
+From 74e741654cc2eb167bca212a3bb2ba8f3ba280c1 Mon Sep 17 00:00:00 2001
+From: Natasha Kovalenko <natasha.k@variscite.com>
+Date: Fri, 14 Nov 2024 12:04:03 +0800
+Subject: [PATCH] tools: hciattach: Add Variscite specific initialization
+
+When using iw612 wifi/bt chip set without bluetooth driver support (btnxpuart),
+to change baud rate to 3000000 bps, first we have to change the default baud rate
+of the bluetooth device (115200 bps).
+
+Add variscite specific init function to change the default baud rate
+during UART initialization.
+
+Usage example:
+hciattach /dev/ttymxc3 variscite 115200 flow
+hciattach /dev/ttymxc3 variscite 3000000 flow
+
+
+Signed-off-by: Natasha Kovalenko <natasha.k@variscite.com>
+---
+ tools/hciattach.c |48 +
+ 1 file changed, 48 insertion(+)
+
+diff --git a/tools/hciattach.c b/tools/hciattach.c
+index c7e28f8..b57373b 100644
+--- a/tools/hciattach.c
++++ b/tools/hciattach.c
+@@ -978,6 +978,51 @@ static int bcm2035(int fd, struct uart_t
+ 	return 0;
+ }
+ 
++/*
++ * Variscite specific initialization
++ */
++static int variscite(int fd, struct uart_t *u, struct termios *ti)
++{
++	struct timespec tm = {0, 100000000};
++	char cmd[8];
++
++	cmd[0] = HCI_COMMAND_PKT;
++	cmd[1] = 0x09;  /* OpCode is 0xFC09 (bits[15:10] for OGF (0x3F - HCI_CMD_GROUP_VENDOR_SPECIFIC) */
++	cmd[2] = 0xfc;  /* bits[9:0] for OCF (0x0009 - HCI_CMD_UART_BAUD)). OpCode in little-endian: 0x09 0xFC */
++	cmd[3] = 0x04;
++
++	switch (u->speed) {
++	case 115200:
++		cmd[4] = 0x00;
++		cmd[5] = 0xc2;
++		cmd[6] = 0x01;
++		cmd[7] = 0x00;
++		break;
++	case 3000000:
++		cmd[4] = 0xc0;
++		cmd[5] = 0xc6;
++		cmd[6] = 0x2d;
++		cmd[7] = 0x00;
++		break;
++	default:
++		cmd[4] = 0x00;
++		cmd[5] = 0xc2;
++		cmd[6] = 0x01;
++		cmd[7] = 0x00;
++		u->speed = 115200;
++		break;
++	}
++
++	/* Send initialization command */
++	if (write(fd, cmd, 8) != 8) {
++		perror("Failed to write init command");
++		return -1;
++	}
++
++	nanosleep(&tm, NULL);
++	return 0;
++}
++
+ struct uart_t uart[] = {
+ 	{ "any",        0x0000, 0x0000, HCI_UART_H4,   115200, 115200,
+ 				FLOW_CTL, DISABLE_PM, NULL, NULL     },
+@@ -1097,6 +1142,9 @@ struct uart_t uart[] = {
+ 	{ "amp",	0x0000, 0x0000, HCI_UART_H4, 115200, 115200,
+ 			AMP_DEV, DISABLE_PM, NULL, NULL, NULL },
+ 
++	{ "variscite",  0x0000, 0x0000, HCI_UART_H4, 115200, 115200,
++			FLOW_CTL, DISABLE_PM, NULL, variscite, NULL },
++
+ 	{ NULL, 0 }
+ };
