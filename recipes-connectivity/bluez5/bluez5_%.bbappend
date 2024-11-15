@@ -8,6 +8,7 @@ SRC_URI:append = " \
 	file://obexd.conf \
 	file://obex.service \
 	file://bluetooth.service \
+	file://0001-tools-hciattach-Add-Variscite-specific-initialization.patch \
 "
 
 # Required by obexd
