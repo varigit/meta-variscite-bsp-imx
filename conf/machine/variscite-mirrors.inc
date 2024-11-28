@@ -10,3 +10,10 @@ MIRRORS += "\
     gitsm://source.codeaurora.org/external/imx/ gitsm://github.com/nxp-imx/ \n \
 "
 
+# Force nobranch to fix renamed default branches
+INHERIT += "srcuri-force-nobranch"
+
+SRCURI_FORCE_NOBRANCH_LIST ??= " \
+    bmap-tools git://github.com/intel/bmap-tools \n \
+    cracklib git://github.com/cracklib/cracklib \n \
+"
