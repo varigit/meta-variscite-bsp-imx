@@ -73,27 +73,20 @@ MACHINE_ESSENTIAL_EXTRA_RDEPENDS:mx9-nxp-bsp = " \
 "
 
 MACHINE_EXTRA_RDEPENDS += " \
-	gptfdisk \
-	hostapd \
-	hdparm \
 	imx-kobs \
-	iw \
 	kernel-modules \
-	kmod \
-	${PREFERRED_CONNECTIVITY_MANAGER_PACKAGES} \
-	packagegroup-tools-bluetooth \
-	packagegroup-var-hw-test \
-	bluealsa \
 	pm-utils-variscite \
-	rng-tools \
-	wpa-supplicant \
-	wireless-regdb-static \
 	u-boot-fw-utils \
 	u-boot-splash \
 	u-boot-default-env \
 	${@bb.utils.contains('MACHINE_FEATURES', 'nxpiw612-sdio', 'iw612-utils', '', d)} \
 "
 
+CORE_IMAGE_EXTRA_INSTALL += " \
+    packagegroup-tools-bluetooth \
+    packagegroup-variscite-devel \
+    ${PREFERRED_CONNECTIVITY_MANAGER_PACKAGES} \
+"
 
 IMAGE_FSTYPES = "tar.zst wic.zst"
 
