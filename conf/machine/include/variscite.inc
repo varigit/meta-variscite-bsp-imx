@@ -62,6 +62,16 @@ MACHINE_FIRMWARE:append:imx93-var-som = " \
 	freertos-variscite-scripts \
 	"
 
+MACHINE_ESSENTIAL_EXTRA_RDEPENDS:mx8-nxp-bsp = " \
+    kernel-image \
+    kernel-devicetree \
+"
+
+MACHINE_ESSENTIAL_EXTRA_RDEPENDS:mx9-nxp-bsp = " \
+    kernel-image \
+    kernel-devicetree \
+"
+
 MACHINE_EXTRA_RDEPENDS += " \
 	gptfdisk \
 	hostapd \
@@ -84,17 +94,6 @@ MACHINE_EXTRA_RDEPENDS += " \
 	${@bb.utils.contains('MACHINE_FEATURES', 'nxpiw612-sdio', 'iw612-utils', '', d)} \
 "
 
-# Packages added to all images (including core-image-minimal)
-IMAGE_INSTALL:append:mx8-nxp-bsp = " \
-	kernel-image \
-	kernel-devicetree \
-"
-
-IMAGE_INSTALL:append:mx9-nxp-bsp = " \
-	kernel-image \
-	kernel-devicetree \
-	zstd \
-"
 
 IMAGE_FSTYPES = "tar.zst wic.zst"
 
