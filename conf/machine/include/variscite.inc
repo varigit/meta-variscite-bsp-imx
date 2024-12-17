@@ -94,5 +94,4 @@ IMAGE_FSTYPES = "tar.zst wic.zst"
 DISTRO_FEATURES_BACKFILL_CONSIDERED:append = " pulseaudio"
 
 # Enable virtualization
-DISTRO_FEATURES:append:mx8-nxp-bsp = " virtualization"
-DISTRO_FEATURES:append:mx9-nxp-bsp = " virtualization"
+DISTRO_FEATURES:append = " virtualization"
