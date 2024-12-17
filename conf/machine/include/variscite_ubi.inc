@@ -22,6 +22,8 @@ UBI_VOLNAME  = "rootfs"
 
 IMAGE_FSTYPES = "tar.gz multiubi wic.gz"
 
+MACHINE_FEATURES += "nand-flash"
+
 # do multiubi last
 IMAGE_TYPEDEP:multiubi += "${IMAGE_FSTYPES}"
 IMAGE_TYPEDEP:multiubi:remove = "multiubi"
