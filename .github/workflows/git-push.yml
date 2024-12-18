@@ -1,0 +1,11 @@
+name: Git Push Workflow Actions
+
+on:
+  push
+
+jobs:
+  yocto-oelint-check:
+    uses: varigit-dev/action-workflows/.github/workflows/yocto-oelint-check.yml@master
+    with:
+        yocto_ref: scarthgap
+
