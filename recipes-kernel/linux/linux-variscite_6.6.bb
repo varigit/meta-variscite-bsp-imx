@@ -20,7 +20,7 @@ DEFAULT_PREFERENCE = "1"
 KERNEL_SRC ?= "git://github.com/varigit/linux-imx;protocol=https"
 
 SRCBRANCH = "lf-6.6.y_6.6.23-2.0.0_var01"
-SRCREV = "8b21b8e13bca30faee0040a16079665f12b0a01f"
+SRCREV = "ea4a04dbba38e193158dbd2a90cf1d642e704df0"
 LINUX_VERSION = "6.6.23"
 
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
@@ -79,4 +79,4 @@ pkg_postinst:kernel-devicetree:append:imx8qm-var-som () {
 }
 
 KERNEL_VERSION_SANITY_SKIP="1"
-COMPATIBLE_MACHINE = "(mx8-nxp-bsp|mx9-nxp-bsp)"
+COMPATIBLE_MACHINE = "(mx6-nxp-bsp|mx8-nxp-bsp|mx9-nxp-bsp)"
