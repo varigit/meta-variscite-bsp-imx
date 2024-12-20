@@ -22,7 +22,7 @@ SRCREV:imx7-var-som = "b022ea6ffae7e6828dff05e133c4a736ff707805"
 UBOOT_INITIAL_ENV_DEVICE:imx7-var-som = "nand"
 
 SRCBRANCH:imx8mn-var-som = "lf_v2022.04_var02"
-SRCREV:imx8mn-var-som = "b826a06b6b8376bc0047a3f7c4d2d9ec6f29e428"
+SRCREV:imx8mn-var-som = "96699eed5953b8d608094522deb08f437dbd2ee0"
 UBOOT_INITIAL_ENV_DEVICE:imx8mn-var-som = "sd"
 
 SRCBRANCH:imx8mp-var-dart = "lf_v2022.04_var02"
