@@ -9,6 +9,10 @@ SRCBRANCH = "lf_v2024.04_6.6.23-2.0.0_var01"
 SRCREV = "15f93470fcd03c288b6fd6a27fbb938857aebbbe"
 UBOOT_INITIAL_ENV_DEVICE = "sd"
 
+SRCBRANCH:var-som-mx6 = "lf_v2024.04_6.6.23-2.0.0_var01"
+SRCREV:var-som-mx6 = "3367fa3a9fcdf5af4ff4c8362e9d6197a16fc183"
+UBOOT_INITIAL_ENV_DEVICE:var-som-mx6 = "nand"
+
 SRCBRANCH:imx6ul-var-dart = "imx_v2018.03_4.14.78_1.0.0_ga_var02"
 SRCREV:imx6ul-var-dart = "9d5b55aeed8d084523c2f5d0762de5100952e4f0"
 UBOOT_INITIAL_ENV_DEVICE:imx6ul-var-dart = "nand"
