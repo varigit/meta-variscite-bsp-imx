@@ -20,7 +20,7 @@ DEFAULT_PREFERENCE = "1"
 KERNEL_SRC ?= "git://github.com/varigit/linux-imx;protocol=https"
 
 SRCBRANCH = "lf-6.6.y_6.6.23-2.0.0_var01"
-SRCREV = "ea4a04dbba38e193158dbd2a90cf1d642e704df0"
+SRCREV = "869cccc0e7753b1f1ccf9959ebce48cf28d460e1"
 LINUX_VERSION = "6.6.23"
 
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
@@ -37,6 +37,7 @@ LOCALVERSION:imx8qxpb0-var-som = "-imx8x"
 LOCALVERSION:imx8qm-var-som = "-imx8qm"
 LOCALVERSION:imx93-var-som = "-imx93"
 LOCALVERSION:imx95-var-dart = "-imx95"
+LOCALVERSION:var-som-mx6 = "-imx6"
 
 KBUILD_DEFCONFIG:mx6-nxp-bsp = "imx_v7_var_defconfig"
 KBUILD_DEFCONFIG:mx8-nxp-bsp = "imx8_var_defconfig"
