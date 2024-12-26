@@ -12,21 +12,16 @@ require recipes-kernel/linux/linux-imx.inc
 LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
-FILES:${KERNEL_PACKAGE_NAME}-base += "${nonarch_base_libdir}/modules/${KERNEL_VERSION}/modules.builtin.modinfo "
-
-DEPENDS += "lzop-native bc-native"
+DEPENDS += "bc-native lzop-native"
 
 DEFAULT_PREFERENCE = "1"
 
 KERNEL_SRC ?= "git://github.com/varigit/linux-imx;protocol=https"
 
 SRCBRANCH = "lf-6.6.y_6.6.23-2.0.0_var01"
+SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
 SRCREV = "869cccc0e7753b1f1ccf9959ebce48cf28d460e1"
 LINUX_VERSION = "6.6.23"
-
-SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
-
-FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 LOCALVERSION:imx6ul-var-dart = "-imx6ul"
 LOCALVERSION:imx8mp-var-dart = "-imx8mp"
@@ -80,5 +75,7 @@ pkg_postinst:kernel-devicetree:append:imx8qm-var-som () {
     ln -s imx8qp-var-spear-sp8customboard-${DEFAULT_DTB}.dtb imx8qp-var-spear-sp8customboard.dtb
 }
 
-KERNEL_VERSION_SANITY_SKIP="1"
+FILES:${KERNEL_PACKAGE_NAME}-base += "${nonarch_base_libdir}/modules/${KERNEL_VERSION}/modules.builtin.modinfo "
+
+KERNEL_VERSION_SANITY_SKIP = "1"
 COMPATIBLE_MACHINE = "(mx6-nxp-bsp|mx8-nxp-bsp|mx9-nxp-bsp)"
