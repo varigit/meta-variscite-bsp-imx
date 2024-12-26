@@ -6,6 +6,7 @@
 SUMMARY = "Linux kernel provided and supported by Variscite"
 DESCRIPTION = "Linux kernel provided and supported by Variscite (based on the kernel provided by NXP) \
 with focus on i.MX Family SOMs. It includes support for many IPs such as GPU, VPU and IPU."
+HOMEPAGE = "https://github.com/varigit/linux-imx"
 
 require recipes-kernel/linux/linux-imx.inc
 LICENSE = "GPL-2.0-only"
