@@ -19,7 +19,7 @@ BT_EN_GPIO="${gpio2} 6"
 BT_BUF_GPIO="${gpio5} 5"
 
 # btnxpuart fdt device compatible file
-BT_FDT_SOM="/sys/firmware/devicetree/base/soc@0/bus@30800000/serial@30880000/bluetooth_iw61x"
+BT_FDT_SOM="/sys/firmware/devicetree/base/soc@0/bus@30800000/spba-bus@30800000/serial@30890000/bluetooth_iw61x"
 BT_FDT_DART="/sys/firmware/devicetree/base/soc@0/bus@30800000/serial@30a60000/bluetooth_iw61x"
 
 # Return true if SOM is VAR-SOM-MX8M-MINI
