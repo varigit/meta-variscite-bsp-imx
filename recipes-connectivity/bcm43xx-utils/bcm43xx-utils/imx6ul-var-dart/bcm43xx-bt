@@ -88,7 +88,7 @@ bt_enable()
 bt_start()
 {
 	# Exit if booting from SD (BT is not available)
- 	grep -q mmcblk0 /proc/cmdline && exit 0
+	grep -q mmcblk0 /proc/cmdline && exit 0
 
 	# Exit if BT module is not available
 	wifi_sdio_exist ${WIFI_SDIO_ID_FILE} || exit 0
@@ -126,7 +126,7 @@ bt_stop()
 	# Stop BT firmware loading service
 	kill -9 $(pidof brcm_patchram_plus) 2>/dev/null || true
 
-  	# Power down BT module
+	# Power down BT module
 	gpioset ${BT_EN_GPIO}=0
 }
 
