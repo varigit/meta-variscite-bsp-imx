@@ -20,7 +20,7 @@ KERNEL_SRC ?= "git://github.com/varigit/linux-imx;protocol=https"
 
 SRCBRANCH = "lf-6.6.y_6.6.23-2.0.0_var01"
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
-SRCREV = "8dfaa948e6fddc8547fe006f35e6180ca8cb7673"
+SRCREV = "283c30ddc9b5dde855899b9e02bed76e8f511e33"
 
 LINUX_VERSION = "6.6.23"
 LINUX_VERSION_EXTENSION = "-var-lts-next"
