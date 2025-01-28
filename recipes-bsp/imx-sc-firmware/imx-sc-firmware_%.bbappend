@@ -1,6 +1,5 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 SC_FIRMWARE_NAME:imx8qxp-var-som = "mx8qx-var-som-scfw-tcm.bin"
-SC_FIRMWARE_NAME:imx8qxpb0-var-som = "mx8qx-var-som-scfw-tcm.bin"
 SC_FIRMWARE_NAME:imx8qm-var-som = "mx8qm-var-som-scfw-tcm.bin"
 
 SC_MX_FAMILY ?= "INVALID"

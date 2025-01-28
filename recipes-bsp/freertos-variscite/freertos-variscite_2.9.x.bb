@@ -9,4 +9,4 @@ CM_GCC = "10.3-2021.10"
 SRC_URI += " \
     git://github.com/varigit/freertos-variscite.git;protocol=https;branch=${MCUXPRESSO_BRANCH}; \
 "
-COMPATIBLE_MACHINE = "(imx8qm-var-som|imx8qxp-var-som|imx8qxpb0-var-som)"
+COMPATIBLE_MACHINE = "(imx8qm-var-som|imx8qxp-var-som)"

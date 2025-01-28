@@ -31,11 +31,9 @@ KBUILD_DEFCONFIG:mx9-nxp-bsp = "imx8_var_defconfig"
 KBUILD_DEFCONFIG:imx8mq-var-dart = "imx8mq_var_dart_defconfig"
 DEFAULT_DTB:imx8mq-var-dart = "sd-lvds"
 DEFAULT_DTB:imx8qxp-var-som = "sd"
-DEFAULT_DTB:imx8qxpb0-var-som = "sd"
 DEFAULT_DTB:imx8qm-var-som = "lvds"
 DEFAULT_DTB_PREFIX:imx8mq-var-dart = "imx8mq-var-dart-dt8mcustomboard"
 DEFAULT_DTB_PREFIX:imx8qxp-var-som = "imx8qxp-var-som-symphony"
-DEFAULT_DTB_PREFIX:imx8qxpb0-var-som = "imx8qxp-var-som-symphony"
 DEFAULT_DTB_PREFIX:imx8qm-var-som = "imx8qm-var-som-symphony"
 
 pkg_postinst:kernel-devicetree:append () {
@@ -48,11 +46,6 @@ pkg_postinst:kernel-devicetree:append:imx8mq-var-dart () {
 }
 
 pkg_postinst:kernel-devicetree:append:imx8qxp-var-som () {
-    cd $D/boot
-    ln -s ${DEFAULT_DTB_PREFIX}-${DEFAULT_DTB}.dtb ${DEFAULT_DTB_PREFIX}.dtb
-}
-
-pkg_postinst:kernel-devicetree:append:imx8qxpb0-var-som () {
     cd $D/boot
     ln -s ${DEFAULT_DTB_PREFIX}-${DEFAULT_DTB}.dtb ${DEFAULT_DTB_PREFIX}.dtb
 }
