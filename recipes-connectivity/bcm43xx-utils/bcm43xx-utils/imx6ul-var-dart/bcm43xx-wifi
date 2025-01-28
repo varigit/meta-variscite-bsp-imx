@@ -49,34 +49,34 @@ wifi_up()
 
 	if som_is_dart_6ul_5g; then
 		# WIFI power up
-		gpioset ${WIFI_PWR_GPIO}=1
+		gpioset -t 0 --chip ${WIFI_PWR_GPIO}=1
 		usleep 10000
 
 		# WLAN_EN up
-		gpioset ${WIFI_EN_GPIO}=1
+		gpioset -t 0 --chip ${WIFI_EN_GPIO}=1
 
 		# BT_EN up
-		gpioset ${BT_EN_GPIO}=1
-	
+		gpioset -t 0 --chip ${BT_EN_GPIO}=1
+
 		# Wait 150ms at least
 		usleep 200000
-	
+
 		# BT_EN down
-		gpioset ${BT_EN_GPIO}=0
+		gpioset -t 0 --chip ${BT_EN_GPIO}=0
 	else
 		# WLAN_EN up
-		gpioset ${WIFI_EN_GPIO}=1
+		gpioset -t 0 --chip ${WIFI_EN_GPIO}=1
 
 		# BT_EN up
-		gpioset ${BT_EN_GPIO}=1
-	
+		gpioset -t 0 --chip ${BT_EN_GPIO}=1
+
 		# Wait 150ms at least
 		usleep 200000
-	
+
 		# BT_EN down
-		gpioset ${BT_EN_GPIO}=0
+		gpioset -t 0 --chip ${BT_EN_GPIO}=0
 	fi
-	
+
 	# Bind WIFI device to MMC controller
 	wifi_mmc_bind ${WIFI_MMC_PATH} ${WIFI_MMC_HOST}
 
@@ -99,20 +99,20 @@ wifi_down()
 
 	if som_is_dart_6ul_5g; then
 		# WLAN_EN down
-		gpioset ${WIFI_EN_GPIO}=0
+		gpioset -t 0 --chip ${WIFI_EN_GPIO}=0
 
 		# BT_EN down
-		gpioset ${BT_EN_GPIO}=0
+		gpioset -t 0 --chip ${BT_EN_GPIO}=0
 		usleep 10000
 
 		# WIFI power down
-		gpioset ${WIFI_PWR_GPIO}=0
+		gpioset -t 0 --chip ${WIFI_PWR_GPIO}=0
 	else
 		# WLAN_EN down
-		gpioset ${WIFI_EN_GPIO}=0
+		gpioset -t 0 --chip ${WIFI_EN_GPIO}=0
 
 		# BT_EN down
-		gpioset ${BT_EN_GPIO}=0
+		gpioset -t 0 --chip ${BT_EN_GPIO}=0
 	fi
 }
 

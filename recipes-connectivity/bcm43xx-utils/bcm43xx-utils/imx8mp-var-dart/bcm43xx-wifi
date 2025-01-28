@@ -105,26 +105,26 @@ wifi_up()
 	wifi_mmc_unbind ${WIFI_MMC_PATH} ${WIFI_MMC_HOST}
 
 	# WIFI_PWR up
-	gpioset ${WIFI_PWR_GPIO}=1
+	gpioset -t 0 --chip ${WIFI_PWR_GPIO}=1
 	usleep 10000
 
 	# WLAN_EN up
-	gpioset ${WIFI_EN_GPIO}=1
+	gpioset -t 0 --chip ${WIFI_EN_GPIO}=1
 
 	# BT_EN up
-	gpioset ${BT_EN_GPIO}=1
+	gpioset -t 0 --chip ${BT_EN_GPIO}=1
 
 	# BT_BUF up
-	gpioset ${BT_BUF_GPIO}=0
+	gpioset -t 0 --chip ${BT_BUF_GPIO}=0
 
 	# Wait at least 150ms
 	usleep 200000
 
 	# BT_BUF down
-	gpioset ${BT_BUF_GPIO}=1
+	gpioset -t 0 --chip ${BT_BUF_GPIO}=1
 
 	# BT_EN down
-	gpioset ${BT_EN_GPIO}=0
+	gpioset -t 0 --chip ${BT_EN_GPIO}=0
 
 	# Bind WIFI device to MMC controller
 	wifi_mmc_bind ${WIFI_MMC_PATH} ${WIFI_MMC_HOST}
@@ -150,17 +150,17 @@ wifi_down()
 	config_pins
 
 	# WIFI_EN down
-	gpioset ${WIFI_EN_GPIO}=0
+	gpioset -t 0 --chip ${WIFI_EN_GPIO}=0
 
 	# BT_BUF down
-	gpioset ${BT_BUF_GPIO}=1
+	gpioset -t 0 --chip ${BT_BUF_GPIO}=1
 
 	# BT_EN down
-	gpioset ${BT_EN_GPIO}=0
+	gpioset -t 0 --chip ${BT_EN_GPIO}=0
 	usleep 10000
 
 	# WIFI_PWR down
-	gpioset ${WIFI_PWR_GPIO}=0
+	gpioset -t 0 --chip ${WIFI_PWR_GPIO}=0
 }
 
 # Return true if SOM has WIFI module assembled

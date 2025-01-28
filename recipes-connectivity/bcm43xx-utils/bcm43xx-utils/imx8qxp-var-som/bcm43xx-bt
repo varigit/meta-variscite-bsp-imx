@@ -26,12 +26,12 @@ WIFI_SDIO_ID_FILE=/sys/class/net/wlan0/device/device
 bt_enable()
 {
 	# Power up BT module
-	gpioset ${BT_EN_GPIO}=0
+	gpioset -t 0 --chip ${BT_EN_GPIO}=0
 	sleep 1
-	gpioset ${BT_EN_GPIO}=1
+	gpioset -t 0 --chip ${BT_EN_GPIO}=1
 
 	# Route UART lines to BT module
-    gpioset ${BT_BUF_GPIO}=0
+	gpioset -t 0 --chip ${BT_BUF_GPIO}=0
 }
 
 # Start BT hardware
@@ -73,10 +73,10 @@ bt_stop()
 	kill -9 $(pidof brcm_patchram_plus) 2>/dev/null || true
 
 	# Route UART lines to SOM connector
-    gpioset ${BT_BUF_GPIO}=1
+	gpioset -t 0 --chip ${BT_BUF_GPIO}=1
 
 	# Power down BT module
-  	gpioset ${BT_EN_GPIO}=0
+	gpioset -t 0 --chip ${BT_EN_GPIO}=0
 }
 
 ###########################

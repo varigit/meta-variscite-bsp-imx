@@ -70,15 +70,15 @@ bt_set_uart()
 bt_enable()
 {
 	# Power up BT module
-	gpioset ${BT_EN_GPIO}=0
+	gpioset -t 0 --chip ${BT_EN_GPIO}=0
 	sleep 1
-	gpioset ${BT_EN_GPIO}=1
+	gpioset -t 0 --chip ${BT_EN_GPIO}=1
 
 	# VAR-SOM-MX8M-MINI has no BT_BUF_GPIO pin
 	som_is_var_som_mx8m_mini && return
 
 	# Route UART lines to BT module
-	gpioset ${BT_BUF_GPIO}=0
+	gpioset -t 0 --chip ${BT_BUF_GPIO}=0
 }
 
 # Start BT hardware
@@ -130,11 +130,11 @@ bt_stop()
 
 	# Route UART lines to SOM connector
 	if ! som_is_var_som_mx8m_mini; then
-		gpioset ${BT_BUF_GPIO}=1
+		gpioset -t 0 --chip ${BT_BUF_GPIO}=1
 	fi
 
   	# Power down BT module
-	gpioset ${BT_EN_GPIO}=0
+	gpioset -t 0 --chip ${BT_EN_GPIO}=0
 }
 
 ###########################

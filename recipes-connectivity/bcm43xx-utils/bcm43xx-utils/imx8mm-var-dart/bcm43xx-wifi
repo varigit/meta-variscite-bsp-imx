@@ -84,36 +84,36 @@ wifi_up()
 	wifi_mmc_unbind ${WIFI_MMC_PATH} ${WIFI_MMC_HOST}
 
 	# WIFI_3V3 up
-	gpioset ${WIFI_3V3_GPIO}=1
+	gpioset -t 0 --chip ${WIFI_3V3_GPIO}=1
 	usleep 10000
 
 	# WIFI_1V8 up
 	if som_is_dart_mx8m_mini; then
-		gpioset ${WIFI_1V8_GPIO}=0
+		gpioset -t 0 --chip ${WIFI_1V8_GPIO}=0
 	else
-		gpioset ${WIFI_1V8_GPIO}=1
+		gpioset -t 0 --chip ${WIFI_1V8_GPIO}=1
 	fi
 	usleep 10000
 
 	# WLAN_EN up
-	gpioset ${WIFI_EN_GPIO}=1
+	gpioset -t 0 --chip ${WIFI_EN_GPIO}=1
 
 	# BT_EN up
-	gpioset ${BT_EN_GPIO}=1
+	gpioset -t 0 --chip ${BT_EN_GPIO}=1
 
 	if som_is_dart_mx8m_mini; then
 		# BT_BUF up
-		gpioset ${BT_BUF_GPIO}=0
+		gpioset -t 0 --chip ${BT_BUF_GPIO}=0
 
 		# Wait at least 150ms
 		usleep 200000
 
 		# BT_BUF down
-		gpioset ${BT_BUF_GPIO}=1
+		gpioset -t 0 --chip ${BT_BUF_GPIO}=1
 	fi
 
 	# BT_EN down
-	gpioset ${BT_EN_GPIO}=0
+	gpioset -t 0 --chip ${BT_EN_GPIO}=0
 
 	# Bind WIFI device to MMC controller
 	wifi_mmc_bind ${WIFI_MMC_PATH} ${WIFI_MMC_HOST}
@@ -136,26 +136,26 @@ wifi_down()
 	wifi_mmc_unbind ${WIFI_MMC_PATH} ${WIFI_MMC_HOST}
 
 	# WIFI_EN down
-	gpioset ${WIFI_EN_GPIO}=0
+	gpioset -t 0 --chip ${WIFI_EN_GPIO}=0
 
 	# BT_BUF down
 	if som_is_dart_mx8m_mini; then
-		gpioset ${BT_BUF_GPIO}=1
+		gpioset -t 0 --chip ${BT_BUF_GPIO}=1
 	fi
 
 	# BT_EN down
-	gpioset ${BT_EN_GPIO}=0
+	gpioset -t 0 --chip ${BT_EN_GPIO}=0
 	usleep 10000
 
 	# WIFI_1V8 down
 	if som_is_dart_mx8m_mini; then
-		gpioset ${WIFI_1V8_GPIO}=1
+		gpioset -t 0 --chip ${WIFI_1V8_GPIO}=1
 	else
-		gpioset ${WIFI_1V8_GPIO}=0
+		gpioset -t 0 --chip ${WIFI_1V8_GPIO}=0
 	fi
 
 	# WIFI_3V3 down
-	gpioset ${WIFI_3V3_GPIO}=0
+	gpioset -t 0 --chip ${WIFI_3V3_GPIO}=0
 }
 
 # Return true if SOM has WIFI module assembled

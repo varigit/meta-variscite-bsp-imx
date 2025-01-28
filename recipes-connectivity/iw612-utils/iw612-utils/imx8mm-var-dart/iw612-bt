@@ -67,13 +67,13 @@ fdt_has_btnxpuart() {
 bt_enable()
 {
 	# Power up BT module
-	gpioset ${BT_EN_GPIO}=0
+	gpioset -t 0 --chip ${BT_EN_GPIO}=0
 	sleep 0.1
-	gpioset ${BT_EN_GPIO}=1
+	gpioset -t 0 --chip ${BT_EN_GPIO}=1
 	sleep 0.1
 
 	# Route UART lines to BT module
-	gpioset ${BT_BUF_GPIO}=0
+	gpioset -t 0 --chip ${BT_BUF_GPIO}=0
 }
 
 # Start BT hardware
@@ -140,8 +140,8 @@ bt_stop()
 	modprobe -r btnxpuart
 
 	# Assert bluetooth/802.15.4 reset GPIO and disable BT uart buffer
-	gpioset ${BT_BUF_GPIO}=0
-	gpioset ${BT_EN_GPIO}=0
+	gpioset -t 0 --chip ${BT_BUF_GPIO}=0
+	gpioset -t 0 --chip ${BT_EN_GPIO}=0
 }
 
 # Issue in-band reset using hci interface
