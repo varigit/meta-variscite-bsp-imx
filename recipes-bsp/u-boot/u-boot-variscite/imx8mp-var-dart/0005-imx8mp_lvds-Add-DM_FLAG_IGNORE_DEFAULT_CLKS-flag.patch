@@ -1,0 +1,25 @@
+From 4313dab13eee3b648590fb3bbf5fb866df50d54c Mon Sep 17 00:00:00 2001
+From: Nate Drude <nate.d@variscite.com>
+Date: Thu, 30 Jan 2025 17:47:50 +0000
+Subject: [PATCH 5/5] imx8mp_lvds: Add DM_FLAG_IGNORE_DEFAULT_CLKS flag
+
+Signed-off-by: Nate Drude <nate.d@variscite.com>
+---
+ drivers/video/nxp/imx/imx8mp_lvds.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/video/nxp/imx/imx8mp_lvds.c b/drivers/video/nxp/imx/imx8mp_lvds.c
+index 3a6bb593f6e..fb234586418 100644
+--- a/drivers/video/nxp/imx/imx8mp_lvds.c
++++ b/drivers/video/nxp/imx/imx8mp_lvds.c
+@@ -280,6 +280,7 @@ U_BOOT_DRIVER(imx8mp_ldb) = {
+ 	.name				= "imx8mp_ldb",
+ 	.id				= UCLASS_DISPLAY,
+ 	.of_match			= imx8mp_ldb_ids,
++	.flags				= DM_FLAG_IGNORE_DEFAULT_CLKS,
+ 	.bind				= imx8mp_ldb_bind,
+ 	.probe				= imx8mp_ldb_probe,
+ 	.ops				= &imx8mp_ldb_ops,
+-- 
+2.43.0
+

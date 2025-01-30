@@ -1,7 +1,7 @@
 From 2dff59a5c79d5079ed50c51256eb35fc7b59cf13 Mon Sep 17 00:00:00 2001
 From: Nate Drude <nate.d@variscite.com>
 Date: Wed, 20 Nov 2024 18:21:28 +0000
-Subject: [PATCH 3/3] video: imx8mp_lvds: Add support for LVDS Channel 1
+Subject: [PATCH 3/5] video: imx8mp_lvds: Add support for LVDS Channel 1
 
 The driver currently hardcodes the LVDS channel to channel 0.
 This patch hardcodes it to channel 1.
