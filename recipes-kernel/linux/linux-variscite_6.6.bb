@@ -20,9 +20,9 @@ KERNEL_SRC ?= "git://github.com/varigit/linux-imx;protocol=https"
 
 SRCBRANCH = "lf-6.6.y_6.6.52-2.2.0_var01"
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
-SRCREV = "e6d2a25aaad1aaeae08894cc51599edd354edaf6"
+SRCREV = "59b0611f73d8f1284313979de7b394026a70c281"
 
-LINUX_VERSION = "6.6.23"
+LINUX_VERSION = "6.6.52"
 LINUX_VERSION_EXTENSION = "-var-lts-next"
 
 KBUILD_DEFCONFIG:mx6-nxp-bsp = "imx_v7_var_defconfig"
