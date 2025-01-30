@@ -1,4 +1,4 @@
-From f6de404b9ea10d815f40ba64b2b06302a25c3c56 Mon Sep 17 00:00:00 2001
+From 2dff59a5c79d5079ed50c51256eb35fc7b59cf13 Mon Sep 17 00:00:00 2001
 From: Nate Drude <nate.d@variscite.com>
 Date: Wed, 20 Nov 2024 18:21:28 +0000
 Subject: [PATCH 3/3] video: imx8mp_lvds: Add support for LVDS Channel 1
