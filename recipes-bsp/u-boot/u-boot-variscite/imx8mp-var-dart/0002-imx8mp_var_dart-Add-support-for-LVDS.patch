@@ -1,4 +1,4 @@
-From 2152fcbdf5e0c4bf97621365a8c8828d47d585aa Mon Sep 17 00:00:00 2001
+From 17e37e9887377004a50e234001bfcd1021bd1e27 Mon Sep 17 00:00:00 2001
 From: Nate Drude <nate.d@variscite.com>
 Date: Thu, 7 Nov 2024 22:30:24 +0000
 Subject: [PATCH 2/3] imx8mp_var_dart: Add support for LVDS
@@ -12,7 +12,7 @@ $ git am --3way --whitespace=fix 0001-L6.6.23-Add-i.MX8MP-LVDS-support-in-uboot.
 
 Signed-off-by: Nate Drude <nate.d@variscite.com>
 ---
- .../dts/imx8mp-var-dart-dt8mcustomboard.dtsi  | 71 +++++++++++++++++++
+ .../dts/imx8mp-var-dart-dt8mcustomboard.dts   | 71 +++++++++++++++++++
  arch/arm/dts/imx8mp-var-som-symphony.dts      | 71 +++++++++++++++++++
  board/variscite/imx8mp_var_dart/Makefile      |  1 +
  .../imx8mp_var_dart/imx8mp_var_dart.c         |  2 +
@@ -20,11 +20,11 @@ Signed-off-by: Nate Drude <nate.d@variscite.com>
  include/configs/imx8mp_var_dart.h             |  5 ++
  6 files changed, 165 insertions(+)
 
-diff --git a/arch/arm/dts/imx8mp-var-dart-dt8mcustomboard.dtsi b/arch/arm/dts/imx8mp-var-dart-dt8mcustomboard.dtsi
-index 4f233e97055..375bc1e6ea1 100644
---- a/arch/arm/dts/imx8mp-var-dart-dt8mcustomboard.dtsi
-+++ b/arch/arm/dts/imx8mp-var-dart-dt8mcustomboard.dtsi
-@@ -16,6 +16,13 @@
+diff --git a/arch/arm/dts/imx8mp-var-dart-dt8mcustomboard.dts b/arch/arm/dts/imx8mp-var-dart-dt8mcustomboard.dts
+index f7526850f30..4e41fbad008 100644
+--- a/arch/arm/dts/imx8mp-var-dart-dt8mcustomboard.dts
++++ b/arch/arm/dts/imx8mp-var-dart-dt8mcustomboard.dts
+@@ -14,6 +14,13 @@
  		gpio6 = &pca6408_2;
  	};
  
@@ -38,7 +38,7 @@ index 4f233e97055..375bc1e6ea1 100644
  	chosen {
  		stdout-path = &uart1;
  	};
-@@ -38,6 +45,37 @@
+@@ -36,6 +43,37 @@
  		startup-delay-us = <100>;
  		off-on-delay-us = <12000>;
  	};
@@ -76,7 +76,7 @@ index 4f233e97055..375bc1e6ea1 100644
  };
  
  &uart1 {
-@@ -179,6 +217,12 @@
+@@ -177,6 +215,12 @@
  };
  
  &iomuxc {
@@ -89,7 +89,7 @@ index 4f233e97055..375bc1e6ea1 100644
  	pinctrl_uart1: uart1grp {
  		fsl,pins = <
  			MX8MP_IOMUXC_UART1_RXD__UART1_DCE_RX				0x40
-@@ -293,3 +337,30 @@
+@@ -291,3 +335,30 @@
  		>;
  	};
  };
@@ -231,10 +231,10 @@ index a1601f6b1e3..b526bc411a6 100644
 +obj-$(CONFIG_VIDEO) += ../common/video.o
  endif
 diff --git a/board/variscite/imx8mp_var_dart/imx8mp_var_dart.c b/board/variscite/imx8mp_var_dart/imx8mp_var_dart.c
-index caa11ab7b72..6f26005d2dc 100644
+index 930eb306ff4..d59391750e5 100644
 --- a/board/variscite/imx8mp_var_dart/imx8mp_var_dart.c
 +++ b/board/variscite/imx8mp_var_dart/imx8mp_var_dart.c
-@@ -403,11 +403,13 @@ int board_late_init(void)
+@@ -446,11 +446,13 @@ int board_late_init(void)
  
  			var_carrier_eeprom_read(CARRIER_EEPROM_BUS_SOM, CARRIER_EEPROM_ADDR,
  						&carrier_eeprom);
@@ -249,10 +249,10 @@ index caa11ab7b72..6f26005d2dc 100644
  
  		var_carrier_eeprom_get_revision(&carrier_eeprom, carrier_rev, sizeof(carrier_rev));
 diff --git a/configs/imx8mp_var_dart_defconfig b/configs/imx8mp_var_dart_defconfig
-index bf53f19b27d..ab93675e193 100644
+index a3d7f568a91..44036652e8b 100644
 --- a/configs/imx8mp_var_dart_defconfig
 +++ b/configs/imx8mp_var_dart_defconfig
-@@ -80,7 +80,9 @@ CONFIG_CMD_USB_SDP=y
+@@ -81,7 +81,9 @@ CONFIG_CMD_USB_SDP=y
  CONFIG_CMD_USB_MASS_STORAGE=y
  CONFIG_BOOTP_PREFER_SERVERIP=y
  CONFIG_CMD_SNTP=y
@@ -262,7 +262,7 @@ index bf53f19b27d..ab93675e193 100644
  CONFIG_CMD_EFIDEBUG=y
  CONFIG_CMD_RTC=y
  CONFIG_CMD_TIME=y
-@@ -172,6 +174,19 @@ CONFIG_USB_GADGET=y
+@@ -173,6 +175,19 @@ CONFIG_USB_GADGET=y
  CONFIG_USB_GADGET_MANUFACTURER="Variscite"
  CONFIG_USB_GADGET_VENDOR_NUM=0x1fc9
  CONFIG_USB_GADGET_PRODUCT_NUM=0x0152
