@@ -1,4 +1,4 @@
-From 17e37e9887377004a50e234001bfcd1021bd1e27 Mon Sep 17 00:00:00 2001
+From 3baf23ef065f70e9326a28976be52b34c0c116f9 Mon Sep 17 00:00:00 2001
 From: Nate Drude <nate.d@variscite.com>
 Date: Thu, 7 Nov 2024 22:30:24 +0000
 Subject: [PATCH 2/5] imx8mp_var_dart: Add support for LVDS
@@ -283,13 +283,13 @@ index a3d7f568a91..44036652e8b 100644
  CONFIG_SHA384=y
  CONFIG_LZO=y
 diff --git a/include/configs/imx8mp_var_dart.h b/include/configs/imx8mp_var_dart.h
-index 21e21ab3eed..07b00f24b77 100644
+index 89e31832662..7a6f0d81baa 100644
 --- a/include/configs/imx8mp_var_dart.h
 +++ b/include/configs/imx8mp_var_dart.h
 @@ -60,6 +60,10 @@
  	"image=Image.gz\0" \
  	"img_addr=0x42000000\0" \
- 	"splashimage=0x50000000\0" \
+ 	"splashimage=0x4F600000\0" \
 +	"splashfile=/boot/splash.bmp\0" \
 +	"splashsourceauto=yes\0" \
 +	"backlight_disable=gpio clear $backlight_gpio\0" \
