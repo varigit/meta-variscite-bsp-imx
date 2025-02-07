@@ -165,6 +165,9 @@ bt_stop()
 # Issue in-band reset using hci interface
 in_band_reset()
 {
+	# Configure global variables for SOM or DART
+	bt_set_vars
+
 	# Exit if BT module is not iw612 according to the device tree
 	fdt_has_btnxpuart || exit 0
 
