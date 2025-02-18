@@ -1,0 +1,38 @@
+From 3c6863b784809757ff843672ee6902933aa28f30 Mon Sep 17 00:00:00 2001
+From: Nate Drude <nate.d@variscite.com>
+Date: Thu, 30 Jan 2025 17:47:50 +0000
+Subject: [PATCH 4/4] imx8mp_lvds: Add DM_FLAG_IGNORE_DEFAULT_CLKS flag
+
+Signed-off-by: Nate Drude <nate.d@variscite.com>
+---
+ drivers/video/nxp/imx/imx8mp_lvds.c | 1 +
+ drivers/video/nxp/imx/imx_lcdifv3.c | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/video/nxp/imx/imx8mp_lvds.c b/drivers/video/nxp/imx/imx8mp_lvds.c
+index fc545cfedb2..ab032957494 100644
+--- a/drivers/video/nxp/imx/imx8mp_lvds.c
++++ b/drivers/video/nxp/imx/imx8mp_lvds.c
+@@ -271,6 +271,7 @@ U_BOOT_DRIVER(imx8mp_ldb) = {
+ 	.name				= "imx8mp_ldb",
+ 	.id				= UCLASS_DISPLAY,
+ 	.of_match			= imx8mp_ldb_ids,
++	.flags				= DM_FLAG_IGNORE_DEFAULT_CLKS,
+ 	.bind				= imx8mp_ldb_bind,
+ 	.probe				= imx8mp_ldb_probe,
+ 	.ops				= &imx8mp_ldb_ops,
+diff --git a/drivers/video/nxp/imx/imx_lcdifv3.c b/drivers/video/nxp/imx/imx_lcdifv3.c
+index e2a95e3e721..659a2bf923c 100644
+--- a/drivers/video/nxp/imx/imx_lcdifv3.c
++++ b/drivers/video/nxp/imx/imx_lcdifv3.c
+@@ -419,6 +419,6 @@ U_BOOT_DRIVER(lcdifv3_video) = {
+ 	.bind	= lcdifv3_video_bind,
+ 	.probe	= lcdifv3_video_probe,
+ 	.remove = lcdifv3_video_remove,
+-	.flags	= DM_FLAG_PRE_RELOC | DM_FLAG_OS_PREPARE,
++	.flags	= DM_FLAG_PRE_RELOC | DM_FLAG_OS_PREPARE | DM_FLAG_IGNORE_DEFAULT_CLKS,
+ 	.priv_auto   = sizeof(struct lcdifv3_priv),
+ };
+-- 
+2.43.0
+

@@ -1,0 +1,47 @@
+From 7f24a6016335d12a7bc703e3923b1a4efdc9df15 Mon Sep 17 00:00:00 2001
+From: Nate Drude <nate.d@variscite.com>
+Date: Thu, 30 Jan 2025 17:24:40 +0000
+Subject: [PATCH 3/4] Partially Revert "Add i.MX8MP LVDS support in uboot"
+
+Hacking device.c is not acceptible since it is breaking
+other devices, namely ethernet on the i.MX 8M Plus.
+
+Signed-off-by: Nate Drude <nate.d@variscite.com>
+---
+ drivers/core/device.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/core/device.c b/drivers/core/device.c
+index 317ea0c1cab..b12f5949637 100644
+--- a/drivers/core/device.c
++++ b/drivers/core/device.c
+@@ -569,16 +569,16 @@ int device_probe(struct udevice *dev)
+ 			goto fail;
+ 	}
+ 
+-	// /* Only handle devices that have a valid ofnode */
+-	// if (dev_has_ofnode(dev) && !(dev->driver->flags & DM_FLAG_IGNORE_DEFAULT_CLKS)) {
+-	// 	/*
+-	// 	 * Process 'assigned-{clocks/clock-parents/clock-rates}'
+-	// 	 * properties
+-	// 	 */
+-	// 	ret = clk_set_defaults(dev, CLK_DEFAULTS_PRE);
+-	// 	if (ret)
+-	// 		goto fail;
+-	// }
++	/* Only handle devices that have a valid ofnode */
++	if (dev_has_ofnode(dev) && !(dev->driver->flags & DM_FLAG_IGNORE_DEFAULT_CLKS)) {
++		/*
++		 * Process 'assigned-{clocks/clock-parents/clock-rates}'
++		 * properties
++		 */
++		ret = clk_set_defaults(dev, CLK_DEFAULTS_PRE);
++		if (ret)
++			goto fail;
++	}
+ 
+ 	if (drv->probe) {
+ 		ret = drv->probe(dev);
+-- 
+2.43.0
+

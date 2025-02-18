@@ -1,0 +1,370 @@
+From b6c932778eda609a49588c521e888759fb152001 Mon Sep 17 00:00:00 2001
+From: Nate Drude <nate.d@variscite.com>
+Date: Tue, 18 Feb 2025 20:40:40 +0000
+Subject: [PATCH 2/4] imx8mp_var_dart: Add support for LVDS
+
+Requires first the following patch from: https://community.nxp.com/t5/i-MX-Processors-Knowledge-Base/Add-i-MX8MP-LVDS-driver-in-uboot/ta-p/1434826
+
+$ wget https://community.nxp.com/pwmxy87654/attachments/pwmxy87654/imx-processors%40tkb/5689/7/0001-L5.15.32-Add-i.MX8MP-LVDS-driver-in-uboot.patch
+$ sha256sum 0001-L5.15.32-Add-i.MX8MP-LVDS-driver-in-uboot.patch
+3d4a54b71d4b81e60fd8692e2b2a27992642076ed54ac6ba32fcd8182097f941  0001-L5.15.32-Add-i.MX8MP-LVDS-driver-in-uboot.patch
+$ git am --3way --whitespace=fix 0001-L5.15.32-Add-i.MX8MP-LVDS-driver-in-uboot.patch
+
+Signed-off-by: Nate Drude <nate.d@variscite.com>
+---
+ .../dts/imx8mp-var-dart-dt8mcustomboard.dts   | 72 +++++++++++++++++++
+ arch/arm/dts/imx8mp-var-som-symphony.dts      | 71 ++++++++++++++++++
+ .../imx8mp_var_dart/imx8mp_var_dart.c         | 17 +++++
+ configs/imx8mp_var_dart_defconfig             | 17 +++++
+ drivers/video/nxp/imx/imx8mp_lvds.c           |  4 +-
+ include/configs/imx8mp_var_dart.h             |  9 +++
+ 6 files changed, 188 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/dts/imx8mp-var-dart-dt8mcustomboard.dts b/arch/arm/dts/imx8mp-var-dart-dt8mcustomboard.dts
+index 03791a527fb..c656fb4f521 100644
+--- a/arch/arm/dts/imx8mp-var-dart-dt8mcustomboard.dts
++++ b/arch/arm/dts/imx8mp-var-dart-dt8mcustomboard.dts
+@@ -14,6 +14,13 @@
+ 		gpio6 = &pca6408_2;
+ 	};
+ 
++	backlight: backlight {
++		compatible = "gpio-backlight";
++		gpios = <&gpio1 1 GPIO_ACTIVE_HIGH>;
++		status = "okay";
++		default-on;
++	};
++
+ 	chosen {
+ 		stdout-path = &uart1;
+ 	};
+@@ -36,6 +43,37 @@
+ 		startup-delay-us = <100>;
+ 		off-on-delay-us = <12000>;
+ 	};
++
++	panel_lvds: panel-lvds {
++		bootph-pre-ram;
++		compatible = "simple-panel";
++		status= "okay";
++		backlight = <&backlight>;
++		width-mm = <153>;
++		height-mm = <86>;
++		data-mapping = "jeida-24";
++		display-timings {
++			native-mode = <&timing0>;
++			timing0: timing0 {
++				bootph-pre-ram;
++				clock-frequency = <74250000>;
++				hactive = <800>;
++				vactive = <480>;
++				hback-porch = <40>;
++				hfront-porch = <40>;
++				vback-porch = <29>;
++				vfront-porch = <13>;
++				hsync-len = <48>;
++				vsync-len = <3>;
++				de-active = <1>;
++			};
++		};
++		port@0 {
++			lvds_in: endpoint {
++				remote-endpoint = <&lvds_out>;
++			};
++		};
++	};
+ };
+ 
+ &uart1 {
+@@ -177,7 +215,41 @@
+ 	status = "okay";
+ };
+ 
++/* LVDS */
++&lcdif2 {
++	status = "okay";
++};
++
++&ldb {
++	status = "okay";
++
++	lvds-channel@0 {
++		fsl,data-mapping = "jeida";
++		fsl,data-width = <24>;
++		status = "okay";
++
++		port@1 {
++			reg = <1>;
++
++			lvds_out: endpoint {
++				remote-endpoint = <&lvds_in>;
++			};
++		};
++	};
++};
++
++&ldb_phy {
++	status = "okay";
++};
++
+ &iomuxc {
++
++	pinctrl_pwm1: pwm1grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_GPIO1_IO01__GPIO1_IO01				0x116
++		>;
++	};
++
+ 	pinctrl_uart1: uart1grp {
+ 		fsl,pins = <
+ 			MX8MP_IOMUXC_UART1_RXD__UART1_DCE_RX				0x40
+diff --git a/arch/arm/dts/imx8mp-var-som-symphony.dts b/arch/arm/dts/imx8mp-var-som-symphony.dts
+index 9c2d5bff717..8186dc0dff1 100644
+--- a/arch/arm/dts/imx8mp-var-som-symphony.dts
++++ b/arch/arm/dts/imx8mp-var-som-symphony.dts
+@@ -9,6 +9,13 @@
+ / {
+ 	model = "Variscite VAR-SOM-MX8M-PLUS on Symphony-Board";
+ 
++	backlight: backlight {
++		compatible = "gpio-backlight";
++		gpios = <&gpio5 5 GPIO_ACTIVE_HIGH>;
++		status = "okay";
++		default-on;
++	};
++
+ 	chosen {
+ 		stdout-path = &uart2;
+ 	};
+@@ -47,6 +54,37 @@
+ 		states = <3300000 0
+ 			  1800000 1>;
+ 	};
++
++	panel_lvds: panel-lvds {
++		bootph-pre-ram;
++		compatible = "simple-panel";
++		status= "okay";
++		backlight = <&backlight>;
++		width-mm = <153>;
++		height-mm = <86>;
++		data-mapping = "jeida-24";
++		display-timings {
++			native-mode = <&timing0>;
++			timing0: timing0 {
++				bootph-pre-ram;
++				clock-frequency = <74250000>;
++				hactive = <800>;
++				vactive = <480>;
++				hback-porch = <40>;
++				hfront-porch = <40>;
++				vback-porch = <29>;
++				vfront-porch = <13>;
++				hsync-len = <48>;
++				vsync-len = <3>;
++				de-active = <1>;
++			};
++		};
++		port@0 {
++			lvds_in: endpoint {
++				remote-endpoint = <&lvds_out>;
++			};
++		};
++	};
+ };
+ 
+ &uart2 {
+@@ -198,8 +236,41 @@
+ 	status = "okay";
+ };
+ 
++/* LVDS */
++&lcdif2 {
++	status = "okay";
++};
++
++&ldb {
++	status = "okay";
++
++	lvds-channel@0 {
++		fsl,data-mapping = "jeida";
++		fsl,data-width = <24>;
++		status = "okay";
++
++		port@1 {
++			reg = <1>;
++
++			lvds_out: endpoint {
++				remote-endpoint = <&lvds_in>;
++			};
++		};
++	};
++};
++
++&ldb_phy {
++	status = "okay";
++};
++
+ &iomuxc {
+ 
++	pinctrl_pwm1: pwm1grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SPDIF_EXT_CLK__GPIO5_IO05				0x116
++		>;
++	};
++
+ 	pinctrl_uart2: uart2grp {
+ 		fsl,pins = <
+ 			MX8MP_IOMUXC_UART2_RXD__UART2_DCE_RX				0x40
+diff --git a/board/variscite/imx8mp_var_dart/imx8mp_var_dart.c b/board/variscite/imx8mp_var_dart/imx8mp_var_dart.c
+index e1a12155361..e79b5df9a21 100644
+--- a/board/variscite/imx8mp_var_dart/imx8mp_var_dart.c
++++ b/board/variscite/imx8mp_var_dart/imx8mp_var_dart.c
+@@ -23,7 +23,10 @@
+ #include <dwc3-uboot.h>
+ #include <power/regulator.h>
+ #include <linux/delay.h>
++#include <imx_sip.h>
++#include <linux/arm-smccc.h>
+ #include <mmc.h>
++#include <splash.h>
+ 
+ #include "../common/extcon-ptn5150.h"
+ #include "../common/imx8_eeprom.h"
+@@ -319,8 +322,13 @@ int board_ehci_usb_phy_mode(struct udevice *dev)
+ #endif
+ #endif
+ 
++#define DISPMIX				13
++#define MIPI				15
++
+ int board_init(void)
+ {
++	struct arm_smccc_res res;
++
+ 	if (CONFIG_IS_ENABLED(EXTCON_PTN5150)) {
+ 		extcon_ptn5150_setup(&usb_ptn5150);
+ 	}
+@@ -337,6 +345,12 @@ int board_init(void)
+ 	init_usb_clk();
+ #endif
+ 
++	/* enable the dispmix & mipi phy power domain */
++	arm_smccc_smc(IMX_SIP_GPC, IMX_SIP_GPC_PM_DOMAIN,
++		      DISPMIX, true, 0, 0, 0, 0, &res);
++	arm_smccc_smc(IMX_SIP_GPC, IMX_SIP_GPC_PM_DOMAIN,
++		      MIPI, true, 0, 0, 0, 0, &res);
++
+ 	return 0;
+ }
+ 
+@@ -370,6 +384,7 @@ int board_late_init(void)
+ 		var_carrier_eeprom_read(CARRIER_EEPROM_BUS_SOM, CARRIER_EEPROM_ADDR, &carrier_eeprom);
+ 		var_carrier_eeprom_get_revision(&carrier_eeprom, carrier_rev, sizeof(carrier_rev));
+ 		env_set("carrier_rev", carrier_rev);
++		env_set("backlight_gpio", "GPIO5_5");
+ 	}
+ 	else if (board_id == BOARD_ID_DART) {
+ 		env_set("board_name", "DART-MX8M-PLUS");
+@@ -377,8 +392,10 @@ int board_late_init(void)
+ 		var_carrier_eeprom_read(CARRIER_EEPROM_BUS_DART, CARRIER_EEPROM_ADDR, &carrier_eeprom);
+ 		var_carrier_eeprom_get_revision(&carrier_eeprom, carrier_rev, sizeof(carrier_rev));
+ 		env_set("carrier_rev", carrier_rev);
++		env_set("backlight_gpio", "GPIO1_1");
+ 	}
+ 
++	splash_display();
+ 	var_setup_mac(ep);
+ 	var_eeprom_print_prod_info(ep);
+ 
+diff --git a/configs/imx8mp_var_dart_defconfig b/configs/imx8mp_var_dart_defconfig
+index 1b6274f4397..d162f4f4d70 100644
+--- a/configs/imx8mp_var_dart_defconfig
++++ b/configs/imx8mp_var_dart_defconfig
+@@ -67,6 +67,7 @@ CONFIG_CMD_USB=y
+ CONFIG_CMD_USB_MASS_STORAGE=y
+ CONFIG_BOOTP_PREFER_SERVERIP=y
+ CONFIG_CMD_SNTP=y
++CONFIG_CMD_BMP=y
+ CONFIG_CMD_CACHE=y
+ CONFIG_CMD_EFIDEBUG=y
+ CONFIG_CMD_RTC=y
+@@ -152,6 +153,22 @@ CONFIG_USB_GADGET=y
+ CONFIG_USB_GADGET_MANUFACTURER="Variscite"
+ CONFIG_USB_GADGET_VENDOR_NUM=0x0525
+ CONFIG_USB_GADGET_PRODUCT_NUM=0xa4a5
++CONFIG_DM_VIDEO=y
++CONFIG_VIDEO_LOGO=y
++CONFIG_BACKLIGHT_GPIO=y
++CONFIG_SYS_WHITE_ON_BLACK=y
++CONFIG_VIDEO_LCD_RAYDIUM_RM67191=y
++CONFIG_VIDEO_IMX8MP_LVDS=y
++CONFIG_VIDEO_IMX_SEC_DSI=y
++CONFIG_VIDEO_IMX_LCDIFV3=y
++CONFIG_SPLASH_SCREEN=y
++CONFIG_SPLASH_SCREEN_ALIGN=y
++CONFIG_SPLASH_SOURCE=y
++CONFIG_BMP_16BPP=y
++CONFIG_BMP_24BPP=y
++CONFIG_BMP_32BPP=y
++CONFIG_VIDEO_IT6263_BRIDGE=y
++CONFIG_VIDEO_ADV7535=y
+ CONFIG_SPL_RSA=y
+ CONFIG_SHA384=y
+ CONFIG_LZO=y
+diff --git a/drivers/video/nxp/imx/imx8mp_lvds.c b/drivers/video/nxp/imx/imx8mp_lvds.c
+index 11ff41ac560..fc545cfedb2 100644
+--- a/drivers/video/nxp/imx/imx8mp_lvds.c
++++ b/drivers/video/nxp/imx/imx8mp_lvds.c
+@@ -176,12 +176,12 @@ static int imx8mp_ldb_probe(struct udevice *dev)
+ 			ret = panel_enable_backlight(priv->conn_dev);
+ 			if (ret) {
+ 					dev_err(dev, "fail to enable panel backlight\n");
+-					return ret;
++					// return ret;
+ 			}
+ 			ret = panel_set_backlight(priv->conn_dev, 80);
+ 				if (ret) {
+ 					dev_err(dev, "fail to set panel backlight\n");
+-					return ret;
++					// return ret;
+ 			}
+ 		}
+ 
+diff --git a/include/configs/imx8mp_var_dart.h b/include/configs/imx8mp_var_dart.h
+index 4f011007830..e25e95a96cc 100644
+--- a/include/configs/imx8mp_var_dart.h
++++ b/include/configs/imx8mp_var_dart.h
+@@ -83,6 +83,10 @@
+ 	"image=Image.gz\0" \
+ 	"img_addr=0x42000000\0" \
+ 	"splashimage=0x4F600000\0" \
++	"splashfile=/boot/splash.bmp\0" \
++	"splashsourceauto=yes\0" \
++	"backlight_disable=gpio clear $backlight_gpio\0" \
++	"backlight_enable=gpio set $backlight_gpio\0" \
+ 	"console=ttymxc0,115200\0" \
+ 	"fdt_addr_r=0x43000000\0" \
+ 	"fdt_addr=0x43000000\0"			\
+@@ -149,6 +153,7 @@
+ 	"mmcboot=echo Booting from mmc ...; " \
+ 		"run mmcargs; " \
+ 		"run optargs; " \
++		"run backlight_disable; " \
+ 		"if test ${boot_fit} = yes || test ${boot_fit} = try; then " \
+ 			"bootm ${loadaddr}; " \
+ 		"else " \
+@@ -234,6 +239,10 @@
+ #define CONFIG_USBD_HS
+ #define CONFIG_USB_GADGET_VBUS_DRAW		2
+ 
++#ifdef CONFIG_DM_VIDEO
++#define CONFIG_HIDE_LOGO_VERSION
++#endif
++
+ /* EEPROM configs */
+ #define VAR_EEPROM_DRAM_START	(PHYS_SDRAM + (DEFAULT_SDRAM_SIZE >> 1))
+ 
+-- 
+2.43.0
+
