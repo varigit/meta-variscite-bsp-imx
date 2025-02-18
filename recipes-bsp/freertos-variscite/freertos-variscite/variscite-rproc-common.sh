@@ -121,6 +121,9 @@ elif [ "${MACHINE#*VAR-SOM*}" != "${MACHINE}" ]; then
             *VAR-SOM-MX8M-PLUS*)
                 CM_DTB=${CM_DTB_SOM_1X}
                 ;;
+            *VAR-SOM-MX8M-MINI*)
+                CM_DTB=${CM_DTB_SOM_1X}
+                ;;
         esac
     fi
 elif [ "${MACHINE#*SPEAR-MX8*}" != "${MACHINE}" ]; then
