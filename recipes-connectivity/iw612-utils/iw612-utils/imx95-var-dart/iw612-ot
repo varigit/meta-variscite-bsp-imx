@@ -3,6 +3,9 @@
 # Activate 802.15.4 / OpenThread on Variscite VAR-SOM-MX95
 #
 
+# Temporary disable OT service.
+exit 0
+
 # Include common functions
 . /etc/wifi/variscite-wireless
 . /etc/gpiochip
