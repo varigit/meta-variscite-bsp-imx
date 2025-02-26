@@ -21,14 +21,45 @@ SPI_MODE="0"
 SPI_SPEED="1000000"
 SPI_RESET_DELAY="500"
 
+# btnxpuart fdt device compatible file
+BT_FDT="/sys/firmware/devicetree/base/soc/bus@42000000/serial@42590000/bluetooth"
+
+# Use btnxpuart device node to determine if wifi module is iw61x
+fdt_has_btnxpuart() {
+	# Check if compatible file exists
+	if [ ! -e "$BT_FDT/compatible" ]; then
+		return 1
+	fi
+
+	# Check if compatible with nxp,88w8987-bt
+	if ! grep -q "nxp,88w8987-bt" "$BT_FDT/compatible"; then
+		return 1
+	fi
+
+	# Check if status file exists
+	if [ ! -e "$BT_FDT/status" ]; then
+		return 1
+	fi
+
+	# Check if status is okay
+	if ! grep -q "okay" "$BT_FDT/status"; then
+		return 1
+	fi
+
+	return 0
+}
+
 # Start OT hardware
 ot_start()
 {
-	# Exit if OT module is not available
-	wifi_sdio_exist ${WIFI_SDIO_ID_FILE} || exit 0
+	# Exit if BT module is not iw612 according to the device tree
+	fdt_has_btnxpuart || exit 0
 
-	# Exit if OT module is not iw612
-	verify_sdio_id ${WIFI_SDIO_ID_FILE} ${WIFI_SDIO_ID} || exit 0
+	# Exit if BT interface is not running, since it manages the reset line
+	if [ ! -e "/sys/class/bluetooth/hci0" ]; then
+		echo "$(basename $0): Error: variscite-bt must be running"
+		exit 1
+	fi
 
 	# Kill any running ot-daemon-iwxxx-spi processes
 	kill -9 $(pidof ot-daemon-iwxxx-spi) 2>/dev/null || true
@@ -47,8 +78,8 @@ ot_start()
 # Stop OT hardware
 ot_stop()
 {
-	# Exit if OT module is not iw612
-	verify_sdio_id ${WIFI_SDIO_ID_FILE} ${WIFI_SDIO_ID} || exit 0
+	# Exit if BT module is not iw612 according to the device tree
+	fdt_has_btnxpuart || exit 0
 
 	# Kill any running ot-daemon-iwxxx-spi processes
 	kill -9 $(pidof ot-daemon-iwxxx-spi) 2>/dev/null || true
