@@ -16,15 +16,10 @@ WIFI_SDIO_ID=0x0205
 # WIFI SDIO ID file
 WIFI_SDIO_ID_FILE=/sys/class/net/wlan0/device/device
 
-gpio4=$(get_gpiochip "43840000.gpio")
-
 SPI_DEV="/dev/spidev1.0"
 SPI_MODE="0"
 SPI_SPEED="1000000"
 SPI_RESET_DELAY="500"
-
-GPIO_DEV_INT="/dev/${gpio4}"
-GPIO_LINE_INT="28"
 
 # Start OT hardware
 ot_start()
@@ -44,7 +39,7 @@ ot_start()
 	hcitool cmd 3f 23 03 00 00
 
 	# Start ot-daemon-iwxxx-spi
-	URL="spinel+spi://${SPI_DEV}?gpio-int-device=${GPIO_DEV_INT}&gpio-int-line=${GPIO_LINE_INT}&spi-mode=${SPI_MODE}&spi-speed=${SPI_SPEED}&spi-reset-delay=${SPI_RESET_DELAY}&"
+	URL="spinel+spi://${SPI_DEV}?spi-mode=${SPI_MODE}&spi-speed=${SPI_SPEED}&spi-reset-delay=${SPI_RESET_DELAY}&"
 	echo "${URL}"
 	ot-daemon-iwxxx-spi "${URL}"
 }
