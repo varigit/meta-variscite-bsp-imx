@@ -13,14 +13,31 @@ gpio4=$(get_gpiochip "43840000.gpio")
 BT_EN_GPIO="${gpio4} 28"
 
 # btnxpuart fdt device compatible file
-BT_FDT="/sys/firmware/devicetree/base/soc/bus@42000000/serial@42590000/bluetooth/compatible"
+BT_FDT="/sys/firmware/devicetree/base/soc/bus@42000000/serial@42590000/bluetooth"
 
+# Use btnxpuart device node to determine if wifi module is iw61x
 fdt_has_btnxpuart() {
-	if [ -e "$BT_FDT" ] && grep -q "nxp,88w8987-bt" "$BT_FDT"; then
-		return 0  # fdt has btnxpuart device
-	else
-		return 1  # fdt does not have btnxpuart device
+	# Check if compatible file exists
+	if [ ! -e "$BT_FDT/compatible" ]; then
+		return 1
 	fi
+
+	# Check if compatible with nxp,88w8987-bt
+	if ! grep -q "nxp,88w8987-bt" "$BT_FDT/compatible"; then
+		return 1
+	fi
+
+	# Check if status file exists
+	if [ ! -e "$BT_FDT/status" ]; then
+		return 1
+	fi
+
+	# Check if status is okay
+	if ! grep -q "okay" "$BT_FDT/status"; then
+		return 1
+	fi
+
+	return 0
 }
 
 # Enable BT via GPIO(s)
