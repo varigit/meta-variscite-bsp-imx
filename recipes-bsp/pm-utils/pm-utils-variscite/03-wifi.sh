@@ -27,7 +27,7 @@ case $1 in
 
         if [ -f /etc/systemd/system/multi-user.target.wants/wpa_supplicant@wlan0.service ]; then
                 systemctl restart systemd-networkd
-                sleep1
+                sleep 1
                 systemctl restart wpa_supplicant@wlan0.service
         fi
         ;;
