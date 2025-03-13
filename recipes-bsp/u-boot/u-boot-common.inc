@@ -15,6 +15,8 @@ UBOOT_INITIAL_ENV_DEVICE:var-som-mx6 = "nand"
 
 UBOOT_INITIAL_ENV_DEVICE:imx6ul-var-dart = "nand"
 
+UBOOT_INITIAL_ENV_DEVICE:imx7-var-som = "nand"
+
 SRC_URI = "${UBOOT_SRC};branch=${SRCBRANCH}"
 
 S = "${WORKDIR}/git"
