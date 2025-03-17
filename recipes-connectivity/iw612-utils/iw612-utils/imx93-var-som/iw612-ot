@@ -13,7 +13,7 @@ WIFI_SDIO_ID=0x0205
 # WIFI SDIO ID file
 WIFI_SDIO_ID_FILE=/sys/class/net/wlan0/device/device
 
-gpio4=$(get_gpiochip "43830080.gpio")
+gpio4=$(get_gpiochip "43830000.gpio")
 
 SPI_DEV="/dev/spidev1.0"
 SPI_MODE="0"

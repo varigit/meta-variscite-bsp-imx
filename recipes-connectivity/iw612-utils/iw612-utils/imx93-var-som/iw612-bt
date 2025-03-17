@@ -7,7 +7,7 @@
 . /etc/wifi/variscite-wireless
 . /etc/gpiochip
 
-gpio4=$(get_gpiochip "43830080.gpio")
+gpio4=$(get_gpiochip "43830000.gpio")
 
 # GPIO pin to enable BT module
 BT_EN_GPIO="${gpio4} 15"
