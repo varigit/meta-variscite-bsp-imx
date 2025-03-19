@@ -100,32 +100,26 @@ get_somrev() {
 # Initialize default Linux Device Tree
 if [ "${MACHINE#*DART-MX*}" != "${MACHINE}" ]; then
     CM_DTB=${CM_DTB_DART}
-    somrev=$(get_somrev)
 
-    if [ "$(echo "$somrev < 2.0" | bc)" -eq 1 ]; then
-        case "${MACHINE}" in 
-            *DART-MX8M-PLUS*)
+    case "${MACHINE}" in
+        *DART-MX8M-PLUS*|*DART-MX8M-MINI*)
+            somrev=$(get_somrev)
+            if [ "$(echo "$somrev < 2.0" | bc)" -eq 1 ]; then
                 CM_DTB=${CM_DTB_DART_1X}
-                ;;
-            *DART-MX8M-MINI*)
-                CM_DTB=${CM_DTB_DART_1X}
-                ;;
-        esac
-    fi
+            fi
+            ;;
+    esac
 elif [ "${MACHINE#*VAR-SOM*}" != "${MACHINE}" ]; then
     CM_DTB=${CM_DTB_SOM}
-    somrev=$(get_somrev)
 
-    if [ "$(echo "$somrev < 2.0" | bc)" -eq 1 ]; then
-        case "$MACHINE" in
-            *VAR-SOM-MX8M-PLUS*)
+    case "$MACHINE" in
+        *VAR-SOM-MX8M-PLUS*|*VAR-SOM-MX8M-MINI*)
+            somrev=$(get_somrev)
+            if [ "$(echo "$somrev < 2.0" | bc)" -eq 1 ]; then
                 CM_DTB=${CM_DTB_SOM_1X}
-                ;;
-            *VAR-SOM-MX8M-MINI*)
-                CM_DTB=${CM_DTB_SOM_1X}
-                ;;
-        esac
-    fi
+            fi
+            ;;
+    esac
 elif [ "${MACHINE#*SPEAR-MX8*}" != "${MACHINE}" ]; then
     readonly CM_DTB=${CM_DTB_SPEAR}
 else
