@@ -1,19 +1,22 @@
 # Copyright (C) 2021-2023 Variscite
-DESCRIPTION = "Variscite i.MX Cortex M4/M7 Firmware Demos"
+SUMMARY = "Variscite i.MX Cortex-M Firmware Demos"
+DESCRIPTION = "FreeRTOS for Cortex-M core located inside i.MX7/8/9 SOC based products"
+HOMEPAGE = "https://github.com/varigit/freertos-variscite"
+SECTION = "bsp"
 LICENSE = "BSD-3-Clause"
-LIC_FILES_CHKSUM = "file://COPYING-BSD-3;md5=0858ec9c7a80c4a2cf16e4f825a2cc91"
-SECTION = "BSP"
+
+# inherit cmake
+DEPENDS:append = " cmake-native cortexm-toolchain-cross (=${CM_GCC})"
 
 SRC_URI = " \
+    git://github.com/varigit/freertos-variscite.git;protocol=https;branch=${MCUXPRESSO_BRANCH}; \
     file://variscite-rproc-linux \
     file://variscite-rproc-u-boot \
     file://variscite-rproc-common.sh \
     file://variscite-rproc.conf \
 "
-
-# inherit cmake
-DEPENDS = "cmake-native"
-DEPENDS:append = " cortexm-toolchain-cross (=${CM_GCC})"
+SRC_URI:append:imx8qxp-var-som = " file://${DISABLE_CACHE_PATCH};apply=no"
+SRC_URI:append:imx8qm-var-som = " file://${DISABLE_CACHE_PATCH};apply=no"
 
 inherit deploy
 
@@ -24,22 +27,22 @@ PACKAGECONFIG ??= "rproc-scripts"
 PACKAGECONFIG[rproc-scripts] = "--with-rproc-scripts, --without-rproc-scripts"
 PACKAGECONFIG[all-demos] = "--with-all-demos"
 
-MCORE_TYPE  ?= "m4"
-MCORE_TYPE:mx8mn-nxp-bsp  = "m7"
+MCORE_TYPE ?= "m4"
+MCORE_TYPE:mx8mn-nxp-bsp = "m7"
 MCORE_TYPE:mx8mnul-nxp-bsp = "m7"
-MCORE_TYPE:mx8mp-nxp-bsp  = "m7"
-MCORE_TYPE:mx8mpul-nxp-bsp  = "m7"
-MCORE_TYPE:mx8ulp-nxp-bsp  = "m33"
-MCORE_TYPE:mx93-nxp-bsp  = "m33"
+MCORE_TYPE:mx8mp-nxp-bsp = "m7"
+MCORE_TYPE:mx8mpul-nxp-bsp = "m7"
+MCORE_TYPE:mx8ulp-nxp-bsp = "m33"
+MCORE_TYPE:mx93-nxp-bsp = "m33"
 
-CM_BOARD="INVALID"
-CM_BOARD:mx8mn-nxp-bsp="som_mx8mn"
-CM_BOARD:mx8mq-nxp-bsp="dart_mx8mq"
-CM_BOARD:mx8mm-nxp-bsp="dart_mx8mm"
-CM_BOARD:mx8mp-nxp-bsp="dart_mx8mp som_mx8mp"
-CM_BOARD:mx8qm-nxp-bsp="som_mx8qm"
-CM_BOARD:mx8qxp-nxp-bsp="som_mx8qx"
-CM_BOARD:mx9-nxp-bsp="som_mx93"
+CM_BOARD = "INVALID"
+CM_BOARD:mx8mn-nxp-bsp = "som_mx8mn"
+CM_BOARD:mx8mq-nxp-bsp = "dart_mx8mq"
+CM_BOARD:mx8mm-nxp-bsp = "dart_mx8mm"
+CM_BOARD:mx8mp-nxp-bsp = "dart_mx8mp som_mx8mp"
+CM_BOARD:mx8qm-nxp-bsp = "som_mx8qm"
+CM_BOARD:mx8qxp-nxp-bsp = "som_mx8qx"
+CM_BOARD:mx9-nxp-bsp = "som_mx93"
 
 CM_BUILD_TARGETS = " \
     debug \
@@ -96,10 +99,8 @@ CM_DEMOS_DISABLE_CACHE = ""
 CM_DEMOS_DISABLE_CACHE:mx8qxp-nxp-bsp = "demo_apps/disable_cache"
 CM_DEMOS_DISABLE_CACHE:mx8qm-nxp-bsp = "demo_apps/disable_cache/cm4_core0 demo_apps/disable_cache/cm4_core1"
 
-DISABLE_CACHE_PATCH="disable_cache.patch"
-DISABLE_CACHE_PATCH:imx8qxp-var-som="disable_cache_${PV}.patch"
-SRC_URI:append:imx8qxp-var-som = " file://${DISABLE_CACHE_PATCH};apply=no"
-SRC_URI:append:imx8qm-var-som = " file://${DISABLE_CACHE_PATCH};apply=no"
+DISABLE_CACHE_PATCH = "disable_cache.patch"
+DISABLE_CACHE_PATCH:imx8qxp-var-som = "disable_cache_${PV}.patch"
 
 compile_fw() {
     DIR_GCC="$1"
@@ -147,6 +148,26 @@ do_compile() {
                 compile_fw "${S}/boards/${CM_BOARD}/${CM_DEMO}/armgcc"
         done
     fi
+}
+
+do_compile:imx8mp-var-dart() {
+    # Configure ARMGCC
+    export ARMGCC_DIR="${STAGING_DIR_NATIVE}${bindir}/cortexm-toolchain-cross-${CM_GCC}"
+
+    # Build all board in CM_BOARD
+    for cm_board in ${CM_BOARD}; do
+        # Determine if demos should be compiled from recipe list or all demos in source repo
+        if "${@bb.utils.contains('PACKAGECONFIG_CONFARGS', '--with-all-demos', 'true', 'false', d)}"; then
+            DEMO_LIST=$(find ${S}/boards/${cm_board} -type d -name "armgcc" -printf "%P/\n" | sed 's|/armgcc/|/|')
+        else
+            DEMO_LIST="${CM_DEMOS}"
+        fi
+
+        # Build all demos in CM_DEMOS
+        for CM_DEMO in ${DEMO_LIST}; do
+            compile_fw "${S}/boards/${cm_board}/${CM_DEMO}/armgcc"
+        done
+    done
 }
 
 do_install() {
@@ -232,26 +253,6 @@ do_install:append:mx9-nxp-bsp() {
     ln -s "${ETHOS_U_FW}" ethosu_firmware
 }
 
-do_compile:imx8mp-var-dart() {
-    # Configure ARMGCC
-    export ARMGCC_DIR="${STAGING_DIR_NATIVE}${bindir}/cortexm-toolchain-cross-${CM_GCC}"
-
-    # Build all board in CM_BOARD
-    for cm_board in ${CM_BOARD}; do
-        # Determine if demos should be compiled from recipe list or all demos in source repo
-        if "${@bb.utils.contains('PACKAGECONFIG_CONFARGS', '--with-all-demos', 'true', 'false', d)}"; then
-            DEMO_LIST=$(find ${S}/boards/${cm_board} -type d -name "armgcc" -printf "%P/\n" | sed 's|/armgcc/|/|')
-        else
-            DEMO_LIST="${CM_DEMOS}"
-        fi
-
-        # Build all demos in CM_DEMOS
-        for CM_DEMO in ${DEMO_LIST}; do
-            compile_fw "${S}/boards/${cm_board}/${CM_DEMO}/armgcc"
-        done
-    done
-}
-
 do_install:imx8mp-var-dart() {
     if "${@bb.utils.contains('PACKAGECONFIG_CONFARGS', '--with-rproc-scripts', 'true', 'false', d)}"; then
         # Install scripts
@@ -312,35 +313,36 @@ do_install:imx8mp-var-dart() {
     done
 }
 
-FILES:${PN} = " \
-	${nonarch_base_libdir}/firmware \
-	/boot \
+PACKAGES =+ "\
+    ${PN}-scripts \
 "
-FILES:${PN}-dbg = " \
+
+# ethos-u-firmware is provided by this recipe
+PACKAGES =+ "\
+    ${PN}-nxp-ethos \
+"
+
+FILES:${PN} += "\
+    ${nonarch_base_libdir}/firmware \
+    /boot \
+"
+FILES:${PN}-dbg += "\
     ${nonarch_base_libdir}/firmware/*.ddr_debug* \
     ${nonarch_base_libdir}/firmware/*.debug* \
     /boot/*.ddr_debug* \
     /boot/*.debug* \
 "
 
-PACKAGES =+ "\
-    ${PN}-scripts \
-"
-
-FILES:${PN}-scripts = " \
+FILES:${PN}-scripts += "\
     ${sysconfdir}/remoteproc \
-"
-
-# ethos-u-firmware is provided by this recipe
-RPROVIDES:${PN}-nxp-ethos = "ethos-u-firmware"
-PACKAGES =+ "\
-    ${PN}-nxp-ethos \
 "
 
 FILES:${PN}-nxp-ethos += "\
     ${nonarch_base_libdir}/firmware/ethosu_firmware \
     ${nonarch_base_libdir}/firmware/cm_ethosu_apps_rpmsg.elf.release \
 "
+
+RPROVIDES:${PN}-nxp-ethos = "ethos-u-firmware"
 
 INHIBIT_PACKAGE_STRIP = "1"
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"

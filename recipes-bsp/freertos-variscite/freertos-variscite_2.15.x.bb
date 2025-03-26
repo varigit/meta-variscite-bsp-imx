@@ -1,5 +1,5 @@
 # Copyright (C) 2024 Variscite
-include freertos-variscite.inc
+require freertos-variscite.inc
 
 LIC_FILES_CHKSUM = "file://COPYING-BSD-3;md5=b66f32a90f9577a5a3255c21d79bc619"
 
@@ -16,9 +16,5 @@ CM_GCC = "12.3.rel1"
 
 SRCREV = "d975da8f0d86692b1de50c0dd5ee1c259a690a8e"
 SRCREV:mx9-nxp-bsp = "f617456ed00fc750ab1dea844d2f8ea66f9fa7aa"
-
-SRC_URI += " \
-    git://github.com/varigit/freertos-variscite.git;protocol=https;branch=${MCUXPRESSO_BRANCH}; \
-"
 
 COMPATIBLE_MACHINE = "(imx8mn-var-som|imx93-var-som|imx8mm-var-dart|imx8mp-var-dart|imx8mq-var-dart)"
