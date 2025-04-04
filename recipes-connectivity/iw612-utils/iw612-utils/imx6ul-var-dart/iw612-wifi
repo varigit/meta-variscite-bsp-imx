@@ -1,0 +1,128 @@
+#!/bin/sh -e
+#
+# Activate IW612 WIFI for IMX6UL-VAR-* modules
+#
+
+# Include common functions
+. /etc/wifi/variscite-wireless
+
+# GPIO pin to enable BT module
+BT_EN_GPIO="gpiochip4 4"
+
+# WIFI MMC host
+WIFI_MMC_HOST=2190000.mmc
+WIFI_MMC_PATH="/sys/bus/platform/drivers/sdhci-esdhc-imx"
+
+# Function to disable a network interface
+disable_network_interface() {
+	local iface="$1"
+
+	# Check if the interface exists
+	if ip link show "$iface" >/dev/null 2>&1; then
+		ifconfig "$iface" down
+	fi
+}
+
+# returns the SOM info revision (which provides the WiFi module in use)
+# 0: 2.4G LWB
+# 1: 5G LW5
+# 2: 5G IW611
+# 3: 5G IW612
+som_rev_info()
+{
+	SOM_INFO=`i2cget -y 1 0x51 0xfd`
+	SOM_INFO_REV=$((SOM_INFO >> 3))
+	return $SOM_INFO_REV
+}
+
+# Check if SOM has IW61x chip
+som_is_dart6ul_iw61x()
+{
+	som_rev_info
+	REV_INFO=$?
+	if [ $REV_INFO = 2 ] || [ $REV_INFO = 3 ]; then
+		return 0;
+	fi
+	return 1
+}
+
+# Start WIFI
+wifi_start()
+{
+	# Unbind WIFI device from MMC controller
+	wifi_mmc_unbind ${WIFI_MMC_PATH} ${WIFI_MMC_HOST}
+
+	# BT_EN up
+	gpioset -t 0 --chip ${BT_EN_GPIO}=1
+
+	# Wait 150ms at least
+	usleep 200000
+
+	# BT_EN down
+	gpioset -t 0 --chip ${BT_EN_GPIO}=0
+
+	# Bind WIFI device to MMC controller
+	wifi_mmc_bind ${WIFI_MMC_PATH} ${WIFI_MMC_HOST}
+
+	modprobe moal mod_para=nxp/var_wifi_mod_para.conf
+}
+
+# Stop WIFI
+wifi_stop()
+{
+	disable_network_interface wlan0
+	disable_network_interface uap0
+	disable_network_interface wfd0
+	modprobe -r moal
+
+	# Unbind WIFI device from MMC controller
+	wifi_mmc_unbind ${WIFI_MMC_PATH} ${WIFI_MMC_HOST}
+
+	# BT_EN down
+	gpioset -t 0 --chip ${BT_EN_GPIO}=0
+	usleep 10000
+}
+
+# Issue in-band reset using sdio interface
+wifi_in_band_reset()
+{
+	if [ -f /proc/mwlan/adapter0/config ]; then
+		echo "fw_reload=1" > /proc/mwlan/adapter0/config
+	else
+		echo "Error: /proc/mwlan/adapter0/config does not exist."
+		exit 1
+	fi
+}
+
+###########################
+#  Execution starts here  #
+###########################
+
+# Exit if booting from eMMC without WIFI
+if ! grep -qi WIFI /sys/devices/soc0/machine; then
+	exit 0
+fi
+
+# Exit when booting from SD card
+if grep -q mmcblk0 /proc/cmdline; then
+	return 0
+fi
+
+if ! som_is_dart6ul_iw61x; then
+	exit 0
+fi
+
+case $1 in
+
+start)
+	wifi_start
+	;;
+stop)
+	wifi_stop
+	;;
+in-band-reset)
+	wifi_in_band_reset
+	;;
+esac
+
+exit 0

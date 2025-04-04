@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Activate WIFI on Variscite DART-6UL / VAR-SOM-6UL
+# Activate WIFI on Variscite DART-6UL / VAR-SOM-6UL for Broadcom WiFi modules
 #
 
 # Include common functions
@@ -30,14 +30,38 @@ disable_network_interface() {
 	fi
 }
 
-# Check is SOM is DART-6UL-5G
-som_is_dart_6ul_5g()
+# returns the SOM info revision (which provides the WiFi module in use)
+# 0: 2.4G LWB
+# 1: 5G LW5
+# 2: 5G IW611
+# 3: 5G IW612
+som_rev_info()
 {
 	SOM_INFO=`i2cget -y 1 0x51 0xfd`
-	if [[ $(($(($SOM_INFO >> 3)) & 0x3)) == 1 ]] ; then
+	SOM_INFO_REV=$((SOM_INFO >> 3))
+	return $SOM_INFO_REV
+}
+
+
+# Check if SOM is DART-6UL-5G LW5
+som_is_dart_6ul_5g_lw5()
+{
+	som_rev_info
+	REV_INFO=$?
+	if [ $REV_INFO = 1 ]; then
 		return 0
 	fi
+	return 1
+}
 
+# Check if SOM has IW61x chip
+som_is_dart6ul_iw61x()
+{
+	som_rev_info
+	REV_INFO=$?
+	if [ $REV_INFO = 2 ] || [ $REV_INFO = 3 ]; then
+		return 0;
+	fi
 	return 1
 }
 
@@ -47,7 +71,7 @@ wifi_up()
 	# Unbind WIFI device from MMC controller
 	wifi_mmc_unbind ${WIFI_MMC_PATH} ${WIFI_MMC_HOST}
 
-	if som_is_dart_6ul_5g; then
+	if som_is_dart_6ul_5g_lw5; then
 		# WIFI power up
 		gpioset -t 0 --chip ${WIFI_PWR_GPIO}=1
 		usleep 10000
@@ -58,7 +82,7 @@ wifi_up()
 		# BT_EN up
 		gpioset -t 0 --chip ${BT_EN_GPIO}=1
 
-		# Wait 150ms at least
+		# Wait at least 150ms
 		usleep 200000
 
 		# BT_EN down
@@ -70,7 +94,7 @@ wifi_up()
 		# BT_EN up
 		gpioset -t 0 --chip ${BT_EN_GPIO}=1
 
-		# Wait 150ms at least
+		# Wait at least 150ms
 		usleep 200000
 
 		# BT_EN down
@@ -97,7 +121,7 @@ wifi_down()
 	# Unbind WIFI device from MMC controller
 	wifi_mmc_unbind ${WIFI_MMC_PATH} ${WIFI_MMC_HOST}
 
-	if som_is_dart_6ul_5g; then
+	if som_is_dart_6ul_5g_lw5; then
 		# WLAN_EN down
 		gpioset -t 0 --chip ${WIFI_EN_GPIO}=0
 
@@ -188,6 +212,11 @@ wifi_stop()
 ###########################
 #  Execution starts here  #
 ###########################
+
+if som_is_dart6ul_iw61x; then
+	exit 0
+fi
+
 case $1 in
 start)
 	wifi_start

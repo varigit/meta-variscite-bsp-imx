@@ -18,6 +18,9 @@ BT_FIRMWARE_LWB=/lib/firmware/brcm/BCM43430A1.hcd
 # Sterling LWB5 BT firmware
 BT_FIRMWARE_LWB5=/lib/firmware/brcm/BCM4335C0.hcd
 
+# Sterling LWB WIFI SDIO ID
+WIFI_2G_SDIO_ID=0xa9a6
+
 # Sterling LWB5 WIFI SDIO ID
 WIFI_5G_SDIO_ID=0x4339
 
@@ -133,6 +136,10 @@ bt_stop()
 ###########################
 #  Execution starts here  #
 ###########################
+
+# Exit if BT module is not bcm43xx
+verify_sdio_id ${WIFI_SDIO_ID_FILE} ${WIFI_2G_SDIO_ID} ${WIFI_5G_SDIO_ID} || exit 0
+
 case $1 in
 
 start)

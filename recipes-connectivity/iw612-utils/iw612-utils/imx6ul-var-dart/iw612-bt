@@ -1,0 +1,135 @@
+#!/bin/sh -e
+#
+# Activate Bluetooth for IW61x on Variscite DART-6UL / VAR-SOM-6UL
+#
+
+# Include common wireless functions
+. /etc/wifi/variscite-wireless
+
+# GPIO pin to enable BT module
+BT_EN_GPIO="gpiochip4 4"
+
+# returns the SOM info revision (which provides the WiFi module in use)
+# 0: 2.4G LWB
+# 1: 5G LW5
+# 2: 5G IW611
+# 3: 5G IW612
+som_rev_info()
+{
+	SOM_INFO=`i2cget -y 1 0x51 0xfd`
+	SOM_INFO_REV=$((SOM_INFO >> 3))
+	return $SOM_INFO_REV
+}
+
+# Check if SOM has IW61x chip
+som_is_dart6ul_iw61x()
+{
+	som_rev_info
+	REV_INFO=$?
+	if [ $REV_INFO = 2 ] || [ $REV_INFO = 3 ]; then
+		return 0;
+	fi
+	return 1
+}
+
+bt_enable()
+{
+	# BT_EN up
+	gpioset -t 0 --chip ${BT_EN_GPIO}=1
+
+	sleep 0.1
+}
+
+# Start BT hardware
+bt_start()
+{
+	# Exit if BT interface is already running
+	if [ -e "/sys/class/bluetooth/hci0" ]; then
+		echo "$(basename $0): Bluetooth already started"
+		exit 0
+	fi
+
+	echo "$(basename $0): starting"
+
+	bt_enable
+
+	# Load the NXP bluetooth driver
+	modprobe btnxpuart
+
+	# Wait until the HCI interface comes up
+	if ! timeout 10 sh -c 'until hciconfig | grep -q "hci"; do sleep 0.1; done'; then
+		echo "Error: HCI interface did not come up"
+		exit 1
+	fi
+
+	# Wait until the Bluetooth MAC address is not 00:00:00:00:00:00
+	if ! timeout 10 sh -c 'until [ "$(hciconfig | grep "BD Address" | \
+	awk "{print \$3}")" != "00:00:00:00:00:00" ]; do sleep 0.1; done'; then
+		echo "Error: Bluetooth MAC address is 00:00:00:00:00:00"
+		exit 1
+	fi
+
+	sleep 1;
+
+	# Fork a dummy process to satisfy the variscite-bt systemd service type=forking
+	(while true; do sleep 60; done) &
+}
+
+# Stop BT hardware
+bt_stop()
+{
+	# Exit if BT interface is not available
+	[ -e /sys/class/bluetooth/hci0 ] || exit 0
+
+	echo "$(basename $0): stopping"
+
+	# Bring up hci interface before unloading the BT module to allow the driver
+	# to restore the baud rate to 115200bps and conditionally issue reset command
+	hciconfig hci0 up
+
+	# Unload the driver
+	modprobe -r btnxpuart
+
+	gpioset -t 0 --chip ${BT_EN_GPIO}=0
+}
+
+# Issue in-band reset using hci interface
+in_band_reset()
+{
+	# Exit if BT interface is not available
+	[ -e /sys/class/bluetooth/hci0 ] || exit 0
+
+	echo "$(basename $0): in-band reset"
+
+	# Bring up hci interface before using hci commands
+	hciconfig hci0 up
+
+	# Issue the reset command
+	hcitool cmd 0x3f 0xfc 0
+}
+
+###########################
+#  Execution starts here  #
+###########################
+
+if ! som_is_dart6ul_iw61x; then
+	exit 0
+fi
+
+# Don't run when booting from SD card
+grep -q mmcblk0 /proc/cmdline && exit 0
+
+case $1 in
+
+start)
+	bt_start
+	;;
+stop)
+	bt_stop
+	;;
+in-band-reset)
+	in_band_reset
+	;;
+esac
+
+exit 0
