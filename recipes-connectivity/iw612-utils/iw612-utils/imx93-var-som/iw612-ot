@@ -32,6 +32,9 @@ ot_start()
 	# Exit if OT module is not iw612
 	verify_sdio_id ${WIFI_SDIO_ID_FILE} ${WIFI_SDIO_ID} || exit 0
 
+	# Exit if WIFI module is not iw612
+	wifi_is_wbe || exit 0
+
 	# Kill any running ot-daemon-iwxxx-spi processes
 	kill -9 $(pidof ot-daemon-iwxxx-spi) 2>/dev/null || true
 
@@ -54,6 +57,19 @@ ot_stop()
 
 	# Kill any running ot-daemon-iwxxx-spi processes
 	kill -9 $(pidof ot-daemon-iwxxx-spi) 2>/dev/null || true
+}
+
+wifi_is_wbe()
+{
+	# Read SOM options EEPROM field
+	opt=$(i2cget -f -y 0x2 0x52 0x25)
+
+	# Check WIFI bit in SOM options
+	if [ $(( $((opt & 0xF)) >> 3 )) -eq 1 ]; then
+		return 0
+	else
+		return 1
+	fi
 }
 
 ###########################

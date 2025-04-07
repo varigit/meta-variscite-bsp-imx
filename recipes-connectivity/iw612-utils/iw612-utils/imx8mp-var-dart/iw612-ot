@@ -79,6 +79,9 @@ ot_start()
 	# Exit if BT module is not iw612 according to the device tree
 	fdt_has_btnxpuart || exit 0
 
+	# Exit if WIFI module is not iw612
+	wifi_is_wbe || exit 0
+
 	# Exit if BT interface is not running, since it manages the reset line
 	if [ ! -e "/sys/class/bluetooth/hci0" ]; then
 		echo "$(basename $0): Error: variscite-bt must be running"
@@ -110,6 +113,19 @@ ot_stop()
 
 	# Kill any running ot-daemon-iwxxx-spi processes
 	kill -9 $(pidof ot-daemon-iwxxx-spi) 2>/dev/null || true
+}
+
+wifi_is_wbe()
+{
+	# Read SOM options EEPROM field
+	opt=$(i2cget -f -y 0x0 0x52 0x20)
+
+	# Check WIFI bit in SOM options
+	if [ $(( $((opt & 0x20)) >> 5 )) -eq 1 ]; then
+		return 0
+	else
+		return 1
+	fi
 }
 
 ###########################
