@@ -1,0 +1,113 @@
+#!/bin/sh -e
+#
+# Activate 802.15.4 / OpenThread on Variscite VAR-SOM-MX8M-NANO
+#
+
+# Include common functions
+. /etc/wifi/variscite-wireless
+. /etc/gpiochip
+
+gpio2=$(get_gpiochip "30210000.gpio")
+
+SPI_DEV="/dev/spidev0.0"
+SPI_MODE="0"
+SPI_SPEED="1000000"
+SPI_RESET_DELAY="500"
+
+GPIO_DEV_INT="/dev/${gpio2}"
+GPIO_LINE_INT="7"
+
+# btnxpuart fdt device compatible file
+BT_FDT="/sys/firmware/devicetree/base/soc@0/bus@30800000/spba-bus@30800000/serial@30890000/bluetooth_iw61x"
+
+# Use btnxpuart device node to determine if wifi module is iw61x
+fdt_has_btnxpuart() {
+	# Check if compatible file exists
+	if [ ! -e "$BT_FDT/compatible" ]; then
+		return 1
+	fi
+
+	# Check if compatible with nxp,88w8987-bt
+	if ! grep -q "nxp,88w8987-bt" "$BT_FDT/compatible"; then
+		return 1
+	fi
+
+	# Check if status file exists
+	if [ ! -e "$BT_FDT/status" ]; then
+		return 1
+	fi
+
+	# Check if status is okay
+	if ! grep -q "okay" "$BT_FDT/status"; then
+		return 1
+	fi
+
+	return 0
+}
+
+# Start OT hardware
+ot_start()
+{
+	# Exit if BT module is not iw612 according to the device tree
+	fdt_has_btnxpuart || exit 0
+
+	# Exit if WIFI module is not iw612
+	wifi_is_wbe || exit 0
+
+	# Exit if BT interface is not running, since it manages the reset line
+	if [ ! -e "/sys/class/bluetooth/hci0" ]; then
+		echo "$(basename $0): Error: variscite-bt must be running"
+		exit 1
+	fi
+
+	# Kill any running ot-daemon-iwxxx-spi processes
+	kill -9 $(pidof ot-daemon-iwxxx-spi) 2>/dev/null || true
+
+	echo "$(basename $0): starting"
+
+	# Disable btnxpuart power save mode
+	hcitool cmd 3f 23 03 00 00
+
+	# Start ot-daemon-iwxxx-spi
+	URL="spinel+spi://${SPI_DEV}?gpio-int-device=${GPIO_DEV_INT}&gpio-int-line=${GPIO_LINE_INT}&spi-mode=${SPI_MODE}&spi-speed=${SPI_SPEED}&spi-reset-delay=${SPI_RESET_DELAY}&"
+	echo "${URL}"
+	ot-daemon-iwxxx-spi "${URL}"
+}
+
+# Stop OT hardware
+ot_stop()
+{
+	# Exit if BT module is not iw612 according to the device tree
+	fdt_has_btnxpuart || exit 0
+
+	# Kill any running ot-daemon-iwxxx-spi processes
+	kill -9 $(pidof ot-daemon-iwxxx-spi) 2>/dev/null || true
+}
+
+wifi_is_wbe()
+{
+	# Read SOM options EEPROM field
+	opt=$(i2cget -f -y 0x0 0x52 0x20)
+
+	# Check WIFI bit in SOM options
+	if [ $(( $((opt & 0x20)) >> 5 )) -eq 1 ]; then
+		return 0
+	else
+		return 1
+	fi
+}
+
+###########################
+#  Execution starts here  #
+###########################
+case $1 in
+
+start)
+	ot_start
+	;;
+stop)
+	ot_stop
+	;;
+esac
+
+exit 0
