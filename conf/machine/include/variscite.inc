@@ -27,11 +27,9 @@ NETMAN_PACKAGES = "\
     networkmanager-nmcli \
 "
 
-# Wayland distros should default to systemd-networkd
+# Yocto distros should default to systemd-networkd
 PREFERRED_CONNECTIVITY_MANAGER	 ?= " \
-    ${@bb.utils.contains('DISTRO', 'b2qt', '', \
-        bb.utils.contains('DISTRO_FEATURES', 'wayland', \
-        'systemd-networkd', '', d), d)} \
+    ${@bb.utils.contains('DISTRO', 'b2qt', '', 'systemd-networkd', d)} \
 "
 PREFERRED_CONNECTIVITY_MANAGER_PACKAGES	?= " \
     ${@bb.utils.contains('PREFERRED_CONNECTIVITY_MANAGER', 'networkmanager', \
