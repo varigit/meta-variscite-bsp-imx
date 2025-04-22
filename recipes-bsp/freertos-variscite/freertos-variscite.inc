@@ -109,7 +109,30 @@ compile_fw() {
     if grep -q "make -j" build_all.sh; then
         sed -i "s/make -j.*[0-9]*/make ${PARALLEL_MAKE}/g" build_all.sh
     fi
-    LDFLAGS="" CFLAGS="" CXXFLAGS="" ./build_all.sh > /dev/null
+
+    # factor out the common prefix-map
+    local PREFIX_BASE="${S}=/usr/src/debug/freertos-variscite/${PV}"
+
+    # build up our flag variables
+    local BB_CFLAGS=" \
+      -ffile-prefix-map=${PREFIX_BASE} \
+      -ffile-prefix-map=${RECIPE_SYSROOT}= \
+      -ffile-prefix-map=${RECIPE_SYSROOT_NATIVE}= \
+    "
+    local BB_CXXFLAGS=" \
+      -ffile-prefix-map=${PREFIX_BASE} \
+      -ffile-prefix-map=${RECIPE_SYSROOT_NATIVE}= \
+    "
+    local BB_ASMFLAGS=" \
+      -fmacro-prefix-map=${PREFIX_BASE} \
+      -fdebug-prefix-map=${PREFIX_BASE} \
+    "
+
+    LDFLAGS="" \
+    CFLAGS="${BB_CFLAGS}" \
+    CXXFLAGS="${BB_CXXFLAGS}" \
+    ASMFLAGS="${BB_ASMFLAGS}" \
+    ./build_all.sh > /dev/null
 }
 
 do_compile() {
