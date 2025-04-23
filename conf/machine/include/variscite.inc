@@ -83,7 +83,7 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     ${PREFERRED_CONNECTIVITY_MANAGER_PACKAGES} \
 "
 
-IMAGE_FSTYPES = "tar.zst wic.zst"
+IMAGE_FSTYPES = "tar.zst wic.zst wic.bmap"
 
 # Use bluez-alsa instead of pulseaudio
 DISTRO_FEATURES_BACKFILL_CONSIDERED:append = " pulseaudio"
