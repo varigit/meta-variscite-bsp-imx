@@ -7,7 +7,7 @@ readonly SOC="$(cat /sys/bus/soc/devices/soc0/soc_id)"
 readonly MACHINE="$(cat /sys/bus/soc/devices/soc0/machine)"
 
 # Increasing logging verbosity for debugging
-sysctl kernel.printk=7 -q
+sysctl kernel.printk=7 >/dev/null 2>&1
 
 verify_file_exists() {
     if [ ! -f $1 ]; then
