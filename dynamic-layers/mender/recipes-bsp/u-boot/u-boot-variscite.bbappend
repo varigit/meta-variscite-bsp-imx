@@ -10,3 +10,7 @@ require recipes-bsp/u-boot/u-boot-mender.inc
 SRC_URI:append:imx8mp-var-dart = " \
     file://0001-imx8mp_var_dart-Add-mender-configuration-options.patch \
 "
+
+SRC_URI:append:imx93-var-som = " \
+    file://0001-imx93_var_som-Add-mender-configuration-options.patch \
+"
