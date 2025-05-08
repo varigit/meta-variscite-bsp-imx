@@ -8,8 +8,6 @@ LICENSE = "BSD-3-Clause"
 # inherit cmake
 DEPENDS:append = " cmake-native cortexm-toolchain-cross (=${CM_GCC})"
 
-RDEPENDS:${PN} += "bc"
-
 SRC_URI = " \
     git://github.com/varigit/freertos-variscite.git;protocol=https;branch=${MCUXPRESSO_BRANCH}; \
     file://variscite-rproc-linux \
@@ -19,6 +17,8 @@ SRC_URI = " \
 "
 SRC_URI:append:imx8qxp-var-som = " file://${DISABLE_CACHE_PATCH};apply=no"
 SRC_URI:append:imx8qm-var-som = " file://${DISABLE_CACHE_PATCH};apply=no"
+
+RDEPENDS:${PN} += "bc"
 
 inherit deploy
 
