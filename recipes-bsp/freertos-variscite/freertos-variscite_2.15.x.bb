@@ -14,7 +14,7 @@ MCUXPRESSO_BRANCH:mx9-nxp-bsp = "mcuxpresso_sdk_${PV}-var02"
 # "Development Tools" section for supported GCC version
 CM_GCC = "12.3.rel1"
 
-SRCREV = "d975da8f0d86692b1de50c0dd5ee1c259a690a8e"
+SRCREV = "a8756e7ba6f764bee95ed2c1b769ca17142ef848"
 SRCREV:mx9-nxp-bsp = "76e6b345d782abc2b8a17cdf40d027bdf68fa44d"
 
 COMPATIBLE_MACHINE = "(imx8mn-var-som|imx93-var-som|imx8mm-var-dart|imx8mp-var-dart|imx8mq-var-dart)"
