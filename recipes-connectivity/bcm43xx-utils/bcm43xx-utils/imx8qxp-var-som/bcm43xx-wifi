@@ -83,6 +83,7 @@ wifi_down()
 	disable_network_interface wlan0
 
 	# Unload WIFI driver
+	modprobe -r brcmfmac_wcc
 	modprobe -r brcmfmac
 
 	# Unbind WIFI device from MMC controller
