@@ -1,6 +1,6 @@
 SRC_URI:var-som = "git://github.com/varigit/imx-oei;protocol=https;branch=${SRCBRANCH}"
-SRCBRANCH:var-som = "lf-6.6.52-2.2.0_var01"
-SRCREV:var-som = "7b1da7588344313cb65b8e23a093ad7f563d9f34"
+SRCBRANCH:var-som = "lf-6.12.20-2.0.0_var01"
+SRCREV:var-som = "e5ed3502f14f6e3a889a04175a0ac4c1826233ef"
 
 EXTRA_OEMAKE:remove:var-som = "DEBUG=1"
 
