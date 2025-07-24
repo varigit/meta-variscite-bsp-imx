@@ -1,19 +1,20 @@
-From fcec8531961564307adf622f5700c9f4c00b17d5 Mon Sep 17 00:00:00 2001
-From: FrancescoFerraro <francesco.f@variscite.com>
-Date: Sat, 1 Jun 2024 17:00:05 +0200
+From ecb6589dcbacb56e7eac2d946b004a3df43ea8ed Mon Sep 17 00:00:00 2001
+From: Alexander Herfurtner <alexander.h@variscite.com>
+Date: Thu, 24 Jul 2025 17:24:45 +0200
 Subject: [PATCH] units: add dependencies to avoid conflict between connman and
  systemd-networkd
 
 Upstream-Status: Pending
 Signed-off-by: Marco Contenti <marco.contenti@variscite.com>
 Signed-off-by: FrancescoFerraro <francesco.f@variscite.com>
+Signed-off-by: Alexander Herfurtner <alexander.h@variscite.com>
 ---
  units/systemd-networkd.service.in | 2 +-
  units/systemd-networkd.socket     | 2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/units/systemd-networkd.service.in b/units/systemd-networkd.service.in
-index 9f0af57fdc..d65466192d 100644
+index cf81c7d841..452e1be417 100644
 --- a/units/systemd-networkd.service.in
 +++ b/units/systemd-networkd.service.in
 @@ -14,7 +14,7 @@ Documentation=man:org.freedesktop.network1(5)
@@ -24,7 +25,7 @@ index 9f0af57fdc..d65466192d 100644
 +After=systemd-networkd.socket systemd-udevd.service network-pre.target systemd-sysusers.service systemd-sysctl.service connman.service
  Before=network.target multi-user.target shutdown.target initrd-switch-root.target
  Conflicts=shutdown.target initrd-switch-root.target
- Wants=systemd-networkd.socket network.target
+ Wants=systemd-networkd.socket network.target systemd-networkd-persistent-storage.service
 diff --git a/units/systemd-networkd.socket b/units/systemd-networkd.socket
 index 2d8d1c3b91..438ef5c209 100644
 --- a/units/systemd-networkd.socket
@@ -36,5 +37,5 @@ index 2d8d1c3b91..438ef5c209 100644
 -WantedBy=sockets.target
 +WantedBy=sockets.target systemd-networkd.service
 -- 
-2.45.1
+2.34.1
 
