@@ -60,5 +60,8 @@ pkg_postinst:kernel-devicetree:append:imx8qm-var-som () {
 
 FILES:${KERNEL_PACKAGE_NAME}-base += "${nonarch_base_libdir}/modules/${KERNEL_VERSION}/modules.builtin.modinfo "
 
+# FIXME: Skip buildpaths sanity check for kernel source
+INSANE_SKIP:${PN}-src = "buildpaths"
+
 KERNEL_VERSION_SANITY_SKIP = "1"
 COMPATIBLE_MACHINE = "(mx9-nxp-bsp)"
