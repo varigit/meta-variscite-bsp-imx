@@ -5,7 +5,7 @@ Subject: [PATCH] gstreamer: Fix display fullscreen vertical positioning issue
 
 Adjusts the height of the fullscreen display when the panel-position
 is set to none in the weston.ini file.
-
+Upstream-Status: Pending
 Signed-off-by: Natalia Kovalenko <natasha.k@variscite.com>
 ---
  gst-libs/gst/wayland/gstwlutils.c  | 29 +++++++++++++++++++++++++----
