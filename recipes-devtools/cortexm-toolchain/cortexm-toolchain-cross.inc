@@ -23,11 +23,13 @@ SRC_URI = " \
     https://developer.arm.com/-/media/Files/downloads/gnu-rm/${PV}/${TOOLCHAIN_TARBALL};name=cortexm-toolchain;unpack=0 \
 "
 
+S = "${WORKDIR}/sources-unpack"
+
 bindir = "${exec_prefix}/bin/"
 
 do_install() {
     install -d ${D}${bindir}cortexm-toolchain-cross-${PV}
-    tar xjf ${WORKDIR}/${TOOLCHAIN_TARBALL} -C ${D}${bindir}cortexm-toolchain-cross-${PV} --strip-components=1
+    tar xjf ${UNPACKDIR}/${TOOLCHAIN_TARBALL} -C ${D}${bindir}cortexm-toolchain-cross-${PV} --strip-components=1
 }
 
 # This toolchain is not built but packaged from

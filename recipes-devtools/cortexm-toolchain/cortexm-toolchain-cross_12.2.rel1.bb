@@ -10,5 +10,5 @@ SRC_URI[cortexm-toolchain.sha256sum] = "84be93d0f9e96a15addd490b6e237f588c641c8a
 
 do_install() {
     install -d ${D}${bindir}cortexm-toolchain-cross-${PV}
-    tar xf ${WORKDIR}/${TOOLCHAIN_TARBALL} -C ${D}${bindir}cortexm-toolchain-cross-${PV} --strip-components=1
+    tar xf ${UNPACKDIR}/${TOOLCHAIN_TARBALL} -C ${D}${bindir}cortexm-toolchain-cross-${PV} --strip-components=1
 }
