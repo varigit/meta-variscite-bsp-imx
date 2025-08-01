@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Activate 802.15.4 / OpenThread on Variscite VAR-SOM-MX93
+# Activate 802.15.4 / OpenThread on Variscite VAR-SOM-MX93 and DART-MX93
 #
 
 # Include common functions
@@ -14,15 +14,49 @@ WIFI_SDIO_ID=0x0205
 WIFI_SDIO_ID_FILE=/sys/class/net/wlan0/device/device
 
 gpio4=$(get_gpiochip "43830000.gpio")
+gpio2=$(get_gpiochip "43810000.gpio")
 
-SPI_DEV="/dev/spidev1.0"
+SPI_DEV_SOM="/dev/spidev1.0"
+SPI_DEV_DART_SONATA="/dev/spidev0.1"
 SPI_MODE="0"
 SPI_SPEED="1000000"
 SPI_RESET_DELAY="500"
 
-GPIO_DEV_INT="/dev/${gpio4}"
-GPIO_LINE_INT="29"
+GPIO_DEV_INT_SOM="/dev/${gpio4}"
+GPIO_LINE_INT_SOM="29"
 
+GPIO_DEV_INT_DART_SONATA="/dev/${gpio2}"
+GPIO_LINE_INT_DART_SONATA="0"
+
+# Return success exit status if SOM is DART-MX93
+is_dart_mx93()
+{
+	grep -q DART-MX93 /sys/devices/soc0/machine
+}
+
+is_carrier_sonata()
+{
+	grep -q Sonata-Board /sys/devices/soc0/machine
+}
+
+ot_set_vars()
+{
+	if is_dart_mx93; then
+		if is_carrier_sonata; then
+			GPIO_DEV_INT=${GPIO_DEV_INT_DART_SONATA}
+			GPIO_LINE_INT=${GPIO_LINE_INT_DART_SONATA}
+			SPI_DEV=${SPI_DEV_DART_SONATA}
+		else
+			echo "DART-MX93 on carrier board DT8M is not supported yet." >&2
+			return 1
+		fi
+	else
+		GPIO_DEV_INT=${GPIO_DEV_INT_SOM}
+		GPIO_LINE_INT=${GPIO_LINE_INT_SOM}
+		SPI_DEV=${SPI_DEV_SOM}
+	fi
+	return 0
+}
 # Start OT hardware
 ot_start()
 {
@@ -34,6 +68,9 @@ ot_start()
 
 	# Exit if WIFI module is not iw612
 	wifi_is_wbe || exit 0
+
+	# Configure global variables for VAR-SOM or DART
+	ot_set_vars || exit 0
 
 	# Kill any running ot-daemon-iwxxx-spi processes
 	kill -9 $(pidof ot-daemon-iwxxx-spi) 2>/dev/null || true
