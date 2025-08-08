@@ -9,3 +9,5 @@ RDEPENDS:${PN}:remove = "\
         '${CONNMAN_PACKAGES}', '', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES', 'nand-flash', 'ltp', '', d)} \
 "
+
+PIPEWIRE_TOOLS = ""
