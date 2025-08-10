@@ -1,6 +1,6 @@
 # Copyright (C) 2013-2016 Freescale Semiconductor
 # Copyright 2017 NXP
-# Copyright 2018-2024 Variscite Ltd.
+# Copyright 2018-2025 Variscite Ltd.
 # Released under the MIT license (see COPYING.MIT for the terms)
 
 SUMMARY = "Linux kernel provided and supported by Variscite"
@@ -18,11 +18,11 @@ DEFAULT_PREFERENCE = "1"
 
 KERNEL_SRC ?= "git://github.com/varigit/linux-imx;protocol=https"
 
-SRCBRANCH = "lf-6.6.y_6.6.52-2.2.0_var01"
+SRCBRANCH = "lf-6.12.y_6.12.20-2.0.0_var01"
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
-SRCREV = "168ca6166204bd24090dffe5d4047d0c202e8d30"
+SRCREV = "4bffdb61134558d8899990c9c8d3d7ac66f7254b"
 
-LINUX_VERSION = "6.6.52"
+LINUX_VERSION = "6.12.20"
 LINUX_VERSION_EXTENSION = "-var-lts-next"
 
 KBUILD_DEFCONFIG:mx6-nxp-bsp = "imx_v7_var_defconfig"
@@ -61,4 +61,4 @@ pkg_postinst:kernel-devicetree:append:imx8qm-var-som () {
 FILES:${KERNEL_PACKAGE_NAME}-base += "${nonarch_base_libdir}/modules/${KERNEL_VERSION}/modules.builtin.modinfo "
 
 KERNEL_VERSION_SANITY_SKIP = "1"
-COMPATIBLE_MACHINE = "(mx6-nxp-bsp|mx8-nxp-bsp|mx9-nxp-bsp)"
+COMPATIBLE_MACHINE = "(mx9-nxp-bsp)"
