@@ -60,9 +60,6 @@ bt_stop()
 	# Exit if BT interface is not available
 	[ -e /sys/class/bluetooth/hci0 ] || exit 0
 
-	# Set BT UART
-	bt_set_uart
-
 	# Stop BT interface
 	hciconfig hci0 down
 
