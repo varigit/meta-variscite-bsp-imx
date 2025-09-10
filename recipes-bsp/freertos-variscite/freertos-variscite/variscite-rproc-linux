@@ -16,7 +16,7 @@ readonly REMOTEPROC_STATE="${REMOTEPROC_DIR}/state"
 readonly REMOTEPROC_FW="${REMOTEPROC_DIR}/firmware"
 
 cm_stop() {
-    if [ "running" = "$(cat ${REMOTEPROC_STATE})" ]; then
+    if [ "running" = "$(cat ${REMOTEPROC_STATE})" ] || [ "attached" = "$(cat ${REMOTEPROC_STATE})" ]; then
         echo "Cortex-M: Stopping"
         echo "stop" > ${REMOTEPROC_STATE}
     fi

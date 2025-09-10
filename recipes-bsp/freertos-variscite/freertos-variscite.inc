@@ -19,9 +19,6 @@ SRC_URI:append:imx8qxp-var-som = " file://${DISABLE_CACHE_PATCH};apply=no"
 SRC_URI:append:imx8qm-var-som = " file://${DISABLE_CACHE_PATCH};apply=no"
 
 S = "${WORKDIR}/git"
-
-RDEPENDS:${PN} += "bc"
-
 inherit deploy
 
 PACKAGECONFIG ??= "rproc-scripts"
@@ -36,6 +33,7 @@ MCORE_TYPE:mx8mp-nxp-bsp = "m7"
 MCORE_TYPE:mx8mpul-nxp-bsp = "m7"
 MCORE_TYPE:mx8ulp-nxp-bsp = "m33"
 MCORE_TYPE:mx93-nxp-bsp = "m33"
+MCORE_TYPE:mx95-nxp-bsp = "m7"
 
 CM_BOARD = "INVALID"
 CM_BOARD:mx8mn-nxp-bsp = "som_mx8mn"
@@ -44,14 +42,20 @@ CM_BOARD:mx8mm-nxp-bsp = "dart_mx8mm"
 CM_BOARD:mx8mp-nxp-bsp = "dart_mx8mp som_mx8mp"
 CM_BOARD:mx8qm-nxp-bsp = "som_mx8qm"
 CM_BOARD:mx8qxp-nxp-bsp = "som_mx8qx"
-CM_BOARD:mx9-nxp-bsp = "som_mx93"
+CM_BOARD:mx93-nxp-bsp = "som_mx93"
+CM_BOARD:mx95-nxp-bsp = "dart_mx95"
 
 CM_BUILD_TARGETS = " \
     debug \
     ddr_debug \
 "
+
 CM_BUILD_TARGETS:mx93-nxp-bsp = " \
     debug \
+    release \
+"
+
+CM_BUILD_TARGETS:mx95-nxp-bsp = " \
     release \
 "
 
@@ -74,6 +78,13 @@ CM_DEMOS:mx8qm-nxp-bsp = " \
 
 CM_DEMOS:append:mx93-nxp-bsp = " \
     demo_apps/ethosu_apps_rpmsg \
+"
+
+# Firmware source directories for MX95
+CM_DEMOS:mx95-nxp-bsp = " \
+    multicore_examples/rpmsg_lite_str_echo_rtos/remote/cm7 \
+    multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote/cm7 \
+    demo_apps/hello_world/cm7 \
 "
 
 # These demos should never be packaged in U-Boot because their functionality
@@ -366,6 +377,8 @@ FILES:${PN}-nxp-ethos += "\
     ${nonarch_base_libdir}/firmware/ethosu_firmware \
     ${nonarch_base_libdir}/firmware/cm_ethosu_apps_rpmsg.elf.release \
 "
+
+RDEPENDS:${PN} += "bc"
 
 RPROVIDES:${PN}-nxp-ethos = "ethos-u-firmware"
 
