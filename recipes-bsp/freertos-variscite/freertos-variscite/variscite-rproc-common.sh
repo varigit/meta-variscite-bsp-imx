@@ -56,11 +56,21 @@ parse_args() {
     verify_file_exists "${DIR_FW}/${FILE_CM_BIN}"
 
     # Verify CM_CORE exists
-    if [ "${CM_CORE}" -ge ${CM_CORES} ]; then
-        echo
-        echo "Error: ${SOC} only has ${CM_CORES} cortex ${CM_SERIES}s"
-        help
-    fi
+    case "${MACHINE}" in
+        *DART-MX95*)
+            if [ "${CM_CORE}" -eq 0 ]; then
+                echo "Core 0 refers Cortex M33 that is not supported by FreeRTOS demos, please use 1 for Cortex M7"
+                exit
+            fi
+        ;;
+        *)
+            if [ "${CM_CORE}" -ge ${CM_CORES} ]; then
+                echo
+                echo "Error: ${SOC} only has ${CM_CORES} cortex ${CM_SERIES}s"
+                help
+            fi
+        ;;
+    esac
 }
 
 help() {
@@ -106,6 +116,12 @@ if [ "${MACHINE#*DART-MX*}" != "${MACHINE}" ]; then
             somrev=$(get_somrev)
             if [ "$(echo "$somrev < 2.0" | bc)" -eq 1 ]; then
                 CM_DTB=${CM_DTB_DART_1X}
+            fi
+            ;;
+
+        *DART-MX95*)
+            if [ "${MACHINE#*Sonata-Board*}" != "${MACHINE}" ]; then
+                CM_DTB=${CM_DTB_SONATA}
             fi
             ;;
     esac

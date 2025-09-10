@@ -57,6 +57,12 @@ MACHINE_FIRMWARE:append:imx93-var-som = " \
     freertos-variscite-scripts \
 "
 
+# Add Cortex-M7 firmware
+MACHINE_FIRMWARE:append:imx95-var-dart = " \
+    freertos-variscite \
+    freertos-variscite-scripts \
+"
+
 MACHINE_ESSENTIAL_EXTRA_RDEPENDS:mx8-nxp-bsp = " \
     kernel-image \
     kernel-devicetree \
