@@ -3,9 +3,6 @@
 # Activate 802.15.4 / OpenThread on Variscite VAR-SOM-MX95
 #
 
-# Temporary disable OT service.
-exit 0
-
 # Include common functions
 . /etc/wifi/variscite-wireless
 . /etc/gpiochip
@@ -16,13 +13,26 @@ WIFI_SDIO_ID=0x0205
 # WIFI SDIO ID file
 WIFI_SDIO_ID_FILE=/sys/class/net/wlan0/device/device
 
-SPI_DEV="/dev/spidev1.0"
+gpio2=$(get_gpiochip "43810000.gpio")
+GPIO_DEV_INT="/dev/${gpio2}"
+GPIO_LINE_INT="24"
+
+SPI_DEV="/dev/spidev0.0"
 SPI_MODE="0"
 SPI_SPEED="1000000"
-SPI_RESET_DELAY="500"
 
 # btnxpuart fdt device compatible file
 BT_FDT="/sys/firmware/devicetree/base/soc/bus@42000000/serial@42590000/bluetooth"
+
+is_carrier_sonata()
+{
+	grep -q 'Sonata-Board' /sys/devices/soc0/machine
+}
+
+has_wbe()
+{
+	grep -q '802.15.4' /sys/devices/soc0/machine
+}
 
 # Use btnxpuart device node to determine if wifi module is iw61x
 fdt_has_btnxpuart() {
@@ -52,6 +62,9 @@ fdt_has_btnxpuart() {
 # Start OT hardware
 ot_start()
 {
+	# Exit if WBE configuration is not available
+	has_wbe || exit 0
+
 	# Exit if BT module is not iw612 according to the device tree
 	fdt_has_btnxpuart || exit 0
 
@@ -61,28 +74,33 @@ ot_start()
 		exit 1
 	fi
 
-	# Kill any running ot-daemon-iwxxx-spi processes
-	kill -9 $(pidof ot-daemon-iwxxx-spi) 2>/dev/null || true
+	is_carrier_sonata || { echo "Carrier board is not supported yet." >&2; exit 0; }
+
+	# Kill any running ot-daemon-iwxxx processes
+	kill -9 $(pidof ot-daemon-iwxxx) 2>/dev/null || true
 
 	echo "$(basename $0): starting"
 
 	# Disable btnxpuart power save mode
 	hcitool cmd 3f 23 03 00 00
 
-	# Start ot-daemon-iwxxx-spi
-	URL="spinel+spi://${SPI_DEV}?spi-mode=${SPI_MODE}&spi-speed=${SPI_SPEED}&spi-reset-delay=${SPI_RESET_DELAY}&"
+	# Start ot-daemon-iwxxx
+	URL="spinel+spi://${SPI_DEV}?gpio-int-device=${GPIO_DEV_INT}&gpio-int-line=${GPIO_LINE_INT}&spi-mode=${SPI_MODE}&spi-speed=${SPI_SPEED}&"
 	echo "${URL}"
-	ot-daemon-iwxxx-spi "${URL}"
+	ot-daemon-iwxxx "${URL}"
 }
 
 # Stop OT hardware
 ot_stop()
 {
+	# Exit if WBE configuration is not available
+	has_wbe || exit 0
+
 	# Exit if BT module is not iw612 according to the device tree
 	fdt_has_btnxpuart || exit 0
 
-	# Kill any running ot-daemon-iwxxx-spi processes
-	kill -9 $(pidof ot-daemon-iwxxx-spi) 2>/dev/null || true
+	# Kill any running ot-daemon-iwxxx processes
+	kill -9 $(pidof ot-daemon-iwxxx) 2>/dev/null || true
 }
 
 ###########################
