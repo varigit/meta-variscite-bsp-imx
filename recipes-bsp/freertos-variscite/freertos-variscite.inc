@@ -199,10 +199,10 @@ do_install() {
     if "${@bb.utils.contains('PACKAGECONFIG_CONFARGS', '--with-rproc-scripts', 'true', 'false', d)}"; then
         # Install scripts
         install -d ${D}${sysconfdir}/remoteproc
-        install -m 0755 ${WORKDIR}/variscite-rproc-u-boot ${D}${sysconfdir}/remoteproc
-        install -m 0755 ${WORKDIR}/variscite-rproc-linux ${D}${sysconfdir}/remoteproc
-        install -m 0644 ${WORKDIR}/variscite-rproc-common.sh ${D}${sysconfdir}/remoteproc
-        install -m 0644 ${WORKDIR}/variscite-rproc.conf ${D}${sysconfdir}/remoteproc
+        install -m 0755 ${UNPACKDIR}/variscite-rproc-u-boot ${D}${sysconfdir}/remoteproc
+        install -m 0755 ${UNPACKDIR}/variscite-rproc-linux ${D}${sysconfdir}/remoteproc
+        install -m 0644 ${UNPACKDIR}/variscite-rproc-common.sh ${D}${sysconfdir}/remoteproc
+        install -m 0644 ${UNPACKDIR}/variscite-rproc.conf ${D}${sysconfdir}/remoteproc
     fi
 
     # Install firmware
