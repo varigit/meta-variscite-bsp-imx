@@ -24,8 +24,8 @@ MODEL_LIST:imx8qm-var-som = "imx8qm-var-som imx8qm-var-spear imx8qp-var-som imx8
 SRC_URI:append = " \
 	https://github.com/LairdCP/Sterling-LWB-and-LWB5-Release-Packages/releases/download/LRD-REL-${BRCM_REV}/summit-lwb-fcc-firmware-${BRCM_REV}.tar.bz2;name=brcm_lwb \
 	https://github.com/LairdCP/Sterling-LWB-and-LWB5-Release-Packages/releases/download/LRD-REL-${BRCM_REV}/summit-lwb5-fcc-firmware-${BRCM_REV}.tar.bz2;name=brcm_lwb5 \
-	git://git.ti.com/cgit/wilink8-wlan/wl18xx_fw;protocol=https;branch=${BRANCH_tiwlan};destsuffix=tiwlan;name=tiwlan \
-	git://git.ti.com/cgit/ti-bt/service-packs;protocol=https;branch=${BRANCH_tibt};destsuffix=tibt;name=tibt \
+	git://git.ti.com/git/wilink8-wlan/wl18xx_fw.git;protocol=https;branch=${BRANCH_tiwlan};destsuffix=tiwlan;name=tiwlan \
+	git://git.ti.com/git/ti-bt/service-packs.git;protocol=https;branch=${BRANCH_tibt};destsuffix=tibt;name=tibt \
 	file://wl1271-nvs.bin \
 "
 
