@@ -6,7 +6,7 @@ DEPENDS += "bison-native"
 UBOOT_SRC ?= "git://github.com/varigit/uboot-imx;protocol=https"
 
 SRCBRANCH = "lf_v2025.04_6.12.20-2.0.0_var01"
-SRCREV = "67aba067aa9ee3e5cba3a653290c9bbb208ae48e"
+SRCREV = "28ed79c4eada4a5ce8b1a00b7117c305ed455a5c"
 UBOOT_INITIAL_ENV_DEVICE = "sd"
 
 UBOOT_INITIAL_ENV_DEVICE:var-som-mx6 = "nand"
