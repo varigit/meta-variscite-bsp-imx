@@ -14,7 +14,6 @@ SRC_URI = " \
 	file://02-bt.sh \
 	file://03-wifi.sh \
 "
-SRC_URI:append:imx91-var-som = " file://04-backlight.sh"
 
 S = "${WORKDIR}"
 
@@ -27,10 +26,6 @@ do_install() {
 
 	echo "ETH_SUSPEND_MODE=\"${PM_ETH_SUSPEND_MODE}\"" > ${WORKDIR}/var_pm_config
 	install -m 0644 ${WORKDIR}/var_pm_config ${D}/${sysconfdir}/pm/
-}
-
-do_install:append:imx91-var-som() {
-	install -m 0755 ${WORKDIR}/04-backlight.sh ${D}/${sysconfdir}/pm/sleep.d
 }
 
 FILES:${PN} = " \
