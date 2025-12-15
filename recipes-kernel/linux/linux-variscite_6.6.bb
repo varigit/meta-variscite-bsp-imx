@@ -49,6 +49,7 @@ pkg_postinst:kernel-devicetree:append:imx8mq-var-dart () {
 pkg_postinst:kernel-devicetree:append:imx8qxp-var-som () {
     cd $D/boot
     ln -s ${DEFAULT_DTB_PREFIX}-${DEFAULT_DTB}.dtb ${DEFAULT_DTB_PREFIX}.dtb
+    ln -s ${DEFAULT_DTB_PREFIX}-1.x-${DEFAULT_DTB}.dtb ${DEFAULT_DTB_PREFIX}-1.x.dtb
 }
 
 pkg_postinst:kernel-devicetree:append:imx8qm-var-som () {
