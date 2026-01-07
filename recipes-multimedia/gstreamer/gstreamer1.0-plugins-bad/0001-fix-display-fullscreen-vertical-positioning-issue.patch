@@ -1,26 +1,27 @@
-From a410188a34f8b73f3febf860cd240afca3b5c28d Mon Sep 17 00:00:00 2001
-From: Natalia Kovalenko <natasha.k@variscite.com>
-Date: Mon, 12 Feb 2024 17:41:09 +0100
+From a6926ec8e32c6ae6a938e79021fbcffd9e7337ab Mon Sep 17 00:00:00 2001
+From: Stefano Radaelli <stefano.r@variscite.com>
+Date: Wed, 7 Jan 2026 16:33:59 +0100
 Subject: [PATCH] gstreamer: Fix display fullscreen vertical positioning issue
 
 Adjusts the height of the fullscreen display when the panel-position
 is set to none in the weston.ini file.
 Upstream-Status: Pending
-Signed-off-by: Natalia Kovalenko <natasha.k@variscite.com>
+Acked-by: Natalia Kovalenko <natasha.k@variscite.com>
+Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
 ---
- gst-libs/gst/wayland/gstwlutils.c  | 29 +++++++++++++++++++++++++----
+ gst-libs/gst/wayland/gstwlutils.c  | 28 ++++++++++++++++++++++++----
  gst-libs/gst/wayland/gstwlutils.h  |  3 ++-
  gst-libs/gst/wayland/gstwlwindow.c |  6 +++---
- 3 files changed, 30 insertions(+), 8 deletions(-)
+ 3 files changed, 29 insertions(+), 8 deletions(-)
 
 diff --git a/gst-libs/gst/wayland/gstwlutils.c b/gst-libs/gst/wayland/gstwlutils.c
-index 63e3c6f0c..867112b94 100644
+index 63e3c6f0c5..3bce0d0f9b 100644
 --- a/gst-libs/gst/wayland/gstwlutils.c
 +++ b/gst-libs/gst/wayland/gstwlutils.c
 @@ -37,6 +37,8 @@
-
+ 
  #define WESTON_INI "/etc/xdg/weston/weston.ini"
-
+ 
 +gint panel_height = PANEL_HEIGH;
 +
  gboolean
@@ -31,12 +32,12 @@ index 63e3c6f0c..867112b94 100644
    struct stat filestat;
    FILE *fp;
 +  gchar *panel_position = NULL;
-
+ 
    if ((fd = open (path, O_RDONLY)) == -1) {
      return FALSE;
 @@ -66,9 +69,6 @@ gst_wl_init_surface_state (GstWlDisplay * display, GstWlWindow * self)
    }
-
+ 
    while (fgets (line, sizeof line, fp)) {
 -    if (found_config)
 -      break;
@@ -44,13 +45,12 @@ index 63e3c6f0c..867112b94 100644
      switch (line[0]) {
        case '#':
        case '\n':
-@@ -107,6 +107,24 @@ gst_wl_init_surface_state (GstWlDisplay * display, GstWlWindow * self)
+@@ -107,6 +107,23 @@ gst_wl_init_surface_state (GstWlDisplay * display, GstWlWindow * self)
                found_config = TRUE;
              }
            }
-+
-+          if (strcmp (&line[0], "panel-position") == 0) {
-+            p++;
++	  if (strcmp (&line[0], "panel-position") == 0) {
++	    p++;
 +            while (isspace (*p))
 +              p++;
 +            i = strlen (p);
@@ -69,7 +69,7 @@ index 63e3c6f0c..867112b94 100644
          }
          continue;
      }
-@@ -133,7 +151,10 @@ gst_wl_init_surface_state (GstWlDisplay * display, GstWlWindow * self)
+@@ -133,7 +150,10 @@ gst_wl_init_surface_state (GstWlDisplay * display, GstWlWindow * self)
        goto out;
      }
      gst_wl_window_set_fullscreen_width (self, desktop_width);
@@ -82,26 +82,26 @@ index 63e3c6f0c..867112b94 100644
      ret = FALSE;
      goto out;
 diff --git a/gst-libs/gst/wayland/gstwlutils.h b/gst-libs/gst/wayland/gstwlutils.h
-index 90c3b0ecd..63397e651 100644
+index 90c3b0ecde..63397e6512 100644
 --- a/gst-libs/gst/wayland/gstwlutils.h
 +++ b/gst-libs/gst/wayland/gstwlutils.h
 @@ -31,7 +31,8 @@ G_BEGIN_DECLS
  /* FIXME: try to get from wayland server */
  #define PANEL_HEIGH 32
-
+ 
 +extern gint panel_height;
  gboolean gst_wl_init_surface_state(GstWlDisplay * display, GstWlWindow * self);
  G_END_DECLS
-
+ 
 -#endif
 \ No newline at end of file
 +#endif
 diff --git a/gst-libs/gst/wayland/gstwlwindow.c b/gst-libs/gst/wayland/gstwlwindow.c
-index 5a5affd94..7efd9e566 100644
+index 782944d897..d36a68f75d 100644
 --- a/gst-libs/gst/wayland/gstwlwindow.c
 +++ b/gst-libs/gst/wayland/gstwlwindow.c
-@@ -487,11 +487,11 @@ gst_wl_window_new_internal (GstWlDisplay * display, GMutex * render_lock)
-
+@@ -541,11 +541,11 @@ gst_wl_window_new_internal (GstWlDisplay * display, GMutex * render_lock)
+ 
    if (!gst_wl_init_surface_state (display, self)) {
      priv->fullscreen_width = width;
 -    priv->fullscreen_height = height - PANEL_HEIGH;
@@ -111,9 +111,12 @@ index 5a5affd94..7efd9e566 100644
 -        ("init surface_state fail, fallback to scale=%d fullscreen (%dx%d)",
 -        priv->scale, priv->fullscreen_width, priv->fullscreen_height);
 +        ("init surface_state fail, fallback to scale=%d fullscreen (%dx%d) panel-height (%d)",
-+        priv->scale, priv->fullscreen_width, priv->fullscreen_height, panel_height);
++	priv->scale, priv->fullscreen_width, priv->fullscreen_height, panel_height);
    }
-
+ 
    return self;
---
-2.34.1
+
+base-commit: d1e0c6a2f64164b1d746f5d47ef091d5d2b196ed
+-- 
+2.47.3
+
