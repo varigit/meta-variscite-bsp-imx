@@ -18,11 +18,11 @@ DEFAULT_PREFERENCE = "1"
 
 KERNEL_SRC ?= "git://github.com/varigit/linux-imx;protocol=https"
 
-SRCBRANCH = "lf-6.12.y_6.12.20-2.0.0_var01"
+SRCBRANCH = "lf-6.12.y_6.12.49-2.2.0_var01"
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
-SRCREV = "b1bff6c466755d4ffd904eaa5876952eba566161"
+SRCREV = "8d60ff1e3dfb19f130274f5af955cb3a9cef3db8"
 
-LINUX_VERSION = "6.12.20"
+LINUX_VERSION = "6.12.49"
 LINUX_VERSION_EXTENSION = "-var-lts-next"
 
 KBUILD_DEFCONFIG:mx6-nxp-bsp = "imx_v7_var_defconfig"
