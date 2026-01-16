@@ -15,6 +15,12 @@ BT_EN_GPIO="${gpio4} 28"
 # btnxpuart fdt device compatible file
 BT_FDT="/sys/firmware/devicetree/base/soc/bus@42000000/serial@42590000/bluetooth"
 
+# iw611/12 WIFI SDIO ID
+WIFI_SDIO_ID=0x0205
+
+# WIFI SDIO ID file
+WIFI_SDIO_ID_FILE=/sys/class/net/wlan0/device/device
+
 # Use btnxpuart device node to determine if wifi module is iw61x
 fdt_has_btnxpuart() {
 	# Check if compatible file exists
@@ -58,6 +64,12 @@ bt_start()
 	# Exit if BT module is not iw612 according to the device tree
 	fdt_has_btnxpuart || exit 0
 
+	# Exit if BT module is not available
+	wifi_sdio_exist ${WIFI_SDIO_ID_FILE} || exit 0
+
+	# Exit if BT module is not iw611/12
+	verify_sdio_id ${WIFI_SDIO_ID_FILE} ${WIFI_SDIO_ID} || exit 0
+
 	# Exit if BT interface is already running
 	if [ -e "/sys/class/bluetooth/hci0" ]; then
 		echo "$(basename $0): Bluetooth already started"
@@ -96,6 +108,9 @@ bt_stop()
 {
 	# Exit if BT module is not iw612 according to the device tree
 	fdt_has_btnxpuart || exit 0
+
+	# Exit if BT module is not iw611/12
+	verify_sdio_id ${WIFI_SDIO_ID_FILE} ${WIFI_SDIO_ID} || exit 0
 
 	# Exit if BT interface is not available
 	[ -e /sys/class/bluetooth/hci0 ] || exit 0
