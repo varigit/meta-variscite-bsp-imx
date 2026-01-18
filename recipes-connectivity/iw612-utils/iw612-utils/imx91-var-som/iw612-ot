@@ -28,11 +28,19 @@ is_var_som_mx91()
 	grep -q VAR-SOM-MX91 /sys/devices/soc0/machine
 }
 
-has_wbe() {
-    features=$(i2cget -y -f 2 0x52 0x25)
-    if [ "${features}" == "0x0f" ]; then
+is_carrier_symphony_v1x()
+{
+	grep -q 'Symphony-Board v1.x' /sys/devices/soc0/machine
+}
+
+has_wbe()
+{
+    features=$(i2cget -f -y 0x2 0x52 0x25)
+
+    if [ $((features & 0x08)) -ne 0 ]; then
         return 0
     fi
+
     return 1
 }
 
@@ -41,6 +49,8 @@ ot_start()
 {
 	# Exit if WBE configuration is not available
 	has_wbe || exit 0
+
+	is_carrier_symphony_v1x || exit 0
 
 	# Exit if OT module is not available
 	wifi_sdio_exist ${WIFI_SDIO_ID_FILE} || exit 0
