@@ -23,14 +23,6 @@ fdt_has_btnxpuart() {
 	fi
 }
 
-has_wbe() {
-    features=$(i2cget -y -f 2 0x52 0x25)
-    if [ "${features}" == "0x0f" ]; then
-        return 0
-    fi
-    return 1
-}
-
 # Enable BT via GPIO(s)
 bt_enable()
 {
@@ -74,11 +66,6 @@ bt_start()
 	awk "{print \$3}")" != "00:00:00:00:00:00" ]; do sleep 0.1; done'; then
 		echo "Error: Bluetooth MAC address is 00:00:00:00:00:00"
 		exit 1
-	fi
-
-	# Disable btnxpuart power save mode
-	if has_wbe; then
-		hcitool cmd 3f 23 03 00 00
 	fi
 
 	sleep 1;

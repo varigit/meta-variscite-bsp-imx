@@ -53,6 +53,9 @@ ot_start()
 
 	echo "$(basename $0): starting"
 
+	# Disable btnxpuart power save mode
+	hcitool cmd 3f 23 03 00 00
+
 	# Start ot-daemon-iwxxx-spi
 	URL="spinel+spi://${SPI_DEV}?gpio-int-device=${GPIO_DEV_INT}&gpio-int-line=${GPIO_LINE_INT}&spi-mode=${SPI_MODE}&spi-speed=${SPI_SPEED}&"
 	echo "${URL}"
