@@ -55,7 +55,9 @@ pkg_postinst:kernel-devicetree:append:imx8qxp-var-som () {
 pkg_postinst:kernel-devicetree:append:imx8qm-var-som () {
     cd $D/boot
     ln -s ${DEFAULT_DTB_PREFIX}-${DEFAULT_DTB}.dtb ${DEFAULT_DTB_PREFIX}.dtb
+    ln -s ${DEFAULT_DTB_PREFIX}-1.x-${DEFAULT_DTB}.dtb ${DEFAULT_DTB_PREFIX}-1.x.dtb
     ln -s imx8qp-var-som-symphony-${DEFAULT_DTB}.dtb imx8qp-var-som-symphony.dtb
+    ln -s imx8qp-var-som-symphony-1.x-${DEFAULT_DTB}.dtb imx8qp-var-som-symphony-1.x.dtb
     ln -s imx8qm-var-spear-sp8customboard-${DEFAULT_DTB}.dtb imx8qm-var-spear-sp8customboard.dtb
     ln -s imx8qp-var-spear-sp8customboard-${DEFAULT_DTB}.dtb imx8qp-var-spear-sp8customboard.dtb
 }
