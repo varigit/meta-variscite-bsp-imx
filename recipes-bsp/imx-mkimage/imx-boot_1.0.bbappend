@@ -1,5 +1,5 @@
 # Copyright (C) 2017-2024 NXP
-# Copyright (C) 2024 Variscite LTD
+# Copyright (C) 2026 Variscite LTD
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 

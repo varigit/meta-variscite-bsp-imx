@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Variscite
+# Copyright (C) 2026 Variscite
 require freertos-variscite.inc
 LIC_FILES_CHKSUM = "file://COPYING-BSD-3;md5=0858ec9c7a80c4a2cf16e4f825a2cc91"
 MCUXPRESSO_BRANCH = "mcuxpresso_sdk_${PV}-var01"

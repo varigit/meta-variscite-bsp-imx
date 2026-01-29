@@ -1,6 +1,6 @@
 # Copyright (C) 2013-2016 Freescale Semiconductor
 # Copyright 2017-2018 NXP
-# Copyright 2018-2023 Variscite Ltd.
+# Copyright 2018-2026 Variscite Ltd.
 
 SUMMARY = "U-Boot for Variscite's i.MX boards"
 require recipes-bsp/u-boot/u-boot.inc

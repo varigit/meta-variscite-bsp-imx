@@ -1,4 +1,4 @@
-# Copyright (C) 2024 Variscite
+# Copyright (C) 2026 Variscite
 require freertos-variscite.inc
 
 LIC_FILES_CHKSUM = "file://COPYING-BSD-3;md5=b66f32a90f9577a5a3255c21d79bc619"

@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2023 Variscite
+# Copyright (C) 2021-2026 Variscite
 SUMMARY = "Variscite i.MX Cortex-M Firmware Demos"
 DESCRIPTION = "FreeRTOS for Cortex-M core located inside i.MX7/8/9 SOC based products"
 HOMEPAGE = "https://github.com/varigit/freertos-variscite"
