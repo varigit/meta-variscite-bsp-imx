@@ -5,8 +5,8 @@
 SUMMARY = "U-Boot for Variscite's i.MX boards"
 require recipes-bsp/u-boot/u-boot.inc
 
-PROVIDES += "u-boot"
 DEPENDS += "bc-native dtc-native gnutls-native"
+PROVIDES += "u-boot"
 
 include u-boot-common.inc
 
