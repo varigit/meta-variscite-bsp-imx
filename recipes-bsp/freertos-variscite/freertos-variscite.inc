@@ -18,11 +18,11 @@ SRC_URI = " \
 SRC_URI:append:imx8qxp-var-som = " file://${DISABLE_CACHE_PATCH};apply=no"
 SRC_URI:append:imx8qm-var-som = " file://${DISABLE_CACHE_PATCH};apply=no"
 
+S = "${WORKDIR}/git"
+
 RDEPENDS:${PN} += "bc"
 
 inherit deploy
-
-S = "${WORKDIR}/git"
 
 PACKAGECONFIG ??= "rproc-scripts"
 
