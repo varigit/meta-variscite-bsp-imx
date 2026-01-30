@@ -8,7 +8,7 @@ require recipes-bsp/u-boot/u-boot.inc
 DEPENDS += "bc-native dtc-native gnutls-native"
 PROVIDES += "u-boot"
 
-include u-boot-common.inc
+require u-boot-common.inc
 
 inherit fsl-u-boot-localversion
 
