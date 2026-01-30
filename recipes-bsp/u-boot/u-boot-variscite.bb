@@ -7,7 +7,6 @@ require recipes-bsp/u-boot/u-boot.inc
 
 PROVIDES += "u-boot"
 DEPENDS += "bc-native dtc-native gnutls-native"
-FILESEXTRAPATHS:prepend := "${THISDIR}/u-boot-fw-utils:"
 
 include u-boot-common.inc
 
