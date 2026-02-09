@@ -3,9 +3,9 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 SRCREV_FORMAT = "linux-firmware"
-IW612_FIRMWARE_SRC = "git://github.com/varigit/imx-firmware.git;protocol=https"
-SRCREV_iw612-firmware = "f899d18fe944fb15ce07ba466cf60c11d05ec1cb"
-SRCBRANCH = "lf-6.1.22_2.0.0-var01"
+IW612_FIRMWARE_SRC = "git://github.com/nxp/imx-firmware.git;protocol=https"
+SRCREV_iw612-firmware = "d31ea8aaba67e188ba0071a90da0364e3946c83a"
+SRCBRANCH = "lf-6.12.20_2.0.0"
 
 BRCM_REV = "10.54.0.13"
 SRC_URI[brcm_lwb.sha256sum] = "8faa105e036a9f8bffe2857f5d9f5ce539521ef8624b59069290579440228ac5"
@@ -42,9 +42,6 @@ do_install:append() {
 	install -m 0644 ${WORKDIR}/iw612-firmware/nxp/FwImage_IW612_SD/sduart_nw61x_v1.bin.se ${D}${nonarch_base_libdir}/firmware/nxp
 	install -m 0644 ${WORKDIR}/iw612-firmware/nxp/FwImage_IW612_SD/sd_w61x_v1.bin.se      ${D}${nonarch_base_libdir}/firmware/nxp
 	install -m 0644 ${WORKDIR}/iw612-firmware/nxp/FwImage_IW612_SD/uartspi_n61x_v1.bin.se ${D}${nonarch_base_libdir}/firmware/nxp
-	for f in ${WORKDIR}/iw612-firmware/nxp/FwImage_IW612_SD/IW612_SD_RFTest/*; do
-		install -D -m 0644 $f ${D}${nonarch_base_libdir}/firmware/nxp/IW612_SD_RFTest/$(basename $f)
-	done
 
 	for model in ${MODEL_LIST}; do
 		# Add model symbolic links to brcmfmac4339
@@ -80,7 +77,6 @@ FILES:${PN}-nxpiw612-sdio = " \
   ${nonarch_base_libdir}/firmware/nxp/sduart_nw61x_v1.bin.se \
   ${nonarch_base_libdir}/firmware/nxp/sd_w61x_v1.bin.se \
   ${nonarch_base_libdir}/firmware/nxp/uartspi_n61x_v1.bin.se \
-  ${nonarch_base_libdir}/firmware/nxp/IW612_SD_RFTest/ \
 "
 RDEPENDS_${PN}-nxpiw612-sdio += "${PN}-nxp-common"
 
