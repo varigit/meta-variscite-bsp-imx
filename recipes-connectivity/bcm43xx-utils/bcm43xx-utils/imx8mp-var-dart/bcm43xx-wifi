@@ -67,6 +67,10 @@ get_somrev() {
 
 # Check if wifi is bcm43xx
 wifi_is_bcm43xx() {
+	if som_is_var_smarc_mx8m_plus; then
+		return 1
+	fi
+
 	somrev=$(get_somrev)
 
 	if [ "$(echo "$somrev < 2.0" | bc)" -eq 1 ]; then
@@ -80,6 +84,12 @@ wifi_is_bcm43xx() {
 som_is_var_som_mx8m_plus()
 {
 	grep -q VAR-SOM-MX8M-PLUS /sys/devices/soc0/machine
+}
+
+# Return true if SOM is VAR-SMARC-MX8M-PLUS
+som_is_var_smarc_mx8m_plus()
+{
+	grep -q VAR-SMARC-MX8M-PLUS /sys/devices/soc0/machine
 }
 
 # Configure VAR-SOM-MX8M-PLUS WIFI/BT pins
