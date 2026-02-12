@@ -88,6 +88,14 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     ${PREFERRED_CONNECTIVITY_MANAGER_PACKAGES} \
 "
 
+CORE_IMAGE_EXTRA_INSTALL:mx8-nxp-bsp += " \
+    variscite-base-files \
+"
+
+CORE_IMAGE_EXTRA_INSTALL:mx9-nxp-bsp += " \
+    variscite-base-files \
+"
+
 IMAGE_FSTYPES = "tar.zst wic.zst wic.bmap wic"
 
 # Use bluez-alsa instead of pulseaudio
