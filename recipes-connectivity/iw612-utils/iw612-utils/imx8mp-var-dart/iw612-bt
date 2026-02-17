@@ -16,6 +16,9 @@ BT_EN_GPIO_DART="${gpio2} 6"
 # GPIO pin to enable BT module
 BT_EN_GPIO_SOM="${gpio2} 9"
 
+# GPIO pin to enable BT module on VAR-SMARC-MX8M-PLUS
+BT_EN_GPIO_SMARC="${gpio2} 11"
+
 # GPIO pin to control routing of UART signals
 # to BT module or SOM connector on DART-MX8M-PLUS
 BT_BUF_GPIO_DART="${gpio2} 9"
@@ -27,11 +30,24 @@ BT_BUF_GPIO_SOM="${gpio1} 4"
 # btnxpuart fdt device compatible file
 BT_FDT_SOM="/sys/firmware/devicetree/base/soc@0/bus@30800000/spba-bus@30800000/serial@30880000/bluetooth_iw61x"
 BT_FDT_DART="/sys/firmware/devicetree/base/soc@0/bus@30800000/serial@30a60000/bluetooth_iw61x"
+BT_FDT_SMARC="/sys/firmware/devicetree/base/soc@0/bus@30800000/spba-bus@30800000/serial@30880000/bluetooth_iw61x"
 
 # Return true if SOM is VAR-SOM-MX8M-PLUS
 som_is_var_som_mx8m_plus()
 {
 	grep -q VAR-SOM-MX8M-PLUS /sys/devices/soc0/machine
+}
+
+# Return true if SOM is DART-MX8M-PLUS
+som_is_dart_mx8m_plus()
+{
+	grep -q DART-MX8M-PLUS /sys/devices/soc0/machine
+}
+
+# Return true if SOM is VAR-SMARC-MX8M-PLUS
+som_is_smarc_mx8m_plus()
+{
+	grep -q VAR-SMARC-MX8M-PLUS /sys/devices/soc0/machine
 }
 
 # Set UART device connected to BT module
@@ -41,10 +57,13 @@ bt_set_vars()
 		BT_FDT=${BT_FDT_SOM}
 		BT_EN_GPIO=${BT_EN_GPIO_SOM}
 		BT_BUF_GPIO=${BT_BUF_GPIO_SOM}
-	else
+	elif som_is_dart_mx8m_plus; then
 		BT_FDT=${BT_FDT_DART}
 		BT_EN_GPIO=${BT_EN_GPIO_DART}
 		BT_BUF_GPIO=${BT_BUF_GPIO_DART}
+	elif som_is_smarc_mx8m_plus; then
+		BT_FDT=${BT_FDT_SMARC}
+		BT_EN_GPIO=${BT_EN_GPIO_SMARC}
 	fi
 }
 
@@ -85,7 +104,7 @@ bt_enable()
 	# Route UART lines to BT module
 	if som_is_var_som_mx8m_plus; then
 		gpioset -t 0 --chip ${BT_BUF_GPIO}=0
-	else
+	elif som_is_dart_mx8m_plus; then
 		gpioset -t 0 --chip ${BT_BUF_GPIO}=1
 	fi
 }
@@ -156,7 +175,7 @@ bt_stop()
 	# Assert bluetooth/802.15.4 reset GPIO and disable BT uart buffer
 	if som_is_var_som_mx8m_plus; then
 		gpioset -t 0 --chip ${BT_BUF_GPIO}=0
-	else
+	elif som_is_dart_mx8m_plus; then
 		gpioset -t 0 --chip ${BT_BUF_GPIO}=1
 	fi
 	gpioset -t 0 --chip ${BT_EN_GPIO}=0
