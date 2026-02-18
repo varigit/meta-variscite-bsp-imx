@@ -1,0 +1,29 @@
+#!/bin/sh -e
+
+# Assert GRST line on USB HUB TUSB8041I for VAR-SMARC-MX8M-PLUS
+usbhub_assert()
+{
+	gpioset -t 0 -c gpiochip5 11=0
+}
+
+# Deassert GRST line on USB HUB TUSB8041I for VAR-SMARC-MX8M-PLUS
+usbhub_deassert()
+{
+        gpioset -t 0 -c gpiochip5 11=0
+	sleep .1
+	gpioget -c gpiochip5 11
+}
+
+###########################
+#  Execution starts here  #
+###########################
+case $1 in
+start)
+	usbhub_deassert
+	;;
+stop)
+	usbhub_assert
+	;;
+esac
+
+exit 0

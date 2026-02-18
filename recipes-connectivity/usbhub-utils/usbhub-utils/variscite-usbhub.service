@@ -1,0 +1,15 @@
+[Unit]
+Description=Variscite USB HUB TUSB8041 reset service
+Requires=systemd-udevd.service
+After=local-fs.target systemd-udevd.service
+Before=network-pre.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecCondition=/bin/grep -q VAR-SMARC-MX8M-PLUS /sys/devices/soc0/machine
+ExecStart=/etc/usbhub/variscite-usbhub start
+ExecStop=/etc/usbhub/variscite-usbhub stop
+
+[Install]
+WantedBy=multi-user.target
