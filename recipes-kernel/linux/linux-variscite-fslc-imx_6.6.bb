@@ -12,7 +12,6 @@ HOMEPAGE = "https://github.com/varigit/linux-imx"
 require recipes-kernel/linux/linux-variscite.inc
 
 SRCBRANCH = "6.6-2.2.x-imx_var01"
-LOCALVERSION = "-${LINUX_VERSION}-2.2.2"
 SRCREV = "bddc7b684d2e4925cf2b9a0a2a339f9c4a62936e"
 
 LINUX_VERSION = "6.6.119"
