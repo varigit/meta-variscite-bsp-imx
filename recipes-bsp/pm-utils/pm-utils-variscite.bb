@@ -12,6 +12,7 @@ SRC_URI = " \
     file://02-bt.sh \
     file://03-wifi.sh \
 "
+SRC_URI:append:imx8mp-var-dart = " file://04-usbhub.sh"
 
 S = "${WORKDIR}"
 
@@ -21,6 +22,7 @@ FILES:${PN}:append = " \
 "
 
 RDEPENDS:${PN} = "pm-utils"
+RDEPENDS:${PN}:append:imx8mp-var-dart = " usbhub-utils"
 
 do_install() {
     install -d ${D}/${sysconfdir}/pm/sleep.d
@@ -28,6 +30,9 @@ do_install() {
     install -m 0755 ${WORKDIR}/01-eth.sh ${D}/${sysconfdir}/pm/sleep.d
     install -m 0755 ${WORKDIR}/02-bt.sh ${D}/${sysconfdir}/pm/sleep.d
     install -m 0755 ${WORKDIR}/03-wifi.sh ${D}/${sysconfdir}/pm/sleep.d
+    if [ "${MACHINE}" = "imx8mp-var-dart" ]; then
+        install -m 0755 ${WORKDIR}/04-usbhub.sh ${D}/${sysconfdir}/pm/sleep.d
+    fi
 
     echo "ETH_SUSPEND_MODE=\"${PM_ETH_SUSPEND_MODE}\"" > ${WORKDIR}/var_pm_config
     install -m 0644 ${WORKDIR}/var_pm_config ${D}/${sysconfdir}/pm/
