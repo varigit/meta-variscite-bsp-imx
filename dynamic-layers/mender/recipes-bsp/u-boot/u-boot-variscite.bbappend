@@ -32,3 +32,11 @@ do_deploy:append:mender-uboot() {
         install -m 644 ${WORKDIR}/uboot.env ${DEPLOYDIR}/uboot.env
     fi
 }
+
+SRC_URI:append:imx93-var-som = " \
+    file://0001-imx93_var_som-Add-mender-configuration-options.patch \
+"
+
+SRC_URI:append:imx95-var-dart = " \
+    file://0001-imx95_var_dart-Add-mender-configuration-options.patch \
+"
