@@ -1,0 +1,6 @@
+LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=a93b654673e1bc8398ed1f30e0813359"
+
+SRCBRANCH = "lf-6.12.20_2.0.0"
+SRCREV = "d31ea8aaba67e188ba0071a90da0364e3946c83a"
+
+INSANE_SKIP:${PN} += "installed-vs-shipped"
