@@ -1,0 +1,55 @@
+From 6ab09ed27381da62fcd4786d194255fdc0184545 Mon Sep 17 00:00:00 2001
+From: Alex Lucchesi <alex.l@variscite.com>
+Date: Fri, 27 Mar 2026 11:35:40 -0300
+Subject: [PATCH] imx91_var_som: Add Mender configuration options
+
+Upstream-Status: Inappropriate [mender-specific configuration]
+Signed-off-by: Alex Lucchesi <alex.l@variscite.com>
+---
+ configs/imx91_var_som_defconfig | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/configs/imx91_var_som_defconfig b/configs/imx91_var_som_defconfig
+index f13a3967e6d..bac273f5667 100644
+--- a/configs/imx91_var_som_defconfig
++++ b/configs/imx91_var_som_defconfig
+@@ -6,7 +6,7 @@ CONFIG_SYS_MALLOC_F_LEN=0x18000
+ CONFIG_SPL_LIBCOMMON_SUPPORT=y
+ CONFIG_SPL_LIBGENERIC_SUPPORT=y
+ CONFIG_NR_DRAM_BANKS=2
+-CONFIG_ENV_SIZE=0x4000
++CONFIG_ENV_SIZE=0x20000
+ CONFIG_ENV_OFFSET=0x700000
+ CONFIG_DM_GPIO=y
+ CONFIG_DEFAULT_DEVICE_TREE="imx91-var-som-symphony"
+@@ -20,6 +20,7 @@ CONFIG_SPL_DRIVERS_MISC=y
+ CONFIG_SPL_STACK=0x204dfdd0
+ CONFIG_SPL_SYS_MALLOC_F_LEN=0x2000
+ CONFIG_SPL=y
++CONFIG_ENV_OFFSET_REDUND=0x740000
+ CONFIG_CMD_DEKBLOB=y
+ CONFIG_SPL_IMX_ROMAPI_LOADADDR=0x88000000
+ CONFIG_SYS_LOAD_ADDR=0x80400000
+@@ -95,16 +96,17 @@ CONFIG_SPL_OF_CONTROL=y
+ CONFIG_OF_LIST="imx91-var-som-symphony imx91-var-dart-dt8mcustomboard"
+ CONFIG_MULTI_DTB_FIT=y
+ CONFIG_ENV_OVERWRITE=y
+-CONFIG_ENV_IS_NOWHERE=y
+ CONFIG_ENV_IS_IN_MMC=y
++CONFIG_SYS_REDUNDAND_ENVIRONMENT=y
+ CONFIG_SYS_RELOC_GD_ENV_ADDR=y
+-CONFIG_SYS_MMC_ENV_DEV=1
+ CONFIG_USE_ETHPRIME=y
+ CONFIG_ETHPRIME="eth0"
+ CONFIG_NET_RANDOM_ETHADDR=y
+ CONFIG_SPL_DM=y
+ CONFIG_ADC=y
+ CONFIG_ADC_IMX93=y
++CONFIG_BOOTCOUNT_LIMIT=y
++CONFIG_BOOTCOUNT_ENV=y
+ CONFIG_CLK_IMX91=y
+ CONFIG_CPU=y
+ CONFIG_CPU_IMX=y
+-- 
+2.43.0
+
