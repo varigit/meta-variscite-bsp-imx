@@ -1,12 +1,5 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-do_configure:prepend:mender-uboot() {
-    bbwarn "Cleaning up .config created by Mender"
-    oe_runmake -C ${S} O=${B} ${UBOOT_MACHINE} mrproper
-}
-
-require recipes-bsp/u-boot/u-boot-mender.inc
-
 SRC_URI:append:imx8mp-var-dart = " \
     file://0001-imx8mp_var_dart-Add-mender-configuration-options.patch \
 "
@@ -18,3 +11,10 @@ SRC_URI:append:imx93-var-som = " \
 SRC_URI:append:imx95-var-dart = " \
     file://0001-imx95_var_dart-Add-mender-configuration-options.patch \
 "
+
+do_configure:prepend:mender-uboot() {
+    bbwarn "Cleaning up .config created by Mender"
+    oe_runmake -C ${S} O=${B} ${UBOOT_MACHINE} mrproper
+}
+
+require recipes-bsp/u-boot/u-boot-mender.inc
