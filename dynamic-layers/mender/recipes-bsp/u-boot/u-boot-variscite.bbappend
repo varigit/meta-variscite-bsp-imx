@@ -4,11 +4,28 @@ SRC_URI:append = " \
     file://mender-required-configs.cfg \
 "
 
+SRC_URI:append:imx8mp-var-dart = " \
+    file://0001-imx8mp_var_dart-Add-mender-configuration-options.patch \
+"
+
+SRC_URI:append:imx93-var-som = " \
+    file://0001-imx93_var_som-Add-mender-configuration-options.patch \
+"
+
+SRC_URI:append:imx95-var-dart = " \
+    file://0001-imx95_var_dart-Add-mender-configuration-options.patch \
+"
+
 B = "${WORKDIR}/build"
 
 require recipes-bsp/u-boot/u-boot-mender.inc
 
 do_configure[cleandirs] = "${B}"
+
+do_configure:prepend:mender-uboot() {
+    bbwarn "Cleaning up .config created by Mender"
+    oe_runmake -C ${S} O=${B} ${UBOOT_MACHINE} mrproper
+}
 
 # Mender validates required U-Boot symbols in do_provide_mender_defines() [1],
 # before the normal U-Boot configuration flow applies the final board settings.
@@ -32,11 +49,3 @@ do_deploy:append:mender-uboot() {
         install -m 644 ${WORKDIR}/uboot.env ${DEPLOYDIR}/uboot.env
     fi
 }
-
-SRC_URI:append:imx93-var-som = " \
-    file://0001-imx93_var_som-Add-mender-configuration-options.patch \
-"
-
-SRC_URI:append:imx95-var-dart = " \
-    file://0001-imx95_var_dart-Add-mender-configuration-options.patch \
-"
