@@ -7,7 +7,7 @@ UBOOT_SRC ?= "git://github.com/varigit/uboot-imx;protocol=https"
 SRC_URI = "${UBOOT_SRC};branch=${SRCBRANCH}"
 
 SRCBRANCH = "lf_v2024.04_6.6.52-2.2.2_var01"
-SRCREV = "5300cc91ffdece042ab64ce4a0956b9242b61435"
+SRCREV = "7480ba9b587812c71fc793653ff881b2715b4fde"
 UBOOT_INITIAL_ENV_DEVICE = "sd"
 
 SRCBRANCH:var-som-mx6 = "lf_v2024.04_6.6.23-2.0.0_var01"
