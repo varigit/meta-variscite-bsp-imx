@@ -86,13 +86,6 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     packagegroup-tools-bluetooth \
     packagegroup-variscite-devel \
     ${PREFERRED_CONNECTIVITY_MANAGER_PACKAGES} \
-"
-
-CORE_IMAGE_EXTRA_INSTALL:append:mx8-nxp-bsp = " \
-    variscite-base-files \
-"
-
-CORE_IMAGE_EXTRA_INSTALL:append:mx9-nxp-bsp = " \
     variscite-base-files \
 "
 
