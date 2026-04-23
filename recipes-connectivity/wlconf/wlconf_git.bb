@@ -4,7 +4,7 @@ LIC_FILES_CHKSUM = "file://README;beginline=1;endline=21;md5=adc05a1903d3f107f85
 
 # Tag: R8.8 (8.8)
 SRCREV = "b23772347318e5e3f724e9686f271efc01512708"
-SRC_URI = "git://git.ti.com/cgit/wilink8-wlan/18xx-ti-utils;protocol=https;branch=master"
+SRC_URI = "git://git.ti.com/git/wilink8-wlan/18xx-ti-utils;protocol=https;branch=master"
 
 S = "${WORKDIR}/git/wlconf"
 
