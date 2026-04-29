@@ -4,10 +4,6 @@ SRC_URI:append:imx91-var-som = " \
     file://0001-imx91_var_som-Add-mender-configuration-options.patch \
 "
 
-SRC_URI:append:imx8mm-var-dart = " \
-    file://0001-imx8mm_var_dart-Add-mender-configuration-options.patch \
-"
-
 SRC_URI:append = " \
     file://mender-required-configs.cfg \
 "
