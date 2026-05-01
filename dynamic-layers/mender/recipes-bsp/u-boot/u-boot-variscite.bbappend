@@ -4,33 +4,24 @@ SRC_URI:append:imx95-var-dart = " \
     file://mender-required-configs.cfg \
 "
 
-MENDER_UBOOT_FRAGMENTS = " \
-    ${UNPACKDIR}/mender-required-configs.cfg \
-"
+B = "${WORKDIR}/build"
 
 require recipes-bsp/u-boot/u-boot-mender.inc
 
-# Mender validates its required U-Boot settings early [1], before configuration
-# fragments are applied. The Mender fragments are pre-merged here so those
-# settings are visible during validation, while still allowing the normal
-# configuration stage to regenerate the final configuration afterward.
+do_configure[cleandirs] = "${B}"
+
+# Mender validates required U-Boot symbols in do_provide_mender_defines() [1],
+# before the normal U-Boot configuration flow applies the final board settings.
+# This replaces Mender's base fragment file, excluding variables that may be
+# overridden later by other fragments.
 #
 # [1] https://github.com/mendersoftware/meta-mender/blob/c3064a2767be4779589bd276079d7bb535dcb481/meta-mender-core/recipes-bsp/u-boot/u-boot-mender.inc#L212-L266
 do_provide_mender_defines:append() {
-    for frag in ${MENDER_UBOOT_FRAGMENTS}; do
-        cat "$frag" >> ${S}/mender_Kconfig_fragment
-    done
-
-    bbnote "Pre-merging Mender fragment into U-Boot config for ${MACHINE}"
-    rm -f ${B}/.config
-    oe_runmake -C ${S} O=${B} ${UBOOT_MACHINE}
-    merge_config.sh -m -O ${B} ${B}/.config ${S}/mender_Kconfig_fragment
-    oe_runmake -C ${S} O=${B} olddefconfig
-}
-
-do_configure:append:mender-uboot() {
-    rm -f ${B}/.config
-    rm -rf ${B}/include/config ${B}/include/generated
+    printf '%s\n' \
+        "CONFIG_ENV_OFFSET=$HEX_MENDER_UBOOT_ENV_STORAGE_DEVICE_OFFSET_1" \
+        "CONFIG_ENV_OFFSET_REDUND=$HEX_MENDER_UBOOT_ENV_STORAGE_DEVICE_OFFSET_2" \
+        "CONFIG_SYS_MMC_ENV_PART=${MENDER_UBOOT_CONFIG_SYS_MMC_ENV_PART}" \
+        > "${S}/mender_Kconfig_fragment"
 }
 
 # Convert zero-filled env to 0xFF so bmaptool copies it.
