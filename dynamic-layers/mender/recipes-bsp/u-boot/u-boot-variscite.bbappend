@@ -1,24 +1,33 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-do_configure:prepend:mender-uboot() {
-    bbwarn "Cleaning up .config created by Mender"
-    oe_runmake -C ${S} O=${B} ${UBOOT_MACHINE} mrproper
-}
-
-require recipes-bsp/u-boot/u-boot-mender.inc
-
-SRC_URI:append:imx8mp-var-dart = " \
-    file://0001-imx8mp_var_dart-Add-mender-configuration-options.patch \
-"
-
 SRC_URI:append:imx91-var-som = " \
     file://0001-imx91_var_som-Add-mender-configuration-options.patch \
-"
-
-SRC_URI:append:imx93-var-som = " \
-    file://0001-imx93_var_som-Add-mender-configuration-options.patch \
 "
 
 SRC_URI:append:imx8mm-var-dart = " \
     file://0001-imx8mm_var_dart-Add-mender-configuration-options.patch \
 "
+
+SRC_URI:append = " \
+    file://mender-required-configs.cfg \
+"
+
+B = "${WORKDIR}/build"
+
+require recipes-bsp/u-boot/u-boot-mender.inc
+
+do_configure[cleandirs] = "${B}"
+
+# Mender validates required U-Boot symbols in do_provide_mender_defines() [1],
+# before the normal U-Boot configuration flow applies the final board settings.
+# This replaces Mender's base fragment file, excluding variables that may be
+# overridden later by other fragments.
+#
+# [1] https://github.com/mendersoftware/meta-mender/blob/c3064a2767be4779589bd276079d7bb535dcb481/meta-mender-core/recipes-bsp/u-boot/u-boot-mender.inc#L212-L266
+do_provide_mender_defines:append() {
+    printf '%s\n' \
+        "CONFIG_ENV_OFFSET=$HEX_MENDER_UBOOT_ENV_STORAGE_DEVICE_OFFSET_1" \
+        "CONFIG_ENV_OFFSET_REDUND=$HEX_MENDER_UBOOT_ENV_STORAGE_DEVICE_OFFSET_2" \
+        "CONFIG_SYS_MMC_ENV_PART=${MENDER_UBOOT_CONFIG_SYS_MMC_ENV_PART}" \
+        > "${S}/mender_Kconfig_fragment"
+}
