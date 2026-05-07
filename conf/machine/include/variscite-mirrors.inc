@@ -9,4 +9,5 @@ MIRRORS += "\
     https://source.codeaurora.org/external/imx/ https://github.com/nxp-imx/ \n \
     http://source.codeaurora.org/external/imx/ http://github.com/nxp-imx/ \n \
     gitsm://source.codeaurora.org/external/imx/ gitsm://github.com/nxp-imx/ \n \
+    https://crates.io/api/v1/crates/([^/]+)/([^/]+)/download https://static.crates.io/crates/\1/\1-\2.crate \n \
 "
