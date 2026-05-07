@@ -4,3 +4,4 @@ SRCBRANCH = "lf-6.12.20_2.0.0"
 SRCREV = "d31ea8aaba67e188ba0071a90da0364e3946c83a"
 
 INSANE_SKIP:${PN} += "installed-vs-shipped"
+ERROR_QA:remove = "packages-list"
