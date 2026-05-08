@@ -12,9 +12,9 @@ HOMEPAGE = "https://github.com/varigit/linux-imx"
 require recipes-kernel/linux/linux-variscite.inc
 
 SRCBRANCH = "6.6-2.2.x-imx_var01"
-SRCREV = "15f81fa2119ec81e16a924f8ef3e1242563764da"
+SRCREV = "29166fa0ab6b1b1696b41c5f1aafb421d8a22141"
 
-LINUX_VERSION = "6.6.119"
+LINUX_VERSION = "6.6.137"
 LINUX_VERSION_EXTENSION = "-var-lts-next"
 
 COMPATIBLE_MACHINE = "(mx6-nxp-bsp|mx7-nxp-bsp|mx8-nxp-bsp|mx9-nxp-bsp)"
