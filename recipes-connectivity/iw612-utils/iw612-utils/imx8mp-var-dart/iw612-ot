@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Activate 802.15.4 / OpenThread on Variscite DART-MX8M-PLUS/VAR-SOM-MX8M-PLUS
+# Activate 802.15.4 / OpenThread on Variscite DART-MX8M-PLUS/VAR-SMARC-MX8M-PLUS/VAR-SOM-MX8M-PLUS
 #
 
 # Include common functions
@@ -18,12 +18,22 @@ SPI_RESET_DELAY="500"
 GPIO_DEV_INT_DART="/dev/${gpio2}"
 GPIO_LINE_INT_DART="6"
 
+GPIO_DEV_INT_SMARC="/dev/${gpio2}"
+GPIO_LINE_INT_SMARC="11"
+
 GPIO_DEV_INT_SOM="/dev/${gpio1}"
 GPIO_LINE_INT_SOM="12"
 
 # btnxpuart fdt device compatible file
 BT_FDT_SOM="/sys/firmware/devicetree/base/soc@0/bus@30800000/spba-bus@30800000/serial@30880000/bluetooth_iw61x"
+BT_FDT_SMARC="/sys/firmware/devicetree/base/soc@0/bus@30800000/spba-bus@30800000/serial@30880000/bluetooth_iw61x"
 BT_FDT_DART="/sys/firmware/devicetree/base/soc@0/bus@30800000/serial@30a60000/bluetooth_iw61x"
+
+# Return true if SOM is VAR-SMARC-MX8M-PLUS
+som_is_var_smarc_mx8m_plus()
+{
+	grep -q VAR-SMARC-MX8M-PLUS /sys/devices/soc0/machine
+}
 
 # Return true if SOM is VAR-SOM-MX8M-PLUS
 som_is_var_som_mx8m_plus()
@@ -34,7 +44,11 @@ som_is_var_som_mx8m_plus()
 # Set UART device connected to BT module
 ot_set_vars()
 {
-	if som_is_var_som_mx8m_plus; then
+	if som_is_var_smarc_mx8m_plus; then
+		BT_FDT=${BT_FDT_SMARC}
+		GPIO_DEV_INT=${GPIO_DEV_INT_SMARC}
+		GPIO_LINE_INT=${GPIO_LINE_INT_SMARC}
+	elif som_is_var_som_mx8m_plus; then
 		BT_FDT=${BT_FDT_SOM}
 		GPIO_DEV_INT=${GPIO_DEV_INT_SOM}
 		GPIO_LINE_INT=${GPIO_LINE_INT_SOM}
