@@ -3,7 +3,7 @@
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-SRC_URI:append:var-som = " \
+SRC_URI:append:mx8m-nxp-bsp:var-som = " \
     file://0001-iMX8M-soc-allow-dtb-override.patch \
     file://0002-iMX8M-soc-change-padding-of-DDR4-and-LPDDR4-DMEM-fir.patch \
     "
