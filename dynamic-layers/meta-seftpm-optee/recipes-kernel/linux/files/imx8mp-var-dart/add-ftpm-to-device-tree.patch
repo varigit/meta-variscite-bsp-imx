@@ -1,0 +1,47 @@
+From b1bc117ee6a6f2e11ec6858598db3c7ad75f86d7 Mon Sep 17 00:00:00 2001
+From: Alifer Moraes <alifer.m@variscite.com>
+Date: Fri, 26 Jun 2026 20:39:02 -0300
+Subject: arm64: dts: imx8mp-var-dart: add fTPM node
+
+Add the "microsoft,ftpm" firmware TPM node to expose the firmware-based
+Trusted Platform Module.
+
+Signed-off-by: Alifer Moraes <alifer.m@variscite.com>
+---
+ arch/arm64/boot/dts/freescale/imx8mp-var-dart.dtsi | 4 ++++
+ arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi  | 4 ++++
+ 2 files changed, 8 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-var-dart.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-var-dart.dtsi
+index 5631265d1ec9..bc823983dfbb 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-var-dart.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-var-dart.dtsi
+@@ -14,6 +14,10 @@
+ / {
+ 	compatible = "variscite,imx8mp-var-dart", "fsl,imx8mp";
+ 
++	ftpm {
++		compatible = "microsoft,ftpm";
++	};
++
+ 	aliases {
+ 		ethernet0 = &eqos;
+ 		ethernet1 = &fec;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
+index f92572f8ced8..3b3382731085 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
+@@ -14,6 +14,10 @@
+ / {
+ 	compatible = "variscite,imx8mp-var-som", "fsl,imx8mp";
+ 
++	ftpm {
++		compatible = "microsoft,ftpm";
++	};
++
+ 	aliases {
+ 		ethernet0 = &eqos;
+ 		ethernet1 = &fec;
+-- 
+2.43.0
+

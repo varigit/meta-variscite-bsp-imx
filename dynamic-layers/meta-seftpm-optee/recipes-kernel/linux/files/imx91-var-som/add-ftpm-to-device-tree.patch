@@ -1,0 +1,47 @@
+From ac623a59ea607b23e4dde1aa1dd850e0080f862c Mon Sep 17 00:00:00 2001
+From: Alifer Moraes <alifer.m@variscite.com>
+Date: Fri, 26 Jun 2026 20:39:36 -0300
+Subject: arm64: dts: imx91-var-som: add fTPM node
+
+Add the "microsoft,ftpm" firmware TPM node to expose the firmware-based
+Trusted Platform Module.
+
+Signed-off-by: Alifer Moraes <alifer.m@variscite.com>
+---
+ arch/arm64/boot/dts/freescale/imx91-var-dart.dtsi | 4 ++++
+ arch/arm64/boot/dts/freescale/imx91-var-som.dtsi  | 4 ++++
+ 2 files changed, 8 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx91-var-dart.dtsi b/arch/arm64/boot/dts/freescale/imx91-var-dart.dtsi
+index b5b5264d34e2..86ae92cf3f6a 100644
+--- a/arch/arm64/boot/dts/freescale/imx91-var-dart.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx91-var-dart.dtsi
+@@ -13,6 +13,10 @@
+ / {
+ 	compatible = "variscite,imx91-var-som", "fsl,imx91";
+ 
++	ftpm {
++		compatible = "microsoft,ftpm";
++	};
++
+ 	sound-wm8904 {
+ 		compatible = "simple-audio-card";
+ 		simple-audio-card,bitclock-master = <&dailink_master>;
+diff --git a/arch/arm64/boot/dts/freescale/imx91-var-som.dtsi b/arch/arm64/boot/dts/freescale/imx91-var-som.dtsi
+index 63486fab5c1f..a19154754545 100644
+--- a/arch/arm64/boot/dts/freescale/imx91-var-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx91-var-som.dtsi
+@@ -13,6 +13,10 @@
+ / {
+ 	compatible = "variscite,imx91-var-som", "fsl,imx91";
+ 
++	ftpm {
++		compatible = "microsoft,ftpm";
++	};
++
+ 	sound-wm8904 {
+ 		compatible = "simple-audio-card";
+ 		simple-audio-card,bitclock-master = <&dailink_master>;
+-- 
+2.43.0
+

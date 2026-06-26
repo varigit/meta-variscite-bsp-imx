@@ -1,0 +1,48 @@
+From 5a47cdb5486074cca9b77ea977c867a05759b98d Mon Sep 17 00:00:00 2001
+From: Alifer Moraes <alifer.m@variscite.com>
+Date: Fri, 26 Jun 2026 20:38:23 -0300
+Subject: arm64: dts: imx8mm-var-dart: add fTPM node
+
+Add the "microsoft,ftpm" firmware TPM node to expose the firmware-based
+Trusted Platform Module.
+
+Signed-off-by: Alifer Moraes <alifer.m@variscite.com>
+---
+ arch/arm64/boot/dts/freescale/imx8mm-var-dart.dtsi | 4 ++++
+ arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi  | 5 +++++
+ 2 files changed, 9 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-var-dart.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-var-dart.dtsi
+index 05972e6260d4..f8364a7fd32a 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-var-dart.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-var-dart.dtsi
+@@ -14,6 +14,10 @@
+ / {
+ 	compatible = "variscite,imx8mm-var-dart", "fsl,imx8mm";
+ 
++	ftpm {
++		compatible = "microsoft,ftpm";
++	};
++
+ 	iw612_pwrseq: iw612_pwrseq {
+ 		compatible = "mmc-pwrseq-simple";
+ 		post-power-on-delay-ms = <100>;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi
+index 1282150ed73b..8f1705d7a713 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi
+@@ -13,6 +13,11 @@
+ 
+ / {
+ 	compatible = "variscite,imx8mm-var-som", "fsl,imx8mm";
++
++	ftpm {
++		compatible = "microsoft,ftpm";
++	};
++
+ 	iw612_pwrseq: iw612_pwrseq {
+ 		compatible = "mmc-pwrseq-simple";
+ 		post-power-on-delay-ms = <100>;
+-- 
+2.43.0
+

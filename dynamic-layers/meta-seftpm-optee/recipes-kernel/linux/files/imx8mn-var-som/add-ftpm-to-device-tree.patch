@@ -1,0 +1,31 @@
+From 789778f819e8f4c944ea78f3039c28d6e2205ae6 Mon Sep 17 00:00:00 2001
+From: Alifer Moraes <alifer.m@variscite.com>
+Date: Fri, 26 Jun 2026 20:34:31 -0300
+Subject: arm64: dts: imx8mn-var-som: add fTPM node
+
+Add the "microsoft,ftpm" firmware TPM node to expose the firmware-based
+Trusted Platform Module.
+
+Signed-off-by: Alifer Moraes <alifer.m@variscite.com>
+---
+ arch/arm64/boot/dts/freescale/imx8mn-var-som.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn-var-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-var-som.dtsi
+index 00c1d33131ca..0874bd4f2ee5 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mn-var-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mn-var-som.dtsi
+@@ -13,6 +13,10 @@
+ / {
+ 	compatible = "variscite,imx8mn-var-som", "fsl,imx8mn";
+ 
++	ftpm {
++		compatible = "microsoft,ftpm";
++	};
++
+ 	can0_osc: can0_osc {
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+-- 
+2.43.0
+
