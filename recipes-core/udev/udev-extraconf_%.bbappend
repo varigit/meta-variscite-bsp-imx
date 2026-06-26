@@ -6,5 +6,5 @@ SRC_URI:append:var-som = " \
 
 do_install:append:var-som() {
 	install -m 0755 -d ${D}${sysconfdir}/modprobe.d
-	install -m 0644 ${WORKDIR}/variscite-blacklist.conf ${D}${sysconfdir}/modprobe.d
+	install -m 0644 ${UNPACKDIR}/variscite-blacklist.conf ${D}${sysconfdir}/modprobe.d
 }

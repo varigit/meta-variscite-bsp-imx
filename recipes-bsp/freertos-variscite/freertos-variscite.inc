@@ -142,7 +142,7 @@ do_compile() {
     export ARMGCC_DIR="${STAGING_DIR_NATIVE}${bindir}/cortexm-toolchain-cross-${CM_GCC}"
 
     # Copy and patch hello_world demo to disable_cache demo
-    if [ -e "${WORKDIR}/${DISABLE_CACHE_PATCH}" ]; then
+    if [ -e "${UNPACKDIR}/${DISABLE_CACHE_PATCH}" ]; then
         # Copy hello_world demo
         cp -r ${S}/boards/${CM_BOARD}/demo_apps/hello_world/ ${S}/boards/${CM_BOARD}/demo_apps/disable_cache
         # Rename hello_world strings to disable_cache
@@ -164,9 +164,9 @@ do_compile() {
     done
 
     # Build firmware to reset cache
-    if [ -e "${WORKDIR}/${DISABLE_CACHE_PATCH}" ]; then
+    if [ -e "${UNPACKDIR}/${DISABLE_CACHE_PATCH}" ]; then
         # Apply patch to disable cache for machine
-        cd ${S} && git apply ${WORKDIR}/${DISABLE_CACHE_PATCH}
+        cd ${S} && git apply ${UNPACKDIR}/${DISABLE_CACHE_PATCH}
 
         # Build the firmware
         for CM_DEMO in ${CM_DEMOS_DISABLE_CACHE}; do
@@ -199,10 +199,10 @@ do_install() {
     if "${@bb.utils.contains('PACKAGECONFIG_CONFARGS', '--with-rproc-scripts', 'true', 'false', d)}"; then
         # Install scripts
         install -d ${D}${sysconfdir}/remoteproc
-        install -m 0755 ${WORKDIR}/variscite-rproc-u-boot ${D}${sysconfdir}/remoteproc
-        install -m 0755 ${WORKDIR}/variscite-rproc-linux ${D}${sysconfdir}/remoteproc
-        install -m 0644 ${WORKDIR}/variscite-rproc-common.sh ${D}${sysconfdir}/remoteproc
-        install -m 0644 ${WORKDIR}/variscite-rproc.conf ${D}${sysconfdir}/remoteproc
+        install -m 0755 ${UNPACKDIR}/variscite-rproc-u-boot ${D}${sysconfdir}/remoteproc
+        install -m 0755 ${UNPACKDIR}/variscite-rproc-linux ${D}${sysconfdir}/remoteproc
+        install -m 0644 ${UNPACKDIR}/variscite-rproc-common.sh ${D}${sysconfdir}/remoteproc
+        install -m 0644 ${UNPACKDIR}/variscite-rproc.conf ${D}${sysconfdir}/remoteproc
     fi
 
     # Install firmware
@@ -282,10 +282,10 @@ do_install:imx8mp-var-dart() {
     if "${@bb.utils.contains('PACKAGECONFIG_CONFARGS', '--with-rproc-scripts', 'true', 'false', d)}"; then
         # Install scripts
         install -d ${D}${sysconfdir}/remoteproc
-        install -m 0755 ${WORKDIR}/variscite-rproc-u-boot ${D}${sysconfdir}/remoteproc
-        install -m 0755 ${WORKDIR}/variscite-rproc-linux ${D}${sysconfdir}/remoteproc
-        install -m 0644 ${WORKDIR}/variscite-rproc-common.sh ${D}${sysconfdir}/remoteproc
-        install -m 0644 ${WORKDIR}/variscite-rproc.conf ${D}${sysconfdir}/remoteproc
+        install -m 0755 ${UNPACKDIR}/variscite-rproc-u-boot ${D}${sysconfdir}/remoteproc
+        install -m 0755 ${UNPACKDIR}/variscite-rproc-linux ${D}${sysconfdir}/remoteproc
+        install -m 0644 ${UNPACKDIR}/variscite-rproc-common.sh ${D}${sysconfdir}/remoteproc
+        install -m 0644 ${UNPACKDIR}/variscite-rproc.conf ${D}${sysconfdir}/remoteproc
     fi
 
     # Install firmware
