@@ -34,6 +34,12 @@ som_is_var_som_mx8m_mini()
 	grep -q VAR-SOM-MX8M-MINI /sys/devices/soc0/machine
 }
 
+# Return success exit status if SOM is DART-MX8M-MINI
+som_is_dart_mx8m_mini()
+{
+	grep -q DART-MX8M-MINI /sys/devices/soc0/machine
+}
+
 # Set BT firmware based on WIFI SDIO ID
 bt_set_firmware()
 {
@@ -82,11 +88,15 @@ bt_enable()
 	som_is_var_som_mx8m_mini && return
 
 	# Route UART lines to BT module
-	gpioset ${BT_BUF_GPIO}=0
+	if som_is_dart_mx8m_mini  && [ -f /proc/mwlan/adapter0/config ]; then
+		gpioset ${BT_BUF_GPIO}=1
+	else
+		gpioset ${BT_BUF_GPIO}=0
+	fi
 }
 
 # Start BT hardware
-bt_start()
+bt_start_bcm43xx()
 {
 	# Exit if BT module is not available
 	bt_found || exit 0
@@ -111,8 +121,55 @@ bt_start()
 			--tosleep 1000 ${BT_TTY_DEV} &
 }
 
+bt_start_iw61x()
+{
+	# Configure global variables for SOM or DART
+	bt_set_uart
+
+	# Exit if BT interface is already running
+	if [ -e "/sys/class/bluetooth/hci0" ]; then
+		echo "$(basename $0): Bluetooth already started"
+		exit 0
+	fi
+
+	echo "$(basename $0): starting"
+
+	# Enable BT hardware
+	bt_enable
+
+	# Initialize and attach the BT device at 3000000 bps
+	hciattach ${BT_TTY_DEV} variscite 3000000 flow
+	sleep 0.5
+	hciconfig hci0 up
+
+	# Wait until the HCI interface comes up
+	if ! timeout 10 sh -c 'until hciconfig | grep -q "hci"; do sleep 0.1; done'; then
+		echo "Error: HCI interface did not come up"
+		exit 1
+	fi
+	# Wait until the Bluetooth MAC address is not 00:00:00:00:00:00
+	if ! timeout 10 sh -c 'until [ "$(hciconfig | grep "BD Address" | \
+	awk "{print \$3}")" != "00:00:00:00:00:00" ]; do sleep 0.1; done'; then
+		echo "Error: Bluetooth MAC address is 00:00:00:00:00:00"
+		exit 1
+	fi
+	sleep 1
+
+	# Fork a dummy process to satisfy the variscite-bt systemd service type=forking
+	(while true; do sleep 60; done) &
+}
+
+bt_start()
+{
+	if [ -f /proc/mwlan/adapter0/config ]; then
+		bt_start_iw61x
+	else
+		bt_start_bcm43xx
+	fi
+}
+
 # Stop BT hardware
-bt_stop()
+bt_stop_bcm43xx()
 {
 	# Exit if BT interface is not available
 	[ -e /sys/class/bluetooth/hci0 ] || exit 0
@@ -133,6 +190,40 @@ bt_stop()
 
   	# Power down BT module
 	gpioset ${BT_EN_GPIO}=0
+}
+
+bt_stop_iw61x()
+{
+	# Exit if BT interface is not available
+	[ -e /sys/class/bluetooth/hci0 ] || exit 0
+
+	echo "$(basename $0): stopping"
+
+	# Configure global variables for SOM or DART
+	bt_set_uart
+
+	# Stop BT interface
+	hciconfig hci0 down
+
+	# Kill any running hciattach processes
+	kill -9 $(pidof hciattach) 2>/dev/null || true
+
+	# Disable BT uart buffer and power down BT module
+	if som_is_var_som_mx8m_mini; then
+		gpioset ${BT_BUF_GPIO}=1
+	else
+		gpioset ${BT_BUF_GPIO}=0
+	fi
+	gpioset ${BT_EN_GPIO}=0
+}
+
+bt_stop()
+{
+        if [ -f /proc/mwlan/adapter0/config ]; then
+                bt_stop_iw61x
+        else
+                bt_stop_bcm43xx
+        fi
 }
 
 ###########################

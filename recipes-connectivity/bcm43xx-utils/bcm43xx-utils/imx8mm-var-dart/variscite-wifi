@@ -22,6 +22,33 @@ BT_BUF_GPIO="gpiochip4 5"
 # WIFI MMC host
 WIFI_MMC_HOST=30b40000.mmc
 
+get_somrev() {
+	# Get the raw output
+	raw_output=$(i2cget -f -y 0x0 0x52 0x1e)
+
+	# Convert the output to decimal
+	decimal_output=$(( $raw_output ))
+
+	# Extract major and minor versions
+	major=$(( ($decimal_output & 0xE0) >> 5 ))
+	minor=$(( $decimal_output & 0x1F ))
+
+	# Adjust the major version as per the specification
+	major=$(( $major + 1 ))
+
+	echo "$major.$minor"
+}
+
+# Check if wifi is bcm43xx
+wifi_is_bcm43xx() {
+	somrev=$(get_somrev)
+	if [ "$(echo "$somrev < 2.0" | bc)" -eq 1 ]; then
+		return 0
+	else
+		return 1
+	fi
+}
+
 # Return true if board is DART-MX8M-MINI
 som_is_dart_mx8m_mini()
 {
@@ -66,7 +93,7 @@ wifi_up()
 
 	# WIFI_3V3 up
 	gpioset ${WIFI_3V3_GPIO}=1
-	usleep 10000
+	sleep 0.01
 
 	# WIFI_1V8 up
 	if som_is_dart_mx8m_mini; then
@@ -74,7 +101,7 @@ wifi_up()
 	else
 		gpioset ${WIFI_1V8_GPIO}=1
 	fi
-	usleep 10000
+	sleep 0.01
 
 	# WLAN_EN up
 	gpioset ${WIFI_EN_GPIO}=1
@@ -87,7 +114,7 @@ wifi_up()
 		gpioset ${BT_BUF_GPIO}=0
 
 		# Wait at least 150ms
-		usleep 200000
+		sleep 0.2
 
 		# BT_BUF down
 		gpioset ${BT_BUF_GPIO}=1
@@ -122,7 +149,7 @@ wifi_down()
 
 	# BT_EN down
 	gpioset ${BT_EN_GPIO}=0
-	usleep 10000
+	sleep 0.01
 
 	# WIFI_1V8 down
 	if som_is_dart_mx8m_mini; then
@@ -174,8 +201,18 @@ wifi_should_not_be_stopped()
 	return 1
 }
 
+# Function to disable a network interface
+disable_network_interface() {
+	local iface="$1"
+
+	# Check if the interface exists
+	if ip link show "$iface" &>/dev/null; then
+		ip link set dev "$iface" down
+	fi
+}
+
 # Start WIFI hardware
-wifi_start()
+wifi_start_bcm43xx()
 {
 	# Exit if WIFI should not be started
 	wifi_should_not_be_started && exit 0
@@ -198,14 +235,45 @@ wifi_start()
 	exit 1
 }
 
+wifi_start_iw61x()
+{
+	modprobe moal mod_para=nxp/var_wifi_mod_para.conf
+}
+
+wifi_start()
+{
+	if wifi_is_bcm43xx; then
+		wifi_start_bcm43xx
+	else
+		wifi_start_iw61x
+	fi
+}
+
 # Stop WIFI hardware
-wifi_stop()
+wifi_stop_bcm43xx()
 {
 	# Exit if WIFI should not be stopped
 	wifi_should_not_be_stopped && exit 0
 
 	# Down WIFI
 	wifi_down
+}
+
+wifi_stop_iw61x()
+{
+	disable_network_interface wlan0
+	disable_network_interface uap0
+	disable_network_interface wfd0
+	modprobe -r moal;
+}
+
+wifi_stop()
+{
+        if wifi_is_bcm43xx; then
+                wifi_stop_bcm43xx
+        else
+                wifi_stop_iw61x
+        fi
 }
 
 ###########################
