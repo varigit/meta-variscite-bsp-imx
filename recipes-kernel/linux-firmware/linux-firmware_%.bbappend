@@ -7,9 +7,9 @@ IW612_FIRMWARE_SRC = "git://github.com/nxp/imx-firmware.git;protocol=https"
 SRCREV_iw612-firmware = "d31ea8aaba67e188ba0071a90da0364e3946c83a"
 SRCBRANCH = "lf-6.12.20_2.0.0"
 
-BRCM_REV = "10.54.0.13"
-SRC_URI[brcm_lwb.sha256sum] = "8faa105e036a9f8bffe2857f5d9f5ce539521ef8624b59069290579440228ac5"
-SRC_URI[brcm_lwb5.sha256sum] = "583e2b328a185f545e1c5de55acaf3ae092cdbc791a62ff005c5559515488f7f"
+BRCM_REV = "12.29.0.22"
+SRC_URI[brcm_lwb.sha256sum] = "7a1340f70a1682798d437c6f6502af1ab6cff4bcb464f79c5d288a634da1356d"
+SRC_URI[brcm_lwb5.sha256sum] = "a8c843b01971883942d7d2cef4473b95d7e70864fe5cccba3e1e23ed0b45acf3"
 
 # TI WiFi FW 8.9.0.0.88 and BT FW 4.7
 SRCREV_tiwlan = "bda5304cc86e9c4029f8101394d2a8b39c640f53"
@@ -24,8 +24,8 @@ MODEL_LIST:imx8qm-var-som = "imx8qm-var-som imx8qm-var-spear imx8qp-var-som imx8
 
 SRC_URI:append = " \
 	${IW612_FIRMWARE_SRC};branch=${SRCBRANCH};destsuffix=iw612-firmware;name=iw612-firmware \
-	https://github.com/LairdCP/Sterling-LWB-and-LWB5-Release-Packages/releases/download/LRD-REL-${BRCM_REV}/laird-lwb-fcc-firmware-${BRCM_REV}.tar.bz2;name=brcm_lwb \
-	https://github.com/LairdCP/Sterling-LWB-and-LWB5-Release-Packages/releases/download/LRD-REL-${BRCM_REV}/laird-lwb5-fcc-firmware-${BRCM_REV}.tar.bz2;name=brcm_lwb5 \
+	https://github.com/LairdCP/Sterling-LWB-and-LWB5-Release-Packages/releases/download/LRD-REL-${BRCM_REV}/summit-lwb-fcc-firmware-${BRCM_REV}.tar.bz2;name=brcm_lwb \
+	https://github.com/LairdCP/Sterling-LWB-and-LWB5-Release-Packages/releases/download/LRD-REL-${BRCM_REV}/summit-lwb5-fcc-firmware-${BRCM_REV}.tar.bz2;name=brcm_lwb5 \
 	git://git.ti.com/git/wilink8-wlan/wl18xx_fw.git;protocol=https;branch=${BRANCH_tiwlan};destsuffix=tiwlan;name=tiwlan \
 	git://git.ti.com/git/ti-bt/service-packs.git;protocol=https;branch=${BRANCH_tibt};destsuffix=tibt;name=tibt \
 	file://wl1271-nvs.bin \
