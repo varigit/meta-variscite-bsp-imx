@@ -5,7 +5,7 @@ SRC_URI:mx8-nxp-bsp = "git://github.com/varigit/imx-atf;protocol=https;branch=${
            file://rwx-segments.patch \
 "
 SRCBRANCH:mx8-nxp-bsp = "lf_v2.6_var01"
-SRCREV:mx8-nxp-bsp = "b0039c73c070f0f1a6455c6c0d828310f12f0e8d"
+SRCREV:mx8-nxp-bsp = "6ff06a8a4a12a8a06603fbc4ef551fc254b67c5c"
 
 SRC_URI:imx93-var-som = "git://github.com/varigit/imx-atf;protocol=https;branch=${SRCBRANCH}"
 SRCBRANCH:imx93-var-som = "lf_v2.6_var02"
