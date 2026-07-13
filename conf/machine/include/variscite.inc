@@ -98,7 +98,7 @@ CORE_IMAGE_EXTRA_INSTALL += " \
 IMAGE_FSTYPES = "tar.zst wic.zst wic.bmap wic"
 
 # Use bluez-alsa instead of pulseaudio
-DISTRO_FEATURES_BACKFILL_CONSIDERED:append = " pulseaudio"
+DISTRO_FEATURES_OPTED_OUT:append = " pulseaudio"
 
 # Enable virtualization
 DISTRO_FEATURES:append = " virtualization"
