@@ -27,6 +27,20 @@ disable_network_interface() {
 	fi
 }
 
+# Check if wifi is bcm43xx
+wifi_is_bcm43xx() {
+	local magic
+
+	# Check for EEPROM v2 magic indicating NOT BCM43xx
+	magic=$(i2cget -f -y 0 0x50 0x00 w 2>/dev/null)
+
+	if [ "$magic" = "0x3745" ]; then
+		return 1
+	fi
+
+	return 0
+}
+
 # Power up WIFI chip
 wifi_up()
 {
@@ -74,6 +88,10 @@ wifi_down()
 # Return true if WIFI should be started
 wifi_should_not_be_started()
 {
+	if ! wifi_is_bcm43xx; then
+		return 0
+	fi
+
 	# Do not enable WIFI if it is already up
 	[ -d /sys/class/net/wlan0 ] && return 0
 
@@ -83,7 +101,10 @@ wifi_should_not_be_started()
 # Return true if WIFI should not be stopped
 wifi_should_not_be_stopped()
 {
-	# Always stop WIFI
+	if ! wifi_is_bcm43xx; then
+		return 0
+	fi
+
 	return 1
 }
 
