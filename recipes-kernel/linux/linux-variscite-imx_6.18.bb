@@ -13,9 +13,9 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
 require recipes-kernel/linux/linux-variscite.inc
 
-SRCBRANCH = "lf-6.6.y_6.6.52-2.2.2_var01"
-SRCREV = "57fa035902a2b4af0737d8d2f7e4a55a0ae90e41"
+SRCBRANCH = "lf-6.18.y_6.18.20-2.0.0_var01"
+SRCREV = "fe714c46c0b5a711fe91ce16baa3cf08994e07ca"
 
-LINUX_VERSION = "6.6.52"
+LINUX_VERSION = "6.18.20"
 
 COMPATIBLE_MACHINE = "(mx6-nxp-bsp|mx7-nxp-bsp|mx8-nxp-bsp|mx9-nxp-bsp)"
