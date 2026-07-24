@@ -37,7 +37,7 @@ PREFERRED_CONNECTIVITY_MANAGER_PACKAGES	?= " \
 "
 
 # Variscite BSP default providers
-PREFERRED_PROVIDER_virtual/kernel ?= "linux-variscite-fslc-imx"
+PREFERRED_PROVIDER_virtual/kernel ?= "linux-variscite-imx"
 
 PREFERRED_PROVIDER_u-boot ?= "u-boot-variscite"
 PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot-variscite"
