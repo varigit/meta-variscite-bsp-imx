@@ -3,11 +3,9 @@
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-IMX_MKIMAGE_SRC = "git://github.com/varigit/imx-mkimage;protocol=https"
-SRCBRANCH = "lf-6.6.52_2.2.2_var01"
-SRCREV = "ea9b5711be09523c51c403a59bdd473b049c2c34"
-
-SRC_URI:remove = "file://0001-iMX8M-soc.mak-use-native-mkimage-from-sysroot.patch"
+SRC_URI = "git://github.com/varigit/imx-mkimage;protocol=https;branch=${SRCBRANCH}"
+SRCBRANCH = "lf-6.18.20_2.0.0_var01"
+SRCREV = "e53faa55bed7433e46e818324ce56a56608443f7"
 
 python __anonymous () {
     import re
