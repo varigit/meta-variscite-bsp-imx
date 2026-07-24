@@ -95,6 +95,12 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     variscite-base-files \
 "
 
+EXTRA_IMAGE_FEATURES += " \
+    allow-empty-password \
+    empty-root-password \
+    allow-root-login \
+"
+
 IMAGE_FSTYPES = "tar.zst wic.zst wic.bmap wic"
 
 # Use bluez-alsa instead of pulseaudio
