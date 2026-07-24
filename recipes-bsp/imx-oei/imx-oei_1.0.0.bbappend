@@ -1,6 +1,6 @@
 SRC_URI:var-som = "git://github.com/varigit/imx-oei;protocol=https;branch=${SRCBRANCH}"
-SRCBRANCH:var-som = "lf-6.12.49-2.2.0_var01"
-SRCREV:var-som = "395c4c349cf8db7dbb3df0cfe11fd4d005d40cc0"
+SRCBRANCH:var-som = "lf-6.18.20-2.0.0_var01"
+SRCREV:var-som = "5ccc725d0ef7bc87f769974767c01a5f024ecd6f"
 
 # TODO: Remove once upstream fixes the inline DDR_CONFIG expansion in EXTRA_OEMAKE.
 OEI_DDR_CONFIG_FILE:var-som = "${@bb.utils.contains('PACKAGECONFIG', 'ecc', d.getVar('OEI_DDR_CONFIG_ECC'), d.getVar('OEI_DDR_CONFIG'), d)}"
