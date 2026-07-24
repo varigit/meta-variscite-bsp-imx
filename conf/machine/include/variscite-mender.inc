@@ -29,4 +29,4 @@ MENDER_IMAGE_BOOTLOADER_FILE ?= "imx-boot"
 MENDER_ARTIFACT_NAME = "${MACHINE}-release-1"
 
 MENDER_UBOOT_AUTO_CONFIGURE ?= "0"
-MENDER_UBOOT_POST_SETUP_COMMANDS="setenv mmcpart \${mender_boot_part}"
+MENDER_UBOOT_POST_SETUP_COMMANDS = "setenv mmcpart \${mender_boot_part}"
