@@ -6,7 +6,7 @@ SECTION = "BSP"
 # We do not need to build anything
 INHIBIT_DEFAULT_DEPS = "1"
 
-# These are needed for compability with cross package naming conventions
+# These are needed for compatibility with cross package naming conventions
 PN = "cortexm-toolchain-cross-${TUNE_PKGARCH}"
 PROVIDES = "cortexm-toolchain-cross"
 
@@ -18,16 +18,18 @@ TUNE_PKGARCH:mx8-nxp-bsp = "armv7e-m"
 TUNE_PKGARCH:mx9-nxp-bsp = "armv8-m"
 
 TARGET_ARCH = "arm32"
+TOOLCHAIN_DIR = "cortexm-toolchain-cross-${PV}"
 
-SRC_URI = " \
-    https://developer.arm.com/-/media/Files/downloads/gnu-rm/${PV}/${TOOLCHAIN_TARBALL};name=cortexm-toolchain;unpack=0 \
+SRC_URI ?= " \
+    https://developer.arm.com/-/media/Files/downloads/gnu-rm/${PV}/${TOOLCHAIN_TARBALL};name=cortexm-toolchain;subdir=${TOOLCHAIN_DIR};striplevel=1 \
 "
 
-bindir = "${exec_prefix}/bin/"
+S = "${UNPACKDIR}/${TOOLCHAIN_DIR}"
 
 do_install() {
-    install -d ${D}${bindir}cortexm-toolchain-cross-${PV}
-    tar xjf ${WORKDIR}/${TOOLCHAIN_TARBALL} -C ${D}${bindir}cortexm-toolchain-cross-${PV} --strip-components=1
+    # Keep the prebuilt toolchain under cross.bbclass's target-specific bindir.
+    install -d ${D}${bindir}/${TOOLCHAIN_DIR}
+    cp -a ${S}/. ${D}${bindir}/${TOOLCHAIN_DIR}/
 }
 
 # This toolchain is not built but packaged from
