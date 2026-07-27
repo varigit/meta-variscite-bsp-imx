@@ -5,7 +5,6 @@ HOMEPAGE = "https://github.com/varigit/freertos-variscite"
 SECTION = "bsp"
 LICENSE = "BSD-3-Clause"
 
-# inherit cmake
 DEPENDS:append = " cmake-native cortexm-toolchain-cross (=${CM_GCC})"
 
 SRC_URI = " \
@@ -18,7 +17,6 @@ SRC_URI = " \
 SRC_URI:append:imx8qxp-var-som = " file://${DISABLE_CACHE_PATCH};apply=no"
 SRC_URI:append:imx8qm-var-som = " file://${DISABLE_CACHE_PATCH};apply=no"
 
-S = "${WORKDIR}/git"
 inherit deploy
 
 PACKAGECONFIG ??= "rproc-scripts"
@@ -115,6 +113,8 @@ CM_DEMOS_DISABLE_CACHE:mx8qm-nxp-bsp = "demo_apps/disable_cache/cm4_core0 demo_a
 DISABLE_CACHE_PATCH = "disable_cache.patch"
 DISABLE_CACHE_PATCH:imx8qxp-var-som = "disable_cache_${PV}.patch"
 
+ARMGCC_DIR = "${RECIPE_SYSROOT_NATIVE}${bindir_native}/arm32-poky-linux/cortexm-toolchain-cross-${CM_GCC}"
+
 compile_fw() {
     DIR_GCC="$1"
     cd ${DIR_GCC}
@@ -150,7 +150,7 @@ compile_fw() {
 
 do_compile() {
     # Configure ARMGCC
-    export ARMGCC_DIR="${STAGING_DIR_NATIVE}${bindir}/cortexm-toolchain-cross-${CM_GCC}"
+    export ARMGCC_DIR="${ARMGCC_DIR}"
 
     # Copy and patch hello_world demo to disable_cache demo
     if [ -e "${UNPACKDIR}/${DISABLE_CACHE_PATCH}" ]; then
@@ -188,7 +188,7 @@ do_compile() {
 
 do_compile:imx8mp-var-dart() {
     # Configure ARMGCC
-    export ARMGCC_DIR="${STAGING_DIR_NATIVE}${bindir}/cortexm-toolchain-cross-${CM_GCC}"
+    export ARMGCC_DIR="${ARMGCC_DIR}"
 
     # Build all board in CM_BOARD
     for cm_board in ${CM_BOARD}; do
