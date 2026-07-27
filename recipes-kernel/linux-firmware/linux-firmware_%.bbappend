@@ -52,11 +52,15 @@ do_install:append() {
 }
 
 FILES:${PN}-bcm4339 += " \
+  ${nonarch_base_libdir}/firmware/bcm \
   ${nonarch_base_libdir}/firmware/brcm/BCM4335C0.hcd \
+  ${nonarch_base_libdir}/firmware/brcm/BCM4335C0_v003.001.009.0202.0809.hcd \
   ${nonarch_base_libdir}/firmware/brcm/brcmfmac4339-sdio* \
 "
 
 FILES:${PN}-bcm43430 += " \
+  ${nonarch_base_libdir}/firmware/bcm \
   ${nonarch_base_libdir}/firmware/brcm/BCM43430A1.hcd \
+  ${nonarch_base_libdir}/firmware/brcm/BCM43430A1_v001.002.009.0163.0531.hcd \
   ${nonarch_base_libdir}/firmware/brcm/brcmfmac43430-sdio* \
 "
