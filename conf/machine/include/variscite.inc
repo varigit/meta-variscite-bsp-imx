@@ -8,6 +8,8 @@ MACHINE_FEATURES += " pci bluetooth wifi screen"
 
 IMX_DEFAULT_BSP = "nxp"
 
+BBMASK += "meta-imx/meta-imx-sdk/recipes-fsl/fsl-rc-local/fsl-rc-local.bbappend"
+
 USE_VT = "0"
 
 KERNEL_IMAGETYPE:mx8-nxp-bsp = "Image.gz"
