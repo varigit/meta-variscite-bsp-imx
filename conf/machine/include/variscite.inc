@@ -8,7 +8,10 @@ MACHINE_FEATURES += " pci bluetooth wifi screen"
 
 IMX_DEFAULT_BSP = "nxp"
 
+# NOTE: Recheck these masks for the next BSP release and remove them once
+# meta-imx appends match the versioned meta-freescale recipes.
 BBMASK += "meta-imx/meta-imx-sdk/recipes-fsl/fsl-rc-local/fsl-rc-local.bbappend"
+BBMASK += "meta-imx/meta-imx-bsp/recipes-core/udev/udev-rules-imx.bbappend"
 
 USE_VT = "0"
 
