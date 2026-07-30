@@ -32,9 +32,6 @@ BT_FIRMWARE_LWB=/lib/firmware/brcm/BCM43430A1.hcd
 # Sterling LWB5 BT firmware
 BT_FIRMWARE_LWB5=/lib/firmware/brcm/BCM4335C0.hcd
 
-# Sterling LWB5 WIFI SDIO ID
-WIFI_5G_SDIO_ID=0x4339
-
 # WIFI SDIO ID file
 WIFI_SDIO_ID_FILE=/sys/class/net/wlan0/device/device
 
