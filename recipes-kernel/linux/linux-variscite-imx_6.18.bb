@@ -17,5 +17,6 @@ SRCBRANCH = "lf-6.18.y_6.18.20-2.0.0_var01"
 SRCREV = "3daf68ed2e48091f409574c69ac6547ae5b0a7da"
 
 LINUX_VERSION = "6.18.20"
+LINUX_VERSION_EXTENSION = "-var-lts-next"
 
 COMPATIBLE_MACHINE = "(mx6-nxp-bsp|mx7-nxp-bsp|mx8-nxp-bsp|mx9-nxp-bsp)"
