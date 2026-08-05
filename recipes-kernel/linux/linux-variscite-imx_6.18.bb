@@ -14,7 +14,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 require recipes-kernel/linux/linux-variscite.inc
 
 SRCBRANCH = "lf-6.18.y_6.18.20-2.0.0_var01"
-SRCREV = "3daf68ed2e48091f409574c69ac6547ae5b0a7da"
+SRCREV = "63e7f7c24bb5bedde310004bec7f9b9985024e84"
 
 LINUX_VERSION = "6.18.20"
 LINUX_VERSION_EXTENSION = "-var-lts-next"
