@@ -48,15 +48,15 @@ ot_start()
 	# Exit if OT module is not iw612
 	verify_sdio_id ${WIFI_SDIO_ID_FILE} ${WIFI_SDIO_ID} || exit 0
 
-	# Kill any running ot-daemon-iwxxx-spi processes
-	kill -9 $(pidof ot-daemon-iwxxx-spi) 2>/dev/null || true
+	# Kill any running ot-daemon-iwxxx processes
+	kill -9 $(pidof ot-daemon-iwxxx) 2>/dev/null || true
 
 	echo "$(basename $0): starting"
 
-	# Start ot-daemon-iwxxx-spi
+	# Start ot-daemon-iwxxx
 	URL="spinel+spi://${SPI_DEV}?gpio-int-device=${GPIO_DEV_INT}&gpio-int-line=${GPIO_LINE_INT}&spi-mode=${SPI_MODE}&spi-speed=${SPI_SPEED}&"
 	echo "${URL}"
-	ot-daemon-iwxxx-spi "${URL}"
+	ot-daemon-iwxxx "${URL}"
 }
 
 # Stop OT hardware
@@ -68,8 +68,8 @@ ot_stop()
 	# Exit if OT module is not iw612
 	verify_sdio_id ${WIFI_SDIO_ID_FILE} ${WIFI_SDIO_ID} || exit 0
 
-	# Kill any running ot-daemon-iwxxx-spi processes
-	kill -9 $(pidof ot-daemon-iwxxx-spi) 2>/dev/null || true
+	# Kill any running ot-daemon-iwxxx processes
+	kill -9 $(pidof ot-daemon-iwxxx) 2>/dev/null || true
 }
 
 ###########################
