@@ -122,6 +122,8 @@ elif [ "${MACHINE#*VAR-SOM*}" != "${MACHINE}" ]; then
     esac
 elif [ "${MACHINE#*SPEAR-MX8*}" != "${MACHINE}" ]; then
     readonly CM_DTB=${CM_DTB_SPEAR}
+elif [ "${MACHINE#*VAR-SMARC*}" != "${MACHINE}" ]; then
+    readonly CM_DTB=${CM_DTB_SMARC}
 else
     echo "Error: Unknown machine ${MACHINE}"
     exit
