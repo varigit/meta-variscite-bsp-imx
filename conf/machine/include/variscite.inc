@@ -3,6 +3,7 @@ INHERIT += "image-buildinfo"
 
 # Common override for all Variscite machines
 MACHINEOVERRIDES =. "var-som:"
+DISTRO_FEATURES += " pni-names"
 
 MACHINE_FEATURES += " pci bluetooth wifi screen"
 
