@@ -50,6 +50,8 @@ PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot-variscite"
 PREFERRED_RPROVIDER_u-boot-default-env ?= "u-boot-variscite"
 PREFERRED_PROVIDER_u-boot-fw-utils ?= "u-boot-fw-utils"
 
+PREFERRED_VERSION_cortexm-toolchain-cross-armv7e-m:mx8m-nxp-bsp = "12.3.rel1"
+
 # Use i.MX Gstreamer Version
 MACHINE_GSTREAMER_1_0_PLUGIN:mx6-nxp-bsp = "imx-gst1.0-plugin"
 MACHINE_GSTREAMER_1_0_PLUGIN:mx7-nxp-bsp = "imx-gst1.0-plugin"
