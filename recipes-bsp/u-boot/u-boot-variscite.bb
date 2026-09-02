@@ -32,12 +32,13 @@ do_deploy:append:mx8m-nxp-bsp () {
                 j=$(expr $j + 1);
                 if [ $j -eq $i ]
                 then
+                    builddir="${config}-${type}"
                     install -d ${DEPLOYDIR}/${BOOT_TOOLS}
-                    install -m 0777 ${B}/${config}/arch/arm/dts/${UBOOT_DTB_NAME}  ${DEPLOYDIR}/${BOOT_TOOLS}
+                    install -m 0777 ${B}/${builddir}/arch/arm/dts/${UBOOT_DTB_NAME}  ${DEPLOYDIR}/${BOOT_TOOLS}
                     for dtb in ${UBOOT_DTB_EXTRA}; do
-                        install -m 0777 ${B}/${config}/arch/arm/dts/${dtb} ${DEPLOYDIR}/${BOOT_TOOLS}
+                        install -m 0777 ${B}/${builddir}/arch/arm/dts/${dtb} ${DEPLOYDIR}/${BOOT_TOOLS}
                     done
-                    install -m 0777 ${B}/${config}/u-boot-nodtb.bin  ${DEPLOYDIR}/${BOOT_TOOLS}/u-boot-nodtb.bin-${MACHINE}-${type}
+                    install -m 0777 ${B}/${builddir}/u-boot-nodtb.bin  ${DEPLOYDIR}/${BOOT_TOOLS}/u-boot-nodtb.bin-${MACHINE}-${type}
                 fi
             done
             unset  j
