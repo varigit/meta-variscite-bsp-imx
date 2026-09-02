@@ -5,7 +5,9 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 SRC_URI = "git://github.com/varigit/imx-mkimage;protocol=https;branch=${SRCBRANCH}"
 SRCBRANCH = "lf-6.18.20_2.0.0_var01"
-SRCREV = "e53faa55bed7433e46e818324ce56a56608443f7"
+SRCREV = "e877d8119d4599fb068f4599e6f22e2f4fcb593b"
+
+MKIMAGE_EXTRA_ARGS:append = " MKIMAGE=mkimage"
 
 python __anonymous () {
     import re
