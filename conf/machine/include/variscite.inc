@@ -114,5 +114,5 @@ IMAGE_FSTYPES = "tar.zst wic.zst wic.bmap wic"
 # Use bluez-alsa instead of pulseaudio
 DISTRO_FEATURES_OPTED_OUT:append = " pulseaudio"
 
-# Enable virtualization
-DISTRO_FEATURES:append = " virtualization"
+# Enable virtualization except on NAND variants to reduce UBIFS filesystem size.
+DISTRO_FEATURES:append = "${@bb.utils.contains('MACHINE_FEATURES', 'nand-flash', '', ' virtualization', d)}"
