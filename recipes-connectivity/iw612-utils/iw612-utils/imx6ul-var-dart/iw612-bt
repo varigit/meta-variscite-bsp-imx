@@ -37,7 +37,7 @@ bt_enable()
 	# BT_EN up
 	gpioset -t 0 --chip ${BT_EN_GPIO}=1
 
-	sleep 0.1
+	sleep 3
 }
 
 # Start BT hardware
