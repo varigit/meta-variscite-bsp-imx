@@ -14,24 +14,24 @@ fi
 case $1 in
 
 "suspend")
-        /etc/wifi/variscite-wifi stop
-        ;;
+	/etc/wifi/variscite-wifi stop
+	;;
 "resume")
-        /etc/wifi/variscite-wifi start
-        if [ -f /etc/init.d/connman ]; then
-                killall -9 wpa_supplicant
-                /etc/init.d/connman restart
-        fi
-        if [ -f /etc/systemd/system/multi-user.target.wants/connman.service ]; then
-                killall -9 wpa_supplicant
-                systemctl restart connman.service
-        fi
+	/etc/wifi/variscite-wifi start
+	if [ -f /etc/init.d/connman ]; then
+		killall -9 wpa_supplicant
+		/etc/init.d/connman restart
+	fi
+	if [ -f /etc/systemd/system/multi-user.target.wants/connman.service ]; then
+		killall -9 wpa_supplicant
+		systemctl restart connman.service
+	fi
 
-        if [ -f /etc/systemd/system/multi-user.target.wants/wpa_supplicant@wlan0.service ]; then
-                systemctl restart systemd-networkd
-                sleep 1
-                systemctl restart wpa_supplicant@wlan0.service
-        fi
-        ;;
+	if [ -f /etc/systemd/system/multi-user.target.wants/wpa_supplicant@wlan0.service ]; then
+		systemctl restart systemd-networkd
+		sleep 1
+		systemctl restart wpa_supplicant@wlan0.service
+	fi
+	;;
 esac
 

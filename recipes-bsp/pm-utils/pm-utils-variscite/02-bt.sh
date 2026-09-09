@@ -14,9 +14,9 @@ fi
 case $1 in
 
 "suspend")
-        /etc/bluetooth/variscite-bt stop
-        ;;
+	/etc/bluetooth/variscite-bt stop
+	;;
 "resume")
-        /etc/bluetooth/variscite-bt start
-        ;;
+	/etc/bluetooth/variscite-bt start
+	;;
 esac
