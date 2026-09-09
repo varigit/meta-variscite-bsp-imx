@@ -10,6 +10,9 @@
 # GPIO pin to enable BT module
 BT_EN_GPIO="gpiochip0 14"
 
+# GPIO pin to enable the BT UART/PCM buffer (active low)
+BT_BUF_GPIO="gpiochip0 6"
+
 # btnxpuart fdt device compatible file
 BT_FDT="/sys/firmware/devicetree/base/soc/bus@30800000/spba-bus@30800000/serial@30880000/bluetooth_iw61x"
 
@@ -40,6 +43,9 @@ fdt_has_btnxpuart() {
 
 bt_enable()
 {
+	# Enable BT UART/PCM buffer
+	gpioset -t 0 --chip ${BT_BUF_GPIO}=0
+
 	# BT_EN up
 	gpioset -t 0 --chip ${BT_EN_GPIO}=1
 
@@ -101,6 +107,9 @@ bt_stop()
 
 	# Unload the driver
 	modprobe -r btnxpuart
+
+	# Disable BT UART/PCM buffer
+	gpioset -t 0 --chip ${BT_BUF_GPIO}=1
 
 	gpioset -t 0 --chip ${BT_EN_GPIO}=0
 }

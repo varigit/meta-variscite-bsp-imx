@@ -9,6 +9,9 @@
 # GPIO pin to enable BT module
 BT_EN_GPIO="gpiochip0 14"
 
+# GPIO pin to enable the BT UART/PCM buffer (active low, LWB5 only)
+BT_BUF_GPIO="gpiochip0 6"
+
 # UART device connected to BT module
 BT_TTY_DEV=/dev/ttymxc2
 
@@ -26,6 +29,26 @@ WIFI_5G_SDIO_ID=0x4339
 
 # WIFI SDIO ID file
 WIFI_SDIO_ID_FILE=/sys/class/net/wlan0/device/device
+
+# Return true if the SOM has a LWB5 (5G) module
+bt_is_lwb5()
+{
+	[ "$(cat "$WIFI_SDIO_ID_FILE")" = "$WIFI_5G_SDIO_ID" ]
+}
+
+# Enable the BT UART/PCM buffer on LWB5 modules
+bt_buffer_enable()
+{
+	bt_is_lwb5 || return 0
+	gpioset -t 0 --chip ${BT_BUF_GPIO}=0
+}
+
+# Disable the BT UART/PCM buffer on LWB5 modules
+bt_buffer_disable()
+{
+	bt_is_lwb5 || return 0
+	gpioset -t 0 --chip ${BT_BUF_GPIO}=1
+}
 
 # Set BT MAC address
 bt_set_macaddr()
@@ -53,6 +76,8 @@ bt_set_firmware()
 # Enable BT via GPIO(s)
 bt_enable()
 {
+	bt_buffer_enable
+
 	# Power up BT module
 	gpioset -t 0 --chip ${BT_EN_GPIO}=0
 	sleep 1
@@ -106,6 +131,8 @@ bt_stop()
 
   	# Power down BT module
 	gpioset -t 0 --chip ${BT_EN_GPIO}=0
+
+	bt_buffer_disable
 }
 
 ###########################
