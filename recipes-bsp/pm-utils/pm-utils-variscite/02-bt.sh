@@ -1,5 +1,11 @@
 #!/bin/sh
 
+SERVICE="variscite-bt"
+
+if [ -d /run/systemd/system ]; then
+	systemctl is-enabled --quiet "$SERVICE" || exit 0
+fi
+
 [ -x /etc/bluetooth/variscite-bt ] || exit 0
 
 SOC=`cat /sys/bus/soc/devices/soc0/soc_id`

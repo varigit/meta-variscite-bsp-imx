@@ -1,5 +1,11 @@
 #!/bin/sh
 
+SERVICE="variscite-wifi"
+
+if [ -d /run/systemd/system ]; then
+	systemctl is-enabled --quiet "$SERVICE" || exit 0
+fi
+
 [ -x /etc/wifi/variscite-wifi ] || exit 0
 
 SOC=`cat /sys/bus/soc/devices/soc0/soc_id`
@@ -34,4 +40,3 @@ case $1 in
 	fi
 	;;
 esac
-
