@@ -99,7 +99,8 @@ do_compile() {
     # Copy and patch hello_world demo to disable_cache demo
     if [ -e "${WORKDIR}/${DISABLE_CACHE_PATCH}" ]; then
         # Copy hello_world demo
-        cp -r ${S}/boards/${CM_BOARD}/demo_apps/hello_world/ ${S}/boards/${CM_BOARD}/demo_apps/disable_cache
+        mkdir -p ${S}/boards/${CM_BOARD}/demo_apps/disable_cache
+        cp -ru ${S}/boards/${CM_BOARD}/demo_apps/hello_world/* ${S}/boards/${CM_BOARD}/demo_apps/disable_cache/
         # Rename hello_world strings to disable_cache
         grep -rl hello_world ${S}/boards/${CM_BOARD}/demo_apps/disable_cache | xargs sed -i 's/hello_world/disable_cache/g'
         # Rename hello_world files to disable_cache
