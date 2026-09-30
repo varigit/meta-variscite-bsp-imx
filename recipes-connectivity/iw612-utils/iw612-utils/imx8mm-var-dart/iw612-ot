@@ -80,18 +80,18 @@ ot_start()
 		exit 1
 	fi
 
-	# Kill any running ot-daemon-iwxxx-spi processes
-	kill -9 $(pidof ot-daemon-iwxxx-spi) 2>/dev/null || true
+	# Kill any running ot-daemon-iwxxx processes
+	kill -9 $(pidof ot-daemon-iwxxx) 2>/dev/null || true
 
 	echo "$(basename $0): starting"
 
 	# Disable btnxpuart power save mode
 	hcitool cmd 3f 23 03 00 00
 
-	# Start ot-daemon-iwxxx-spi
+	# Start ot-daemon-iwxxx
 	URL="spinel+spi://${SPI_DEV}?gpio-int-device=${GPIO_DEV_INT}&gpio-int-line=${GPIO_LINE_INT}&spi-mode=${SPI_MODE}&spi-speed=${SPI_SPEED}&spi-reset-delay=${SPI_RESET_DELAY}&"
 	echo "${URL}"
-	ot-daemon-iwxxx-spi "${URL}"
+	ot-daemon-iwxxx "${URL}"
 }
 
 # Stop OT hardware
@@ -103,8 +103,8 @@ ot_stop()
 	# Exit if BT module is not iw612 according to the device tree
 	fdt_has_btnxpuart || exit 0
 
-	# Kill any running ot-daemon-iwxxx-spi processes
-	kill -9 $(pidof ot-daemon-iwxxx-spi) 2>/dev/null || true
+	# Kill any running ot-daemon-iwxxx processes
+	kill -9 $(pidof ot-daemon-iwxxx) 2>/dev/null || true
 }
 
 wifi_is_wbe()
