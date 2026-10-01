@@ -17,12 +17,12 @@ if [ "${SOC#i.MX6UL*}" != "${SOC}" ] ; then
 	fi
 fi
 
-case $1 in
+case "$1" in
 
-"suspend")
+"pre"|"suspend")
 	/etc/bluetooth/variscite-bt stop
 	;;
-"resume")
+"post"|"resume")
 	/etc/bluetooth/variscite-bt start
 	;;
 esac

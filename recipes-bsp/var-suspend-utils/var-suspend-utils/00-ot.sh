@@ -18,7 +18,7 @@ fi
 
 case "$1" in
 
-"suspend")
+"pre"|"suspend")
 	# Check if the service is enabled and try to stop it
 	if systemctl is-enabled --quiet ${SERVICE}; then
 		if ! systemctl stop ${SERVICE}; then
@@ -27,7 +27,7 @@ case "$1" in
 	fi
 	;;
 
-"resume")
+"post"|"resume")
 	# Check if the service is enabled and try to start it
 	if systemctl is-enabled --quiet ${SERVICE}; then
 		if ! systemctl start ${SERVICE}; then

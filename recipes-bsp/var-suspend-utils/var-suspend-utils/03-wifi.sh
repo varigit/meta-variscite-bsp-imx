@@ -17,12 +17,12 @@ if [ "${SOC#i.MX6UL*}" != "${SOC}" ] ; then
 	fi
 fi
 
-case $1 in
+case "$1" in
 
-"suspend")
+"pre"|"suspend")
 	/etc/wifi/variscite-wifi stop
 	;;
-"resume")
+"post"|"resume")
 	/etc/wifi/variscite-wifi start
 	if [ -f /etc/init.d/connman ]; then
 		killall -9 wpa_supplicant

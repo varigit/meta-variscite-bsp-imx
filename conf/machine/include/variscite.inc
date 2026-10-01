@@ -52,6 +52,9 @@ PREFERRED_PROVIDER_u-boot-fw-utils ?= "u-boot-fw-utils"
 
 PREFERRED_VERSION_cortexm-toolchain-cross-armv7e-m:mx8m-nxp-bsp = "12.3.rel1"
 
+SUSPEND_UTILS_PACKAGE = "${@bb.utils.contains('DISTRO_FEATURES', 'systemd', \
+    'var-suspend-utils-systemd', 'var-suspend-utils-pm-utils', d)}"
+
 # Use i.MX Gstreamer Version
 MACHINE_GSTREAMER_1_0_PLUGIN:mx6-nxp-bsp = "imx-gst1.0-plugin"
 MACHINE_GSTREAMER_1_0_PLUGIN:mx7-nxp-bsp = "imx-gst1.0-plugin"
@@ -89,7 +92,7 @@ MACHINE_ESSENTIAL_EXTRA_RDEPENDS:mx9-nxp-bsp = " \
 MACHINE_EXTRA_RDEPENDS += " \
     imx-kobs \
     kernel-modules \
-    pm-utils-variscite \
+    ${SUSPEND_UTILS_PACKAGE} \
     u-boot-fw-utils \
     u-boot-splash \
     u-boot-default-env \
