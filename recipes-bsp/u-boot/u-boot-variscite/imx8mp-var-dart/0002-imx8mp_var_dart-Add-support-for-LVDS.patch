@@ -225,8 +225,8 @@ index a1601f6b1e3..b526bc411a6 100644
 --- a/board/variscite/imx8mp_var_dart/Makefile
 +++ b/board/variscite/imx8mp_var_dart/Makefile
 @@ -15,4 +15,5 @@ obj-y += ../common/mmc.o
- obj-$(CONFIG_FEC_MXC) += ../common/eth.o
  obj-$(CONFIG_EXTCON_PTN5150) += ../common/extcon-ptn5150.o
+ obj-$(CONFIG_OF_BOARD_FIXUP) += ../common/fixdt.o
  obj-$(CONFIG_IMX8M_BOARD_INIT_DRAM) += ../common/imx8_dram.o
 +obj-$(CONFIG_VIDEO) += ../common/video.o
  endif
@@ -245,9 +245,9 @@ index 930eb306ff4..d59391750e5 100644
  			var_carrier_eeprom_read(CARRIER_EEPROM_BUS_DART, CARRIER_EEPROM_ADDR,
  						&carrier_eeprom);
 +			env_set("backlight_gpio", "GPIO1_1");
- 		}
- 
- 		var_carrier_eeprom_get_revision(&carrier_eeprom, carrier_rev, sizeof(carrier_rev));
+ 		} else if (board_id == BOARD_ID_SMARC) {
+ 			env_set("board_name", "VAR-SMARC-MX8M-PLUS");
+ 			env_set("console", "ttymxc1,115200");
 diff --git a/configs/imx8mp_var_dart_defconfig b/configs/imx8mp_var_dart_defconfig
 index a3d7f568a91..44036652e8b 100644
 --- a/configs/imx8mp_var_dart_defconfig
@@ -280,7 +280,7 @@ index a3d7f568a91..44036652e8b 100644
 +CONFIG_BMP_24BPP=y
 +CONFIG_BMP_32BPP=y
  CONFIG_SPL_RSA=y
- CONFIG_SHA384=y
+ CONFIG_TPM=y
  CONFIG_LZO=y
 diff --git a/include/configs/imx8mp_var_dart.h b/include/configs/imx8mp_var_dart.h
 index 89e31832662..7a6f0d81baa 100644
@@ -298,7 +298,7 @@ index 89e31832662..7a6f0d81baa 100644
  	"fdt_addr_r=0x43000000\0" \
  	"fdt_addr=0x43000000\0"			\
 @@ -138,6 +142,7 @@
- 	"mmcboot=echo Booting from mmc ...; " \
+ 		"run ramsize_check; " \
  		"run mmcargs; " \
  		"run optargs; " \
 +		"run backlight_disable; " \
