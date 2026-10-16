@@ -10,14 +10,14 @@ case "$1" in
 "pre"|"suspend")
 	if [ "$ETH_SUSPEND_MODE" = "disabled" ]; then
 		# Bring down all eth interfaces for low power suspend
-		for eth_interface in /sys/class/net/eth* ; do
+		for eth_interface in /sys/class/net/eth* /sys/class/net/en* ; do
 			ip link set $(basename ${eth_interface}) down
 		done
 		exit 0
 	fi
 	;;
 "post"|"resume")
-	for eth_interface in /sys/class/net/eth* ; do
+	for eth_interface in /sys/class/net/eth* /sys/class/net/en* ; do
 		ip link set $(basename ${eth_interface}) down
 		ip link set $(basename ${eth_interface}) up
 	done
