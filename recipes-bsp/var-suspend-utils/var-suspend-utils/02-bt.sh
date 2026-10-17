@@ -4,6 +4,10 @@ SERVICE="variscite-bt"
 
 if [ -d /run/systemd/system ]; then
 	systemctl is-enabled --quiet "$SERVICE" || exit 0
+# Check if running as root
+if [ "$(id -u)" -ne 0 ]; then
+	echo "Please run as root"
+	exit 1
 fi
 
 [ -x /etc/bluetooth/variscite-bt ] || exit 0

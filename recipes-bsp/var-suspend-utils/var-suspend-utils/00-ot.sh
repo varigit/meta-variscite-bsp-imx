@@ -8,6 +8,7 @@ if [ "$(id -u)" -ne 0 ]; then
 	exit 1
 fi
 
+[ -x /etc/openthread/variscite-ot ] || exit 0
 
 case "$1" in
 
