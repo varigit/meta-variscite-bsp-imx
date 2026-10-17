@@ -2,6 +2,8 @@
 
 SERVICE="variscite-ot"
 
+SUSPEND_CONF=/run/variscite-suspend/suspend.conf
+
 # Check if running as root
 if [ "$(id -u)" -ne 0 ]; then
 	echo "Please run as root"
@@ -13,23 +15,24 @@ fi
 case "$1" in
 
 "pre"|"suspend")
-	# Check if the service is enabled and try to stop it
-	if systemctl is-enabled --quiet ${SERVICE}; then
-		if ! systemctl stop ${SERVICE}; then
-			echo "Error stopping service"
+	if [ -d /run/systemd/system ]; then
+		if systemctl is-active --quiet "$SERVICE"; then
+			systemctl stop "$SERVICE"
+			echo "${SERVICE}," >> "$SUSPEND_CONF"
 		fi
+	else
+		/etc/openthread/variscite-ot stop
 	fi
 	;;
 
 "post"|"resume")
-	# Check if the service is enabled and try to start it
-	if systemctl is-enabled --quiet ${SERVICE}; then
-		if ! systemctl start ${SERVICE}; then
-			echo "Error starting service"
+	if [ -d /run/systemd/system ]; then
+		# restore systemd service if it has previously been stopped
+		if grep -q "${SERVICE}," "$SUSPEND_CONF"; then
+			systemctl start "$SERVICE"
 		fi
+	else
+		/etc/openthread/variscite-ot start
 	fi
-	;;
-
-*)
 	;;
 esac

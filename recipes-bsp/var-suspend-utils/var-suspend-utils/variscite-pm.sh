@@ -6,6 +6,11 @@ PM_SCRIPT_DIR="/etc/var-suspend-utils"
 # we want to enforce sequential execution
 
 if [ "$1" = "pre" ]; then
+	# delete file from previous suspend if it exists
+	rm -f /run/variscite-suspend/suspend.conf
+
+	mkdir -p /run/variscite-suspend/
+	touch /run/variscite-suspend/suspend.conf
 
 	find "$PM_SCRIPT_DIR" -maxdepth 1 -type f -executable | sort |
 	while IFS= read -r script; do

@@ -2,8 +2,8 @@
 
 SERVICE="variscite-bt"
 
-if [ -d /run/systemd/system ]; then
-	systemctl is-enabled --quiet "$SERVICE" || exit 0
+SUSPEND_CONF=/run/variscite-suspend/suspend.conf
+
 # Check if running as root
 if [ "$(id -u)" -ne 0 ]; then
 	echo "Please run as root"
@@ -24,9 +24,24 @@ fi
 case "$1" in
 
 "pre"|"suspend")
-	/etc/bluetooth/variscite-bt stop
+	if [ -d /run/systemd/system ]; then
+		if systemctl is-active --quiet "$SERVICE"; then
+			systemctl stop "$SERVICE"
+			echo "${SERVICE}," >> "$SUSPEND_CONF"
+		fi
+	else
+		/etc/bluetooth/variscite-bt stop
+	fi
 	;;
+
 "post"|"resume")
-	/etc/bluetooth/variscite-bt start
+	if [ -d /run/systemd/system ]; then
+		# restore systemd service if it has previously been stopped
+		if grep -q "${SERVICE}," "$SUSPEND_CONF"; then
+			systemctl start "$SERVICE"
+		fi
+	else
+		/etc/bluetooth/variscite-bt start
+	fi
 	;;
 esac

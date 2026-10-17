@@ -2,8 +2,8 @@
 
 SERVICE="variscite-wifi"
 
-if [ -d /run/systemd/system ]; then
-	systemctl is-enabled --quiet "$SERVICE" || exit 0
+SUSPEND_CONF=/run/variscite-suspend/suspend.conf
+
 # Check if running as root
 if [ "$(id -u)" -ne 0 ]; then
 	echo "Please run as root"
@@ -24,10 +24,25 @@ fi
 case "$1" in
 
 "pre"|"suspend")
-	/etc/wifi/variscite-wifi stop
+	if [ -d /run/systemd/system ]; then
+		if systemctl is-active --quiet "$SERVICE"; then
+			systemctl stop "$SERVICE"
+			echo "${SERVICE}," >> "$SUSPEND_CONF"
+		fi
+	else
+		/etc/wifi/variscite-wifi stop
+	fi
 	;;
 "post"|"resume")
-	/etc/wifi/variscite-wifi start
+	if [ -d /run/systemd/system ]; then
+		# restore systemd service if it has previously been stopped
+		if grep -q "${SERVICE}," "$SUSPEND_CONF"; then
+			systemctl start "$SERVICE"
+		fi
+	else
+		/etc/wifi/variscite-wifi start
+	fi
+
 	if [ -f /etc/init.d/connman ]; then
 		killall -9 wpa_supplicant
 		/etc/init.d/connman restart
