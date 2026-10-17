@@ -11,7 +11,9 @@ SRC_URI = " \
     file://01-eth.sh \
     file://02-bt.sh \
     file://03-wifi.sh \
+    file://04-usbhub.sh \
     file://01-variscite-sleep.conf \
+    file://variscite-pm.sh \
 "
 
 S = "${UNPACKDIR}"
@@ -33,6 +35,7 @@ FILES:${PN}-pm-utils += "\
 FILES:${PN}-systemd += "\
     ${sysconfdir}/systemd/sleep.conf.d/* \
     ${SYSTEMD_SLEEP_DIR}/* \
+    ${sysconfdir}/var-suspend-utils/0* \
 "
 
 RDEPENDS:${PN}-pm-utils = "${PN} pm-utils"
@@ -42,9 +45,11 @@ do_install() {
     install -Dm 0644 ${S}/01-variscite-sleep.conf \
         ${D}${sysconfdir}/systemd/sleep.conf.d/01-variscite-sleep.conf
 
-    for script in 00-ot.sh 01-eth.sh 02-bt.sh 03-wifi.sh; do
+    install -Dm 0755 ${S}/variscite-pm.sh ${D}${SYSTEMD_SLEEP_DIR}/variscite-pm.sh
+
+    for script in 00-ot.sh 01-eth.sh 02-bt.sh 03-wifi.sh 04-usbhub.sh; do
         install -Dm 0755 ${S}/${script} ${D}${PM_UTILS_SLEEP_DIR}/${script}
-        install -Dm 0755 ${S}/${script} ${D}${SYSTEMD_SLEEP_DIR}/${script}
+        install -Dm 0755 ${S}/${script} ${D}${sysconfdir}/var-suspend-utils/${script}
     done
 
     install -d ${D}${sysconfdir}/var-suspend-utils
