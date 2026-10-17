@@ -8,13 +8,6 @@ if [ "$(id -u)" -ne 0 ]; then
 	exit 1
 fi
 
-# Check if the service file exists in either /etc or /lib
-if [ ! -f "/etc/systemd/system/${SERVICE}.service" ] && \
-   [ ! -f "/lib/systemd/system/${SERVICE}.service" ]; then
-	echo "${SERVICE}.service does not exist in" \
-	     "/etc/systemd/system or /lib/systemd/system."
-	exit 0
-fi
 
 case "$1" in
 
