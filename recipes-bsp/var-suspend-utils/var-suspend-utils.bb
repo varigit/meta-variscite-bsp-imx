@@ -18,7 +18,7 @@ SRC_URI = " \
 
 S = "${UNPACKDIR}"
 
-PACKAGES = "${PN} ${PN}-pm-utils ${PN}-systemd"
+PACKAGE_BEFORE_PN += "${PN}-pm-utils ${PN}-systemd"
 
 PM_UTILS_SLEEP_DIR = "${sysconfdir}/pm/sleep.d"
 SYSTEMD_SLEEP_DIR = "${nonarch_libdir}/systemd/system-sleep"
