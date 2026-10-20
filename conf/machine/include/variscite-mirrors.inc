@@ -1,4 +1,6 @@
 MIRRORS += "\
+    git://git.ti.com/git/wilink8-wlan/wl18xx_fw.git git://github.com/varigit/wl18xx_fw.git;protocol=https \n \
+    git://git.ti.com/git/ti-bt/service-packs.git git://github.com/varigit/ti-bt-service-packs.git;protocol=https \n \
     git://anonscm.debian.org/.*   git://anonscm.debian.org/git/PATH;protocol=https \n \
     git://git.gnome.org/.*        git://git.gnome.org/browse/PATH;protocol=https \n \
     git://git.savannah.gnu.org/.* git://git.savannah.gnu.org/git/PATH;protocol=https \n \
