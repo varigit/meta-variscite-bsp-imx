@@ -6,6 +6,9 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
 require recipes-kernel/linux/linux-imx.inc
 
+S = "${STAGING_KERNEL_DIR}"
+SPDX_INCLUDE_COMPILED_SOURCES = "1"
+
 KERNEL_SRC ?= "git://github.com/varigit/linux-imx;protocol=https"
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
 
