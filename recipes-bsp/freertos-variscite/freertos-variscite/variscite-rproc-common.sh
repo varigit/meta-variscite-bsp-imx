@@ -112,7 +112,19 @@ if [ "${MACHINE#*DART-MX*}" != "${MACHINE}" ]; then
     CM_DTB=${CM_DTB_DART}
 
     case "${MACHINE}" in
-        *DART-MX8M-PLUS*|*DART-MX8M-MINI*)
+        *DART-MX8M-MINI*)
+            somrev=$(get_somrev)
+            case "${somrev}" in
+                1.*)
+                    CM_DTB=${CM_DTB_DART_1X}
+                    ;;
+                3.*)
+                    CM_DTB=${CM_DTB_DART_3X}
+                    ;;
+            esac
+            ;;
+
+        *DART-MX8M-PLUS*)
             somrev=$(get_somrev)
             if [ "$(echo "$somrev < 2.0" | bc)" -eq 1 ]; then
                 CM_DTB=${CM_DTB_DART_1X}
