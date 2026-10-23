@@ -107,6 +107,25 @@ get_somrev() {
 	echo "$major.$minor"
 }
 
+get_symphonyrev() (
+    # VAR-SOM-MX8M-MINI carrier EEPROM: I2C3, address 0x54.
+    # The packed header contains magic (2 bytes), version (1 byte),
+    # then a 16-byte carrier revision string.
+    magic_hi=$(i2cget -f -y 0x2 0x54 0x0) || return 1
+    magic_lo=$(i2cget -f -y 0x2 0x54 0x1) || return 1
+    [ "$((magic_hi))" -eq 86 ] && [ "$((magic_lo))" -eq 67 ] || return 1
+
+    carrier_revision=""
+    offset=3
+    while [ "$offset" -lt 19 ]; do
+        value=$(i2cget -f -y 0x2 0x54 "$offset") || return 1
+        [ "$((value))" -ne 0 ] || break
+        carrier_revision="${carrier_revision}$(printf "\\$(printf '%03o' "$((value))")")"
+        offset=$((offset + 1))
+    done
+    printf '%s\n' "$carrier_revision"
+)
+
 # Initialize default Linux Device Tree
 if [ "${MACHINE#*DART-MX*}" != "${MACHINE}" ]; then
     CM_DTB=${CM_DTB_DART}
@@ -141,7 +160,27 @@ elif [ "${MACHINE#*VAR-SOM*}" != "${MACHINE}" ]; then
     CM_DTB=${CM_DTB_SOM}
 
     case "$MACHINE" in
-        *VAR-SOM-MX8M-PLUS*|*VAR-SOM-MX8M-MINI*)
+        *VAR-SOM-MX8M-MINI*)
+            somrev=$(get_somrev)
+            case "${somrev}" in
+                1.*) CM_DTB=${CM_DTB_SOM_1X} ;;
+            esac
+
+            # Match U-Boot: Symphony 2.1+ uses the unsuffixed DTB;
+            # older or unidentified carriers use the 2.0 variant.
+            carrierrev=$(get_symphonyrev 2>/dev/null) || carrierrev="undefined"
+            case "${carrierrev}" in
+                sym-2.[1-9]*) ;;
+                *)
+                    case "${somrev}" in
+                        1.*) CM_DTB=${CM_DTB_SOM_1X_SYMPHONY_20} ;;
+                        *) CM_DTB=${CM_DTB_SOM_SYMPHONY_20} ;;
+                    esac
+                    ;;
+            esac
+            ;;
+
+        *VAR-SOM-MX8M-PLUS*)
             somrev=$(get_somrev)
             if [ "$(echo "$somrev < 2.0" | bc)" -eq 1 ]; then
                 CM_DTB=${CM_DTB_SOM_1X}
