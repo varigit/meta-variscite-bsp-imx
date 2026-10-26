@@ -7,6 +7,10 @@ UBOOT_SRC ?= "git://github.com/varigit/uboot-imx;protocol=https"
 SRC_URI = "${UBOOT_SRC};branch=${SRCBRANCH}"
 
 SRCBRANCH = "lf_v2024.04_6.6.52-2.2.2_var01"
+
+CVE_PRODUCT = "nxp:uboot_secondary_program_loader u-boot:u-boot denx:u-boot"
+CVE_VERSION = "2024.04"
+
 SRCREV = "3a65d101951a41603f602ff9c1d2414da71c283e"
 UBOOT_INITIAL_ENV_DEVICE = "sd"
 
