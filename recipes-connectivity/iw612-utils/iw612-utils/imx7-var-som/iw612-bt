@@ -16,6 +16,9 @@ BT_BUF_GPIO="gpiochip0 6"
 # btnxpuart fdt device compatible file
 BT_FDT="/sys/firmware/devicetree/base/soc/bus@30800000/spba-bus@30800000/serial@30880000/bluetooth_iw61x"
 
+# Optional Bluetooth SCO sound card enabled by the device tree overlay
+BT_SCO_FDT="/sys/firmware/devicetree/base/sound-bt-sco"
+
 # Use btnxpuart device node to determine if wifi module is iw61x
 fdt_has_btnxpuart() {
 	# Check if compatible file exists
@@ -85,6 +88,12 @@ bt_start()
 	fi
 
 	sleep 1;
+
+	if [ ! -e "$BT_SCO_FDT" ]; then
+		# Select Host/DMA (HCI) audio; this does not enable SCO over SAI2 PCM.
+		echo "$(basename $0): selecting SCO audio over HCI"
+		hcitool -i hci0 cmd 0x3f 0x001d 0x00
+	fi
 
 	# Fork a dummy process to satisfy the variscite-bt systemd service type=forking
 	(while true; do sleep 60; done) &
