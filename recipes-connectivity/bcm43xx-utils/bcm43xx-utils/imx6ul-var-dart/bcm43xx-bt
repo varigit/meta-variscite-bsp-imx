@@ -28,7 +28,7 @@ WIFI_5G_SDIO_ID=0x4339
 WIFI_SDIO_ID_FILE=/sys/class/net/wlan0/device/device
 
 # Prepare the Bluetooth MAC address argument for brcm_patchram_plus.
-# If eth0 or eth1 is present, set the Bluetooth MAC to the highest
+# If end0 or end1 is present, set the Bluetooth MAC to the highest
 # Ethernet MAC address + 1. If no Ethernet MAC addresses are found,
 # use the default MAC address provided by the Bluetooth radio.
 bt_set_macaddr()
@@ -36,24 +36,24 @@ bt_set_macaddr()
 	BT_MACADDR=""
 	BT_MACADDR_ARG=""
 
-	# Get MAC address of eth0 if available, stripping colons
-	if [ -f /sys/class/net/eth0/address ]; then
-		eth0_addr=$(cat /sys/class/net/eth0/address | sed 's/://g')
+	# Get MAC address of end0 if available, stripping colons
+	if [ -f /sys/class/net/end0/address ]; then
+		end0_addr=$(cat /sys/class/net/end0/address | sed 's/://g')
 	else
-		eth0_addr=""
+		end0_addr=""
 	fi
 
-	# Get MAC address of eth1 if available, stripping colons
-	if [ -f /sys/class/net/eth1/address ]; then
-		eth1_addr=$(cat /sys/class/net/eth1/address | sed 's/://g')
+	# Get MAC address of end1 if available, stripping colons
+	if [ -f /sys/class/net/end1/address ]; then
+		end1_addr=$(cat /sys/class/net/end1/address | sed 's/://g')
 	else
-		eth1_addr=""
+		end1_addr=""
 	fi
 
-	# Determine the Bluetooth MAC address if either eth0 or eth1 exists
-	if [ -n "$eth0_addr" ] || [ -n "$eth1_addr" ]; then
-		# Use the maximum of eth0 and eth1 MAC addresses
-		bt_addr=$(max $eth0_addr $eth1_addr)
+	# Determine the Bluetooth MAC address if either end0 or end1 exists
+	if [ -n "$end0_addr" ] || [ -n "$end1_addr" ]; then
+		# Use the maximum of end0 and end1 MAC addresses
+		bt_addr=$(max $end0_addr $end1_addr)
 		# Increment the address by 1
 		bt_addr=$((0x$bt_addr + 1))
 		# Convert to 12-character uppercase hexadecimal and format as colon-separated
