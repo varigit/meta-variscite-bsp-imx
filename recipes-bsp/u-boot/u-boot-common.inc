@@ -11,7 +11,7 @@ SRCBRANCH = "lf_v2024.04_6.6.52-2.2.2_var01"
 CVE_PRODUCT = "nxp:uboot_secondary_program_loader u-boot:u-boot denx:u-boot"
 CVE_VERSION = "2024.04"
 
-SRCREV = "9b14be94f7999ca5836234bc91f17a14a8188ab6"
+SRCREV = "6be5fa4b66f2e6a19cd76cc35f5213dca5f5c8a7"
 UBOOT_INITIAL_ENV_DEVICE = "sd"
 
 UBOOT_INITIAL_ENV_DEVICE:var-som-mx6 = "nand"
