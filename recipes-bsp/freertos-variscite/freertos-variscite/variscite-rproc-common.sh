@@ -97,12 +97,51 @@ get_somrev() {
 	echo "$major.$minor"
 }
 
+get_carrierrev() (
+    # VAR-SOM-MX8M-MINI carrier EEPROM: I2C3, address 0x54.
+    # The packed header contains magic (2 bytes), version (1 byte),
+    # then a 16-byte carrier revision string.
+    magic_hi=$(i2cget -f -y 0x2 0x54 0x0) || return 1
+    magic_lo=$(i2cget -f -y 0x2 0x54 0x1) || return 1
+    if [ "$((magic_hi))" -ne 86 ] || [ "$((magic_lo))" -ne 67 ]; then
+        printf '%s\n' legacy
+        return 0
+    fi
+
+    carrierrev=""
+    offset=3
+    while [ "$offset" -lt 19 ]; do
+        value=$(i2cget -f -y 0x2 0x54 "$offset") || return 1
+        [ "$((value))" -ne 0 ] || break
+        carrierrev="${carrierrev}$(printf "\\$(printf '%03o' "$((value))")")"
+        offset=$((offset + 1))
+    done
+    printf '%s\n' "$carrierrev"
+)
+
 # Initialize default Linux Device Tree
 if [ "${MACHINE#*DART-MX*}" != "${MACHINE}" ]; then
     CM_DTB=${CM_DTB_DART}
 
     case "${MACHINE}" in
-        *DART-MX8M-PLUS*|*DART-MX8M-MINI*)
+        *DART-MX8M-MINI*)
+            somrev=$(get_somrev)
+            case "${somrev}" in
+                1.*) CM_DTB=${CM_DTB_DART_1X} ;;
+                3.*) CM_DTB=${CM_DTB_DART_3X} ;;
+            esac
+            case "${MACHINE}" in
+                *Sonata*)
+                    CM_DTB=${CM_DTB_DART_SONATA}
+                    case "${somrev}" in
+                        1.*) CM_DTB=${CM_DTB_DART_SONATA_1X} ;;
+                        3.*) CM_DTB=${CM_DTB_DART_SONATA_3X} ;;
+                    esac
+                    ;;
+            esac
+            ;;
+
+        *DART-MX8M-PLUS*)
             somrev=$(get_somrev)
             if [ "$(echo "$somrev < 2.0" | bc)" -eq 1 ]; then
                 CM_DTB=${CM_DTB_DART_1X}
@@ -113,7 +152,33 @@ elif [ "${MACHINE#*VAR-SOM*}" != "${MACHINE}" ]; then
     CM_DTB=${CM_DTB_SOM}
 
     case "$MACHINE" in
-        *VAR-SOM-MX8M-PLUS*|*VAR-SOM-MX8M-MINI*)
+        *VAR-SOM-MX8M-MINI*)
+            somrev=$(get_somrev)
+            case "${somrev}" in
+                1.*) CM_DTB=${CM_DTB_SOM_1X} ;;
+            esac
+
+            if ! carrierrev=$(get_carrierrev); then
+                echo "Error: Cannot read carrier EEPROM" >&2
+                exit 1
+            fi
+            case "${carrierrev}" in
+                sym-1.*|legacy)
+                    CM_DTB=${CM_DTB_SOM_SYMPHONY_1X}
+                    case "${somrev}" in
+                        1.*) CM_DTB=${CM_DTB_SOM_1X_SYMPHONY_1X} ;;
+                    esac
+                    ;;
+                sym-2.0)
+                    CM_DTB=${CM_DTB_SOM_SYMPHONY_20}
+                    case "${somrev}" in
+                        1.*) CM_DTB=${CM_DTB_SOM_1X_SYMPHONY_20} ;;
+                    esac
+                    ;;
+            esac
+            ;;
+
+        *VAR-SOM-MX8M-PLUS*)
             somrev=$(get_somrev)
             if [ "$(echo "$somrev < 2.0" | bc)" -eq 1 ]; then
                 CM_DTB=${CM_DTB_SOM_1X}
